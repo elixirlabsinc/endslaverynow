@@ -25,8 +25,11 @@ npm start
 ----------------------
 
 To run the React version of the project:
+
 cd endslaverynow-react
+
 npm install
+
 npm start
 
 Tutorials:
