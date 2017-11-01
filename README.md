@@ -21,3 +21,13 @@ Now you can start the TypeScript compiler in watch mode and run lite-server with
 npm start
 
 //instructions from https://github.com/buckyroberts/angular-2-template.git//
+
+----------------------
+
+To run the React version of the project:
+cd endslaverynow-react
+npm install
+npm start
+
+Tutorials:
+https://www.codementor.io/yurio/all-you-need-is-react-firebase-4v7g9p4kf 
