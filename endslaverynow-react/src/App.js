@@ -6,22 +6,76 @@ import fire from './fire';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { childData: []}; // <- set up react state
+    this.state = { map: []}; // <- set up react state
   }
   componentWillMount() {
-      let data = fire.database().ref('/products');
-      var realThis = this;
-        data.on("value", snapshot => {
-          snapshot.forEach(function(childSnapshot) {
-            realThis.setState({childData: realThis.state.childData.concat([childSnapshot.val()])});
-          });
+      var innerThis = this;
+
+      let category1Data = fire.database().ref('/categoryLvl1');
+      let category2Data = fire.database().ref('/categoryLvl2');
+      let productData = fire.database().ref('/products');
+
+      var cat2toProd = {};
+
+      productData.on("value", snapshot => {
+        snapshot.forEach(function(childSnapshot) {
+          let childData = childSnapshot.val();
+          childData.id = childSnapshot.key;
+          if(!(childData.categoryLvl2ID in cat2toProd)) {
+            cat2toProd[childData.categoryLvl2ID] = [];
+          }
+          cat2toProd[childData.categoryLvl2ID].push(childData);
         });
+      });
+
+      var cat1tocat2 = {};
+
+      category2Data.on("value", snapshot => {
+        snapshot.forEach(function(childSnapshot) {
+          let childData = childSnapshot.val();
+          childData.id = childSnapshot.key;
+          if (childData.id in cat2toProd){
+            childData.products = cat2toProd[childData.id];
+          }
+          else {
+            childData.products = [];
+          }
+          if(!(childData.categoryLvl1ID in cat1tocat2)) {
+            cat1tocat2[childData.categoryLvl1ID] = [];
+          }
+          cat1tocat2[childData.categoryLvl1ID].push(childData);
+        })
+      })
+
+      category1Data.on("value", snapshot => {
+        snapshot.forEach(function(childSnapshot) {
+          let childData = childSnapshot.val();
+          childData.id = childSnapshot.key;
+          if (childData.id in cat1tocat2){
+            childData.cat2 = cat1tocat2[childData.id];
+          }
+          else {
+            childData.cat2 = [];
+          }
+          innerThis.setState({map: [childData].concat(innerThis.state.map)});
+        })
+      })
+
+      console.log(innerThis.state.map);
   }
   render() {
         return (
           <div className = "App">
             <ul>
-              {this.state.childData.map(childData => <li>{childData}</li>)}
+              {this.state.map.map(cat1 => <li key = {cat1.id}><br />{cat1.name}
+                <ul>
+                  {cat1.cat2.map(cat2 => <li key = {cat2.id}><br />{cat2.name}
+                     <ul>
+                        {cat2.products.map(products => <li key = {products.id}><br />{products.productName}<br />{products.productDesc}<br />{products.ranking}</li>)}<br />
+                     </ul> 
+                  </li>)}
+                </ul>
+              </li>)}
             </ul>
           </div>
         );

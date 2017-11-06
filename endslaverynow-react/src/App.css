@@ -1,5 +1,9 @@
 .App {
-  text-align: center;
+  color: black;
+}
+
+.App ul {
+  list-style-type: none;
 }
 
 .App-logo {
