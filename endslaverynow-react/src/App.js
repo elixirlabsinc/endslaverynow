@@ -3,6 +3,12 @@ import React, { Component } from 'react';
 import './App.css';
 import fire from './fire';
 
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
+import HeaderNavigation from './HeaderNavigation';
+import JumbotronComponent from './JumbotronComponent';
+import RankingSystem from './RankingSystem';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -60,24 +66,34 @@ class App extends Component {
           innerThis.setState({map: [childData].concat(innerThis.state.map)});
         })
       })
-
-      console.log(innerThis.state.map);
   }
   render() {
         return (
-          <div className = "App">
-            <ul>
-              {this.state.map.map(cat1 => <li key = {cat1.id}><br />{cat1.name}
-                <ul>
-                  {cat1.cat2.map(cat2 => <li key = {cat2.id}><br />{cat2.name}
-                     <ul>
-                        {cat2.products.map(products => <li key = {products.id}><br />{products.productName}<br />{products.productDesc}<br />{products.ranking}</li>)}<br />
-                     </ul> 
-                  </li>)}
-                </ul>
-              </li>)}
-            </ul>
+        <body>
+          <div className = "header">
+            <HeaderNavigation />
           </div>
+    
+          <div className = "App">
+            <div id="jumbotron-component">
+              <JumbotronComponent />
+            </div>
+            <div id="app-body">
+              <ul>
+                {this.state.map.map(cat1 => <li key = {cat1.id}><br />{cat1.name}
+                  <ul>
+                    {cat1.cat2.map(cat2 => <li key = {cat2.id}><br />{cat2.name}
+                       <ul>
+                          {cat2.products.map(products => <li key = {products.id}><br />{products.productName}<br />{products.productDesc}<br />{products.ranking}</li>)}<br />
+                       </ul> 
+                    </li>)}
+                  </ul>
+                </li>)}
+              </ul>
+            </div>
+
+          </div>
+        </body>
         );
   };
   }
