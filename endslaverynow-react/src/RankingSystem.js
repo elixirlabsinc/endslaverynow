@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import HeaderNavigation from './HeaderNavigation';
 
 export default class RankingSystem extends React.Component {
   
@@ -8,8 +7,11 @@ export default class RankingSystem extends React.Component {
     
     return (
       <body>
-        <HeaderNavigation />
-        <h1>Hi there</h1>
+        <h1>Ranking System</h1>
+        <p>We ranked companies and brands based on their antislavery policies; 
+        supply chain transparency; third-party certifications; and engagement 
+        around slavery, forced labor and human trafficking. We awarded points 
+        for our Good, Better, Best lists for the following:</p>
       </body>
     );
   }

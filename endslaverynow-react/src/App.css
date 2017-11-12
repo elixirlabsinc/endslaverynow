@@ -1,23 +1,19 @@
 .header .container{
-  height: 110px;
+  height: 75px;
 }
 
 .header img{
-  max-height: 400%;
+  max-height: 300%;
 }
 
 .header li a{
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .App {
   color: black;
-  margin-top: 110px;
-}
-
-#app-body {
-  margin-left: 250px;
-  margin-right: 50px;
+  margin-top: 70px;
+  margin-bottom: 70px;
 }
 
 #jumbotron-component {
@@ -47,6 +43,54 @@
 
 #jumbotron-component p {
   color: white;
+}
+
+#ranking {
+  padding-top: 70px;
+  margin-left: 250px;
+  margin-right: 100px;
+}
+
+#products {
+  padding-top: 70px;
+  margin-left: 250px;
+  margin-right: 100px;
+}
+
+#certifications {
+  padding-top: 70px;
+  margin-left: 250px;
+  margin-right: 100px;
+}
+
+#contact {
+  padding-top: 70px;
+  margin-left: 250px;
+  margin-right: 100px;
+}
+
+.footer .container{
+  height: 200px;
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 50px;
+  padding-right: 50px;
+  display: block;
+}
+
+.footer img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer p {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 50px;
+  padding-right: 50px;
+  display: block;
 }
 
 .App ul {

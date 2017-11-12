@@ -3,12 +3,6 @@ import './App.css';
 import Nav from 'react-bootstrap/lib/Nav';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import NavItem from 'react-bootstrap/lib/NavItem';
-import NavDropdown from 'react-bootstrap/lib/NavDropdown';
-import MenuItem from 'react-bootstrap/lib/MenuItem';
-import Tabs from 'react-bootstrap/lib/Tabs';
-import Tab from 'react-bootstrap/lib/Tab';
-
-import './logo_endslaverynow.png';
 
 export default class HeaderNavigation extends React.Component {
   
@@ -20,7 +14,7 @@ export default class HeaderNavigation extends React.Component {
         <Navbar.Header>
           <Navbar.Brand>
               <a href="/">
-                <img src={require("./logo_endslaverynow.png")} alt="End Slavery Now"></img>
+                <img src={require("./logo_endslaverynowH.png")} alt="End Slavery Now"></img>
               </a>
           </Navbar.Brand>
         </Navbar.Header>
