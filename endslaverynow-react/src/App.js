@@ -30,6 +30,7 @@ class App extends Component {
           if(!(childData.categoryLvl2ID in cat2toProd)) {
             cat2toProd[childData.categoryLvl2ID] = [];
           }
+          //console.log("Product: " + childData.productName);
           cat2toProd[childData.categoryLvl2ID].push(childData);
         });
       });
@@ -49,6 +50,7 @@ class App extends Component {
           if(!(childData.categoryLvl1ID in cat1tocat2)) {
             cat1tocat2[childData.categoryLvl1ID] = [];
           }
+          console.log("Category 2: " + childData.name + " with products: " + childData.products);
           cat1tocat2[childData.categoryLvl1ID].push(childData);
         })
       })
@@ -63,6 +65,7 @@ class App extends Component {
           else {
             childData.cat2 = [];
           }
+          console.log("Category 1: " + childData.name + " with children 2: " + childData.cat2);
           innerThis.setState({map: [childData].concat(innerThis.state.map)});
         })
       })
@@ -91,7 +94,6 @@ class App extends Component {
                 </li>)}
               </ul>
             </div>
-
           </div>
         </body>
         );
