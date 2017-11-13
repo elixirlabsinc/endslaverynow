@@ -67,20 +67,30 @@ export default class JumbotronComponent extends React.Component {
 
   render() {
     return (
-      <body>
-        <h1>Shop Products by Category</h1>
-        <ul>
-          {this.state.map.map(cat1 => <li key = {cat1.id}><br />{cat1.name}
-            <ul>
-              {cat1.cat2.map(cat2 => <li key = {cat2.id}><br />{cat2.name}
+      <section class="content-section-b">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-13 ml-auto">
+            <hr class="section-heading-spacer"/>
+            <div class="clearfix"></div>
+            <h2 class="section-heading">Shop Products by Category</h2>
+            <p class="lead"><ul>
+              {this.state.map.map(cat1 => <li key = {cat1.id}><br />{cat1.name}
                 <ul>
-                  {cat2.products.map(products => <li key = {products.id}><br />{products.productName}<br />{products.productDesc}<br />{products.ranking}</li>)}<br />
-                </ul> 
+                  {cat1.cat2.map(cat2 => <li key = {cat2.id}><br />{cat2.name}
+                    <ul>
+                      {cat2.products.map(products => <li key = {products.id}><br />{products.productName}<br />{products.productDesc}<br />{products.ranking}</li>)}<br />
+                    </ul> 
+                  </li>)}
+                </ul>
               </li>)}
-            </ul>
-          </li>)}
-        </ul>
-      </body>
+            </ul></p>
+          </div>
+        </div>
+
+      </div>
+    </section>
     )
   }
 }

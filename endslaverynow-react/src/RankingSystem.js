@@ -6,13 +6,26 @@ export default class RankingSystem extends React.Component {
   render() {
     
     return (
-      <body>
-        <h1>Ranking System</h1>
-        <p>We ranked companies and brands based on their antislavery policies; 
+      <section class="content-section-a">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 ml-auto">
+            <hr class="section-heading-spacer"/>
+            <div class="clearfix"></div>
+            <h2 class="section-heading">Ranking System</h2>
+            <p class="lead">We ranked companies and brands based on their antislavery policies; 
         supply chain transparency; third-party certifications; and engagement 
         around slavery, forced labor and human trafficking. We awarded points 
         for our Good, Better, Best lists for the following:</p>
-      </body>
+          </div>
+          <div class="col-lg-5 mr-auto">
+            <img class="img-fluid" src="img/ipad.png" alt=""/>
+          </div>
+        </div>
+
+      </div>
+    </section>
     );
   }
 }
