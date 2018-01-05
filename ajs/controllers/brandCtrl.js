@@ -14,9 +14,15 @@ angularApp.controller('BrandCtrl', [
         var syncObject = $firebaseObject(firebase);
 
         syncObject.$loaded().then(function() {
-            console.log('data is loaded');
-            console.log(syncObject.products);
+            // Get brand information
+            $scope.brandDetails = syncObject.brands[$scope.brandId];
 
+            if($scope.brandDetails == null) {
+                console.log($scope.brandDetails);
+                return
+            }
+
+            // Get products for this brand
             for(prod in syncObject.products) {
                 var temp = syncObject.products[prod];
                 console.log(temp.name);
@@ -37,19 +43,6 @@ angularApp.controller('BrandCtrl', [
          *          - find a better way to find them other than loading all products everytime
          *       3. display product details
          */
-
-        $scope.brandDetails = {
-            "description" : "Cadbury chocolates are based out of the UK and are absolutely delicious",
-            "id" : 1,
-            "image" : "https://vignette.wikia.nocookie.net/logopedia/images/9/9b/Cadbury_logo.svg/revision/latest?cb=20100111121243",
-            "name" : "Cadbury",
-            "ranking" : "Best",
-            "brandURL": "https://www.cadbury.co.uk/"
-        }
-
-        
-
-        // $scope.brandProducts = getBrandProducts();
   
     }
   ]);

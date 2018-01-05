@@ -1,44 +1,52 @@
 <h2>{{ brandDetails.name }}</h2>
 
-<div class="col-md-12 thumbnail">
-    <br>
-    <div class="col-md-4">
-        <img
-            src="{{ brandDetails.image }}"
-            class="img-rounded img-responsive"
-        >
-    </div>
-
-    <div class="col-md-8">
-        <p>
-            <h2>{{ brandDetails.name }}</h2>
-            Ranking: {{ brandDetails.ranking }}<br>
-            Description: {{ brandDetails.description }}<br>
-        </p>
-
-        <a href="{{ brandDetails.brandURL }}" class="btn btn-success btn-medium">Visit {{ brandDetails.name }}</a>
-    </div>
-    <br>&nbsp;<br>
-    <div class="col-md-12">
-        <div class="row"><br>
-        </div>
+<div ng-if="!brandDetails">
+    <div class="col-md-12 thumbnail">
+        No Brand Details Found
     </div>
 </div>
 
+<div ng-if="brandDetails">
+    <div class="col-md-12 thumbnail">
+        <br>
+        <div class="col-md-4">
+            <img
+                src="{{ brandDetails.image }}"
+                class="img-rounded img-responsive"
+            >
+        </div>
 
-<div class="" ng-if="loaded">
-    <div class="row">
-        <div ng-repeat="product in brandProducts">
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <img ng-src="{{ product.image }}" alt="...">
-                    <h3><a href="#/product/{{ product.id }}">{{ product.name }}</a></h3>
+        <div class="col-md-8">
+            <p>
+                <h2>{{ brandDetails.name }}</h2>
+                Ranking: {{ brandDetails.ranking }}<br>
+                Description: {{ brandDetails.description }}<br>
+            </p>
+
+            <a href="{{ brandDetails.brandURL }}" class="btn btn-success btn-medium">Visit {{ brandDetails.name }}</a>
+        </div>
+        <br>&nbsp;<br>
+        <div class="col-md-12">
+            <div class="row"><br>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="" ng-if="loaded">
+        <div class="row">
+            <div ng-repeat="product in brandProducts">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img ng-src="{{ product.image }}" alt="..." height="400px">
+                        <h3><a href="#/product/{{ product.id }}">{{ product.name }}</a></h3>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="" ng-if="!loaded || brandProducts.length == 0">
-    No products found at this time
+    <div class="" ng-if="!loaded || brandProducts.length == 0">
+        No products found at this time
+    </div>
 </div>
