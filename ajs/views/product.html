@@ -1,5 +1,27 @@
-<!-- TODO: coming - requires database update -->
-Category Name
-<!-- end todo -->
+<h2>{{ event.title }}</h2>
 
-<h2>Products</h2>
+
+<div class="col-md-12 thumbnail">
+    <br>
+    <div class="col-md-4">
+        <img
+            src="{{ productDetails.image }}"
+            class="img-rounded img-responsive"
+        >
+    </div>
+
+    <div class="col-md-8">
+        <p>
+            <h2>{{ productDetails.name }}</h2>
+            Brand: <a href="#/brand/{{ productDetails.brandId }}">{{ productDetails.brandName }}</a><br>
+            Description: {{ productDetails.description }}<br>
+        </p>
+
+        <a href="{{ productDetails.purchaseUrl }}" class="btn btn-success btn-medium">Purchase {{productDetails.name }}</a>
+    </div>
+    <br>&nbsp;<br>
+    <div class="col-md-12">
+        <div class="row"><br>
+        </div>
+    </div>
+</div>

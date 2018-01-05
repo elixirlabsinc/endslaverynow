@@ -4,7 +4,7 @@ angularApp.controller('MainCtrl', [
   '$scope',
   function($firebaseArray, $firebaseObject, $scope){
     $scope.heading = "Hello World";
-    $scope.message = "This is me 12";
+    $scope.message = "This is me 123";
 
     /* firebase */
 		var firebase = new Firebase("https://end-slavery-now.firebaseio.com/aatest");

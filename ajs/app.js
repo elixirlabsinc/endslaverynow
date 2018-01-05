@@ -11,6 +11,11 @@ angularApp.config(['$routeProvider',
       controller : 'MainCtrl',
       controllerAs : 'main'
     })
+    .when('/product/:id', {
+      templateUrl : 'views/product.html',
+      controller : 'ProductCtrl',
+      controllerAs : 'product'
+    })
     .otherwise('/');
   }
 ]);
