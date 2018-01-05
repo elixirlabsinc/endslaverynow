@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="AngularApp">
+<head>
+  <title>Angular App</title>
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-route.min.js"></script>
+
+  <script type="text/javascript" src="app.js"></script>
+
+  <!-- Controllers -->
+  <script type="text/javascript" src="controllers/mainCtrl.js"></script>
+
+  <!-- Firebase -->
+  <script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
+  <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
+</head>
+<body>
+
+  <div ng-view></div>
+
+</body>
+</html>
