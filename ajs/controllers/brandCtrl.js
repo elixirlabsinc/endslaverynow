@@ -3,10 +3,31 @@ angularApp.controller('BrandCtrl', [
     '$firebaseObject',
     '$routeParams',
     '$scope',
-    function($firebaseArray, $firebaseObject, $routeParams, $scope){  
+    function($firebaseArray, $firebaseObject, $routeParams, $scope){
+        
+        $scope.brandId = $routeParams.id;
+        $scope.loaded = false;
+        $scope.brandProducts = [];
+
         /* firebase */
         var firebase = new Firebase("https://end-slavery-now.firebaseio.com/aatest");
         var syncObject = $firebaseObject(firebase);
+
+        syncObject.$loaded().then(function() {
+            console.log('data is loaded');
+            console.log(syncObject.products);
+
+            for(prod in syncObject.products) {
+                var temp = syncObject.products[prod];
+                console.log(temp.name);
+                if(temp.brandId == $scope.brandId) {
+                    $scope.brandProducts.push(temp);
+                }
+            }
+
+            $scope.loaded = true;
+        });
+
         syncObject.$bindTo($scope, "esn");
 
         /**
@@ -17,8 +38,6 @@ angularApp.controller('BrandCtrl', [
          *       3. display product details
          */
 
-        $scope.brandId = $routeParams.id;
-
         $scope.brandDetails = {
             "description" : "Cadbury chocolates are based out of the UK and are absolutely delicious",
             "id" : 1,
@@ -26,7 +45,11 @@ angularApp.controller('BrandCtrl', [
             "name" : "Cadbury",
             "ranking" : "Best",
             "brandURL": "https://www.cadbury.co.uk/"
-          }
+        }
+
+        
+
+        // $scope.brandProducts = getBrandProducts();
   
     }
   ]);

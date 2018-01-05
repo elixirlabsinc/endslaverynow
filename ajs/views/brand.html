@@ -24,40 +24,21 @@
         </div>
     </div>
 </div>
-<!-- 
 
-<div class="">
-        <div class="row">
-            <div ng-repeat="product in events">
-                <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
-                        <img src="{{ event.imgUrl }}" alt="...">
-                        <div class="caption">
-                            <a ng-href="#/event/{{ event.eventId }}">
-                                <h4>{{ event.title ? event.title : 'Puppy Time' + event.eventId }}</h4>
-                            </a>
-                            Date: {{ event.eventDate | date : 'EEE MMM dd, yyyy' : 'PST'}} - {{ event.time }}<br/>
-                            Location: <img src="../resources/img/pin.png" width="20px" height="20px">  {{ event.locationCity }}<br>
-                             Volunteers:
-                             <span class="label label-primary">{{ event.numAcceptedVolunteers }} Accepted</span>
-                             <span class="label label-primary">{{ event.numDeclinedVolunteers }} Declined</span>
-                             <span class="label label-primary">{{ event.numPendingVolunteers }} Pending</span>
-                            <br><br>
-                            <a href="#/event/{{event.eventId}}" class="btn btn-primary" role="button">View Details</a>
-                            <a href="#/event/edit/{{ event.eventId }}" class="btn btn-primary btn-medium">Edit Event</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-sm-4 col-md-3">
+<div class="" ng-if="loaded">
+    <div class="row">
+        <div ng-repeat="product in brandProducts">
+            <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <div class="caption">
-                        <h4>Create New Event</h4>
-                        <a href="#/event/new" class="btn btn-primary btn-medium col-md-offset-5"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a><br>
-                        <br>
-                    </div>
+                    <img ng-src="{{ product.image }}" alt="...">
+                    <h3><a href="#/product/{{ product.id }}">{{ product.name }}</a></h3>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
+</div>
+
+<div class="" ng-if="!loaded || brandProducts.length == 0">
+    No products found at this time
+</div>
