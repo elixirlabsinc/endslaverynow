@@ -3,11 +3,25 @@ angularApp.controller('ProductCtrl', [
     '$firebaseObject',
     '$routeParams',
     '$scope',
-    function($firebaseArray, $firebaseObject, $routeParams, $scope){  
-        /* firebase */
-        var firebase = new Firebase("https://end-slavery-now.firebaseio.com/aatest");
-        var syncObject = $firebaseObject(firebase);
-        syncObject.$bindTo($scope, "esn");
+    function($firebaseArray, $firebaseObject, $routeParams, $scope){
+
+      $scope.productId = $routeParams.id;
+
+      /* firebase */
+      var firebase = new Firebase("https://end-slavery-now.firebaseio.com/aatest");
+      var syncObject = $firebaseObject(firebase);
+      syncObject.$loaded().then(function() {
+          // Get product information
+          $scope.productDetails = syncObject.products[$scope.productId];
+
+          if($scope.productDetails == null) {
+              return
+          }
+          
+          $scope.brandDetails = syncObject.brands[$scope.productDetails.brandId];
+
+          $scope.loaded = true;
+      });
 
         /**
          * TODO: 1. get the productId from the path
@@ -18,9 +32,8 @@ angularApp.controller('ProductCtrl', [
          *       3. display those product details
          */
 
-        $scope.productId = $routeParams.id;
 
-        $scope.productDetails = {
+        $scope.productDetails1 = {
             "brandId" : 1,
             "categoryId" : 1,
             "description" : "Delicious milk chocolate bar mixed with hazelnut for an added crunch",
