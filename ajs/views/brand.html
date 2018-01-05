@@ -1,5 +1,3 @@
-<h2>{{ brandDetails.name }}</h2>
-
 <div ng-if="!brandDetails">
     <div class="col-md-12 thumbnail">
         No Brand Details Found
@@ -7,6 +5,7 @@
 </div>
 
 <div ng-if="brandDetails">
+    <h2>{{ brandDetails.name }}</h2>
     <div class="col-md-12 thumbnail">
         <br>
         <div class="col-md-4">

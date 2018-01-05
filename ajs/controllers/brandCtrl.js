@@ -18,7 +18,6 @@ angularApp.controller('BrandCtrl', [
             $scope.brandDetails = syncObject.brands[$scope.brandId];
 
             if($scope.brandDetails == null) {
-                console.log($scope.brandDetails);
                 return
             }
 
@@ -33,8 +32,6 @@ angularApp.controller('BrandCtrl', [
 
             $scope.loaded = true;
         });
-
-        syncObject.$bindTo($scope, "esn");
 
         /**
          * TODO: 1. get the brandId from the path and display brand details
