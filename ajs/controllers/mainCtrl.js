@@ -3,13 +3,35 @@ angularApp.controller('MainCtrl', [
 	'$firebaseObject', 
   '$scope',
   function($firebaseArray, $firebaseObject, $scope){
-    $scope.heading = "Hello World";
-    $scope.message = "This is me 123";
+    $scope.brands = [];
+    $scope.products = [];
+    $scope.categories = [];
 
     /* firebase */
 		var firebase = new Firebase("https://end-slavery-now.firebaseio.com/aatest");
 		var syncObject = $firebaseObject(firebase);
-		syncObject.$bindTo($scope, "esn");    
+    
+    syncObject.$loaded().then(function() {
+      for(brand in syncObject.brands) {
+          var temp = syncObject.brands[brand];
+          console.log(temp.name);
+          $scope.brands.push(temp);
+      }
+
+      for(product in syncObject.products) {
+          var temp = syncObject.products[product];
+          console.log(temp.name);
+          $scope.products.push(temp);
+      }
+
+      for(category in syncObject.categories) {
+          var temp = syncObject.categories[category];
+          console.log(temp.name);
+          $scope.categories.push(temp);
+      }
+
+      $scope.loaded = true;
+  });
 
   }
 ]);

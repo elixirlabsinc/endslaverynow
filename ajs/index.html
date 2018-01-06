@@ -26,10 +26,26 @@
   <link rel="stylesheet" type="text/css" href="resources/styles/style.css">
 </head>
 <body>
-
-  <div class="col-md-10 col-md-offset-1">
-    <div ng-view></div>
-  </div>
+    <div class="navbar navbar-static-top" id="header">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-3">
+            <h1><a href="#/"><img src="../resources/img/logo_header.png" width="100%"></a></h1>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-7">
+            <br>
+            <a href="#/ranking">Ranking System</a>&nbsp;&nbsp;&nbsp;
+            <a href="#/certifications">Certifications</a>&nbsp;&nbsp;&nbsp;
+            <a href="#/categories">Shop Categories</a>&nbsp;&nbsp;&nbsp;
+            <a href="#/about">About Us</a>&nbsp;&nbsp;&nbsp;
+            <a href="#/contact">Contact Us</a>&nbsp;&nbsp;&nbsp;
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-md-10 col-md-offset-1">
+        <div ng-view></div>
+      </div>
 
 </body>
 </html>
