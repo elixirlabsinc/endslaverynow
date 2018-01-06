@@ -1,28 +1,26 @@
-<div ng-if="!brandDetails">
+<div ng-if="!categoryDetails">
     <div class="col-md-12 thumbnail">
-        No Brand Details Found
+        No Category Details Found
     </div>
 </div>
 
-<div ng-if="brandDetails">
-    <h2>{{ brandDetails.name }}</h2>
+    
+<div ng-if="categoryDetails">
+    <h2>{{ categoryDetails.name }}</h2>
     <div class="col-md-12 thumbnail">
         <br>
         <div class="col-md-4">
             <img
-                ng-src="{{ brandDetails.image }}"
+                ng-src="{{ categoryDetails.image }}"
                 class="img-rounded img-responsive"
             >
         </div>
 
         <div class="col-md-8">
             <p>
-                <h2>{{ brandDetails.name }}</h2>
-                Ranking: {{ brandDetails.ranking }}<br>
-                Description: {{ brandDetails.description }}<br>
+                <h2>{{ categoryDetails.name }}</h2>
+                Description: {{ categoryDetails.description }}<br>
             </p>
-
-            <a href="{{ brandDetails.brandURL }}" class="btn btn-success btn-medium">Visit {{ brandDetails.name }}</a>
         </div>
         <br>&nbsp;<br>
         <div class="col-md-12">
@@ -34,7 +32,22 @@
 
     <div class="" ng-if="loaded">
         <div class="row">
-            <div ng-repeat="product in brandProducts">
+            <h2>Related Brands</h2>
+            <div ng-repeat="brand in categoryBrands">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img ng-src="{{ brand.image }}" alt="..." height="400px">
+                        <h3><a href="#/product/{{ brand.id }}">{{ brand.name }}</a></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="" ng-if="loaded">
+        <div class="row">
+            <h2>Related Products</h2>
+            <div ng-repeat="product in categoryProducts">
                 <div class="col-sm-6 col-md-4">
                     <div class="thumbnail">
                         <img ng-src="{{ product.image }}" alt="..." height="400px">
