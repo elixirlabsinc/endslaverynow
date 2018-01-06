@@ -26,6 +26,11 @@ angularApp.config(['$routeProvider',
       controller : 'ProductCtrl',
       controllerAs : 'product'
     })
+    .when('/ranking', {
+      templateUrl : 'views/ranking.html',
+      controller : 'RankingCtrl',
+      controllerAs : 'ranking'
+    })
     .otherwise('/');
   }
 ]);
