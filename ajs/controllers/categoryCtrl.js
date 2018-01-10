@@ -23,19 +23,26 @@ angularApp.controller('CategoryCtrl', [
                 return
             }
 
-            if($scope.categoryDetails.parentCategoryId != 0) {
+            // if($scope.categoryDetails.parentCategoryId != 0) {
                 // Check if current category is a child
-                $scope.relatedCategories.push(syncObject.categories[$scope.categoryDetails.parentCategoryId]);
-            } else {
+                // $scope.relatedCategories.push(syncObject.categories[$scope.categoryDetails.parentCategoryId]);
+            // } else {
                 for(cat in syncObject.categories) {
-                    if (syncObject.categories[cat].parentCategoryId == $scope.categoryId ||
-                        (syncObject.categories[cat].parentCategoryId == $scope.categoryDetails.parentCategoryId &&
-                            syncObject.categories[cat].id != $scope.categoryId)
-                    ) {
+                    console.log(cat, syncObject.categories[cat])
+                    if(syncObject.categories[cat].id == $scope.categoryDetails.parentCategoryId) {
+                        console.log("added parent", cat, syncObject.categories[cat]);
                         $scope.relatedCategories.push(syncObject.categories[cat]);
                     }
+                    if (syncObject.categories[cat].parentCategoryId == $scope.categoryId ||
+                        syncObject.categories[cat].parentCategoryId == $scope.categoryDetails.parentCategoryId
+                    ) {
+                        if(syncObject.categories[cat].id != $scope.categoryId && syncObject.categories[cat].parentCategoryId != 0) {
+                            console.log("adding siblings", cat, syncObject.categories[cat]);
+                            $scope.relatedCategories.push(syncObject.categories[cat]);
+                        }
+                    }
                 }
-            }
+            // }
 
             for(brand in syncObject.brands) {
                 var temp = syncObject.brands[brand];

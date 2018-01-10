@@ -29,7 +29,7 @@
         </div>
     </div>
     
-    <div class="" ng-if="loaded">
+    <div class="" ng-if="loaded && relatedCategories.length > 0">
         <div class="row">
             <h2>Related Categories</h2>
             <div ng-repeat="category in relatedCategories">
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="" ng-if="loaded">
+    <div class="" ng-if="loaded && categoryBrands.length > 0">
         <div class="row">
             <h2>Related Brands</h2>
             <div ng-repeat="brand in categoryBrands">
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <div class="" ng-if="loaded">
+    <div class="" ng-if="loaded && categoryProducts.length > 0">
         <div class="row">
             <h2>Related Products</h2>
             <div ng-repeat="product in categoryProducts">
