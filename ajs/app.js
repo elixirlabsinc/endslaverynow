@@ -11,6 +11,11 @@ angularApp.config(['$routeProvider',
       controller : 'MainCtrl',
       controllerAs : 'main'
     })
+    .when('/about', {
+      templateUrl : 'views/about.html',
+      controller : 'AboutCtrl',
+      controllerAs : 'about'
+    })
     .when('/brand/:id', {
       templateUrl : 'views/brand.html',
       controller : 'BrandCtrl',
