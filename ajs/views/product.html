@@ -22,7 +22,13 @@
                 Description: {{ productDetails.description }}<br>
             </p>
 
-            <a href="{{ productDetails.purchaseUrl }}" class="btn btn-success btn-medium">Purchase {{productDetails.name }}</a>
+            <a
+                href="{{ productDetails.purchaseUrl }}"
+                class="btn btn-success btn-medium"
+                ng-if="productDetails.purchaseUrl"
+            >
+                Purchase {{productDetails.name }}
+            </a>
         </div>
         <br>&nbsp;<br>
         <div class="col-md-12">
