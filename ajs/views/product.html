@@ -23,9 +23,11 @@
             </p>
 
             <a
+                ng-click="updateClickCount()"
                 href="{{ productDetails.purchaseUrl }}"
                 class="btn btn-success btn-medium"
                 ng-if="productDetails.purchaseUrl"
+                target="_blank"
             >
                 Purchase {{productDetails.name }}
             </a>
