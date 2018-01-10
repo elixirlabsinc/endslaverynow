@@ -28,7 +28,20 @@
             </div>
         </div>
     </div>
-
+    
+    <div class="" ng-if="loaded">
+        <div class="row">
+            <h2>Related Categories</h2>
+            <div ng-repeat="category in relatedCategories">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img ng-src="{{ category.image }}" alt="..." height="400px">
+                        <h3><a href="#/category/{{ category.id }}">{{ category.name }}</a></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="" ng-if="loaded">
         <div class="row">

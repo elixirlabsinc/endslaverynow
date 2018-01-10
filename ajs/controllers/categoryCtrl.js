@@ -9,6 +9,7 @@ angularApp.controller('CategoryCtrl', [
         $scope.loaded = false;
         $scope.categoryBrands = [];
         $scope.categoryProducts = [];
+        $scope.relatedCategories = [];
 
         /* firebase */
         var firebase = new Firebase("https://end-slavery-now.firebaseio.com/aatest");
@@ -20,6 +21,20 @@ angularApp.controller('CategoryCtrl', [
 
             if($scope.categoryDetails == null) {
                 return
+            }
+
+            if($scope.categoryDetails.parentCategoryId != 0) {
+                // Check if current category is a child
+                $scope.relatedCategories.push(syncObject.categories[$scope.categoryDetails.parentCategoryId]);
+            } else {
+                for(cat in syncObject.categories) {
+                    if (syncObject.categories[cat].parentCategoryId == $scope.categoryId ||
+                        (syncObject.categories[cat].parentCategoryId == $scope.categoryDetails.parentCategoryId &&
+                            syncObject.categories[cat].id != $scope.categoryId)
+                    ) {
+                        $scope.relatedCategories.push(syncObject.categories[cat]);
+                    }
+                }
             }
 
             for(brand in syncObject.brands) {
