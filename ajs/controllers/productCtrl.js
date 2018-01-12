@@ -22,6 +22,7 @@ angularApp.controller('ProductCtrl', [
 
             // TODO: CHECK FOR BRAND ID IN PRODUCTD DETAILS BEFORE ASSIGNING BRAND DETAILS
             $scope.brandDetails = syncObject.brands[$scope.productDetails.brandId];
+            $scope.categoryDetails = syncObject.categories[$scope.productDetails.categoryId];
 
             $scope.loaded = true;
         });
