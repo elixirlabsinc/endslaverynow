@@ -5,33 +5,56 @@
 
 /*
 
-            3b8f8d -
-    Blue – #72d6d6 - container
-    new grey: #f0f3f7
-    Grey – #7f7f7f – line colors
-    Light – #ededed - general background
-    ff5467
+background/lightbrown: #E9DECA
+text/grey: #565656
+links/blue: #2d9898
+red: #D85252
+darkblue: #0D344F
 
 */
 
 body {
     font-family: 'Segoe';
-    background-color: #f0f3f7;
+    background-color: #E9DECA;
     font-size: 2em;
+    color: #565656;
 }
 
 #header {
     padding: 10px 0;
-    color: #3b8f8d;
+    color: #D85252;
 }
 
 a {
-    color: #3b8f8d;
+    color: #2d9898;
 }
 
-.btn-primary {
+a:hover {
+    text-decoration: none;
+    color: #0D344F;
+}
+
+/* .btn-success {
+    background: none;
+    border: none;
+    background-color: #0D344F;
+    color: #565656;
+} */
+
+.purchaseButton {
     color: #f0f3f7;
+    background: none;
+    background-image: none;
     background-color: #3b8f8d;
+}
+
+.productblock {
+    text-align: center;
+}
+
+.btn-success {
+    color: #E9DECA;
+    background-color: #2d9898;
 }
 
 .label{
@@ -54,6 +77,13 @@ a {
     padding: 9px;
     font-size: 0.7em;
     color: #333;
+}
+
+.thumbnail, .panel, .panel-default {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }
 
 .smallfont {

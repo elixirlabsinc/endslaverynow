@@ -22,7 +22,15 @@
                 Description: {{ brandDetails.description }}<br>
             </p>
 
-            <a href="{{ brandDetails.brandURL }}" class="btn btn-success btn-medium">Visit {{ brandDetails.name }}</a>
+            <a
+                href="{{ brandDetails.brandURL }}"
+                class="btn purchaseButton"
+                ng-if="brandDetails.brandURL"
+                target="_blank"
+            >
+                Visit {{ brandDetails.name }}
+            </a>
+
         </div>
         <br>&nbsp;<br>
         <div class="col-md-12">
@@ -36,7 +44,7 @@
         <div class="row">
             <div ng-repeat="product in brandProducts">
                 <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
+                    <div class="thumbnail productblock">
                         <img ng-src="{{ product.image }}" alt="..." height="400px">
                         <h3><a href="#/product/{{ product.id }}">{{ product.name }}</a></h3>
                     </div>

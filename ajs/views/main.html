@@ -14,7 +14,7 @@
         <h2>Sample Categories</h2>
         <div ng-repeat="category in categories">
             <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
+                <div class="thumbnail productblock">
                     <img ng-src="{{ category.image }}" alt="..." height="400px">
                     <h3><a href="#/category/{{ category.id }}">{{ category.name }}</a></h3>
                 </div>
@@ -28,7 +28,7 @@
         <h2>Sample Brands</h2>
         <div ng-repeat="brand in brands">
             <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
+                <div class="thumbnail productblock">
                     <img ng-src="{{ brand.image }}" alt="..." height="400px">
                     <h3><a href="#/brand/{{ brand.id }}">{{ brand.name }}</a></h3>
                 </div>
@@ -42,7 +42,7 @@
         <h2>Sample Products</h2>
         <div ng-repeat="product in products">
             <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
+                <div class="thumbnail productblock">
                     <img ng-src="{{ product.image }}" alt="..." height="400px">
                     <h3><a href="#/product/{{ product.id }}">{{ product.name }}</a></h3>
                 </div>

@@ -5,7 +5,6 @@
 </div>
 
 <div ng-if="brandDetails">
-    <h2>{{ productDetails.name }}</h2>
     <div class="col-md-12 thumbnail">
         <br>
         <div class="col-md-4">
@@ -26,7 +25,7 @@
             <a
                 ng-click="updateClickCount()"
                 href="{{ productDetails.purchaseUrl }}"
-                class="btn btn-success btn-medium"
+                class="btn purchaseButton"
                 ng-if="productDetails.purchaseUrl"
                 target="_blank"
             >
