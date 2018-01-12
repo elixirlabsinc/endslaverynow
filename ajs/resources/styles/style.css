@@ -52,27 +52,6 @@ a:hover {
     text-align: center;
 }
 
-.btn-success {
-    color: #E9DECA;
-    background-color: #2d9898;
-}
-
-.label{
-    font-size: 50%;
-}
-
-.pastEvents {
-    cursor: pointer;
-}
-
-.pastEvents.collapsed:after {
-    content: " +"
-}
-
-.pastEvents.expanded:after {
-    content: " -"
-}
-
 .thumbnail .caption {
     padding: 9px;
     font-size: 0.7em;
@@ -87,5 +66,5 @@ a:hover {
 }
 
 .smallfont {
-    font-size: 0.7em;
+    font-size: 0.9em;
 }

@@ -29,39 +29,45 @@
   <link rel="stylesheet" type="text/css" href="resources/styles/style.css">
 </head>
 <body>
-    <div class="navbar navbar-static-top" id="header">
-        <div class="col-md-10 col-md-offset-1">
-          <div class="col-md-3">
-            <h1><a href="#/"><img src="../resources/img/logo_header.png" width="100%"></a></h1>
-          </div>
-          <div class="col-md-3"></div>
-          <div class="col-md-6">
-            <br>
-            <a href="#/ranking">Ranking System</a>&nbsp;&nbsp;&nbsp;
-            <a href="#/certifications">Certifications</a>&nbsp;&nbsp;&nbsp;
-            <a href="#/categories">Shop Categories</a>&nbsp;&nbsp;&nbsp;
-            <a href="#/about">About Us</a>&nbsp;&nbsp;&nbsp;
-          </div>
-        </div>
+  <div class="navbar navbar-static-top" id="header">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="col-md-3">
+        <h1><a href="#/"><img src="../resources/img/logo_header.png" width="100%"></a></h1>
       </div>
-    
-      <div class="col-md-10 col-md-offset-1">
-        <div ng-view></div>
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <br>
+        <a href="#/ranking">Ranking System</a>&nbsp;&nbsp;&nbsp;
+        <a href="#/certifications">Certifications</a>&nbsp;&nbsp;&nbsp;
+        <a href="#/categories">Shop Categories</a>&nbsp;&nbsp;&nbsp;
+        <a href="#/about">About Us</a>&nbsp;&nbsp;&nbsp;
       </div>
+    </div>
+  </div>
 
-      <br>
-      <div class="col-md-10 col-md-offset-1 smallfont">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div class="col-md-3">
-              In partnership with <a href="http://www.endslaverynow.org/" target="_blank">End Slavery Now</a>
-            </div>
-            <div class="col-md-3 col-md-offset-6">
-              Made with love by <a href="http://www.elixirlabs.org/" target="_blank">Elixir Labs</a>
-            </div>
-          </div>
+  <div class="col-md-10 col-md-offset-1">
+    <div ng-view>
+
+    </div>
+  </div>
+
+
+  <br>
+  <div class="col-md-10 col-md-offset-1 smallfont footer">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="col-md-5">
+          A project by 
+          <a href="http://www.endslaverynow.org/" target="_blank"><img src="../resources/img/logo.png" height="30px"></a>
+            in partnership with 
+          <a href="http://www.freedomcenter.org/" target="_blank"><img src="../resources/img/nurfc.png" height="30px"></a>
+        </div>
+        <div class="col-md-3 col-md-offset-4">
+          Made with love by <a href="http://www.elixirlabs.org/" target="_blank"><img src="../resources/img/elixirlabslogo.png" height="30px"></a>
         </div>
       </div>
+    </div>
+  </div>
 
 </body>
 </html>
