@@ -15,12 +15,10 @@
         </div>
 
         <div class="col-md-8">
-            <p>
-                <h2>{{ productDetails.name }}</h2>
-                Brand: <a href="#/brand/{{ productDetails.brandId }}">{{ brandDetails.name }}</a><br>
-                Category: <a href="#/category/{{ productDetails.categoryId }}">{{ categoryDetails.name }}</a><br>
-                Description: {{ productDetails.description }}<br>
-            </p>
+            <h2>{{ productDetails.name }}</h2>
+            <p ng-if="brandDetails.name">Brand: <a href="#/brand/{{ productDetails.brandId }}">{{ brandDetails.name }}</a></p>
+            <p ng-if="categoryDetails.name">Category: <a href="#/category/{{ productDetails.categoryId }}">{{ categoryDetails.name }}</a></p>
+            <p ng-if="productDetails.description">Description: {{ productDetails.description }}</p>
 
             <a
                 ng-click="updateClickCount()"

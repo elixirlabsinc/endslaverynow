@@ -15,14 +15,14 @@
         </div>
 
         <div class="col-md-8">
-            <p>
                 <h2>{{ brandDetails.name }}</h2>
-                Ranking: <a href="#/ranking">{{ brandDetails.ranking }}</a><br>
-                Category: 
+                <p ng-if="brandDetails.ranking">Ranking: <a href="#/ranking">{{ brandDetails.ranking }}</a></p>
+                <p ng-if="relatedCategories.length > 0">Category: 
                     <span ng-repeat="categoryDetails in relatedCategories">
                         <a href="#/category/{{ categoryDetails.id }}">{{ categoryDetails.name }}</a> 
-                    </span><br>
-                Description: {{ brandDetails.description }}<br>
+                    </span>
+                </p>
+                <p ng-if="brandDetails.description">{{ brandDetails.description }}</p>
             </p>
 
             <a
@@ -44,6 +44,7 @@
 
 
     <div class="" ng-if="loaded">
+        <h2>Products</h2>
         <div class="row">
             <div ng-repeat="product in brandProducts">
                 <div class="col-sm-6 col-md-4">
