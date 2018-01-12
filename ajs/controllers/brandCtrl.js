@@ -24,7 +24,6 @@ angularApp.controller('BrandCtrl', [
             // Get products for this brand
             for(prod in syncObject.products) {
                 var temp = syncObject.products[prod];
-                console.log(temp.name);
                 if(temp.brandId == $scope.brandId) {
                     $scope.brandProducts.push(temp);
                 }

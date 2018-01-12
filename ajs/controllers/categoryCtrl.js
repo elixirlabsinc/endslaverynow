@@ -28,16 +28,13 @@ angularApp.controller('CategoryCtrl', [
                 // $scope.relatedCategories.push(syncObject.categories[$scope.categoryDetails.parentCategoryId]);
             // } else {
                 for(cat in syncObject.categories) {
-                    console.log(cat, syncObject.categories[cat])
                     if(syncObject.categories[cat].id == $scope.categoryDetails.parentCategoryId) {
-                        console.log("added parent", cat, syncObject.categories[cat]);
                         $scope.relatedCategories.push(syncObject.categories[cat]);
                     }
                     if (syncObject.categories[cat].parentCategoryId == $scope.categoryId ||
                         syncObject.categories[cat].parentCategoryId == $scope.categoryDetails.parentCategoryId
                     ) {
                         if(syncObject.categories[cat].id != $scope.categoryId && syncObject.categories[cat].parentCategoryId != 0) {
-                            console.log("adding siblings", cat, syncObject.categories[cat]);
                             $scope.relatedCategories.push(syncObject.categories[cat]);
                         }
                     }
@@ -46,7 +43,6 @@ angularApp.controller('CategoryCtrl', [
 
             for(brand in syncObject.brands) {
                 var temp = syncObject.brands[brand];
-                console.log(temp.name);
                 $scope.brandCategories = temp.categories.split(",");
                 for(catId in $scope.brandCategories) {
                     if($scope.brandCategories[catId] == $scope.categoryId) {
@@ -57,7 +53,6 @@ angularApp.controller('CategoryCtrl', [
 
             for(product in syncObject.products) {
                 var temp = syncObject.products[product];
-                console.log(temp);
                 if(temp.categoryId == $scope.categoryId) {
                     $scope.categoryProducts.push(temp);
                 }
