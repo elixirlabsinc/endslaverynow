@@ -57,8 +57,8 @@ angularApp.controller('CategoryCtrl', [
 
             for(product in syncObject.products) {
                 var temp = syncObject.products[product];
-                console.log(temp.name);
-                if(temp.id == $scope.categoryId) {
+                console.log(temp);
+                if(temp.categoryId == $scope.categoryId) {
                     $scope.categoryProducts.push(temp);
                 }
             }
