@@ -8,6 +8,7 @@ angularApp.controller('BrandCtrl', [
         $scope.brandId = $routeParams.id;
         $scope.loaded = false;
         $scope.brandProducts = [];
+        $scope.relatedCategories = [];
 
         /* firebase */
         var firebase = new Firebase("https://end-slavery-now.firebaseio.com/aatest");
@@ -27,6 +28,11 @@ angularApp.controller('BrandCtrl', [
                 if(temp.brandId == $scope.brandId) {
                     $scope.brandProducts.push(temp);
                 }
+            }
+            
+            $scope.relatedCategoryIds = $scope.brandDetails.categories.split(",");
+            for(rcat in $scope.relatedCategoryIds) {
+                $scope.relatedCategories.push(syncObject.categories[$scope.relatedCategoryIds[rcat]]);
             }
 
             $scope.loaded = true;

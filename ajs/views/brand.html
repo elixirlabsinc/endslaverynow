@@ -18,6 +18,10 @@
             <p>
                 <h2>{{ brandDetails.name }}</h2>
                 Ranking: <a href="#/ranking">{{ brandDetails.ranking }}</a><br>
+                Category: 
+                    <span ng-repeat="categoryDetails in relatedCategories">
+                        <a href="#/category/{{ categoryDetails.id }}">{{ categoryDetails.name }}</a> 
+                    </span><br>
                 Description: {{ brandDetails.description }}<br>
             </p>
 
