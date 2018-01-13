@@ -8,10 +8,8 @@
     <div class="col-md-12 thumbnail">
         <br>
         <div class="col-md-4">
-            <img
-                ng-src="{{ brandDetails.image }}"
-                class="img-rounded img-responsive"
-            >
+            <img ng-if="!brandDetails.image" src="../resources/img/noimage.png" height="400px" class="img-rounded img-responsive">
+            <img ng-if="brandDetails.image" ng-src="{{ brandDetails.image }}" height="400px" class="img-rounded img-responsive">
         </div>
 
         <div class="col-md-8">
@@ -49,7 +47,8 @@
             <div ng-repeat="product in brandProducts">
                 <div class="col-sm-6 col-md-4">
                     <div class="thumbnail productblock">
-                        <img ng-src="{{ product.image }}" alt="..." height="400px">
+                        <img ng-if="!product.image" src="../resources/img/noimage.png" height="400px">
+                        <img ng-if="product.image" ng-src="{{ product.image }}" height="400px">
                         <h3><a href="#/product/{{ product.id }}">{{ product.name }}</a></h3>
                     </div>
                 </div>
