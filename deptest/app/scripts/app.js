@@ -55,6 +55,11 @@ angular
         controller: 'ProductCtrl',
         controllerAs: 'product'
       })
+      .when('/rankings', {
+        templateUrl: 'views/rankings.html',
+        controller: 'RankingsCtrl',
+        controllerAs: 'rankings'
+      })
       .otherwise({
         redirectTo: '/'
       });
