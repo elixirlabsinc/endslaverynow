@@ -35,6 +35,11 @@ angular
         controller: 'BrandCtrl',
         controllerAs: 'brand'
       })
+      .when('/category/:id', {
+        templateUrl: 'views/category.html',
+        controller: 'CategoryCtrl',
+        controllerAs: 'category'
+      })
       .otherwise({
         redirectTo: '/'
       });

@@ -1,0 +1,77 @@
+<div ng-if="!categoryDetails">
+        <div class="col-md-12 thumbnail">
+            No Category Details Found
+        </div>
+    </div>
+    
+        
+    <div ng-if="categoryDetails">
+        <div class="col-md-12 thumbnail">
+            <br>
+            <div class="col-md-4">
+                <img ng-if="!brand.image" src="../images/noimage.png" height="400px" class="img-rounded img-responsive">
+                <img ng-if="brand.image" ng-src="{{ brand.image }}" height="400px" class="img-rounded img-responsive">
+            </div>
+    
+            <div class="col-md-8">
+                <p>
+                    <h2>{{ categoryDetails.name }}</h2>
+                    <p ng-if="categoryDetails.description">Description: {{ categoryDetails.description }}</p>
+                </p>
+            </div>
+            <br>&nbsp;<br>
+            <div class="col-md-12">
+                <div class="row"><br>
+                </div>
+            </div>
+        </div>
+        
+        <div class="" ng-if="loaded && relatedCategories.length > 0">
+            <div class="row">
+                <h2>Related Categories</h2>
+                <div ng-repeat="category in relatedCategories">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail productblock">
+                            <img ng-if="!category.image" src="../images/noimage.png" height="400px">
+                            <img ng-if="category.image" ng-src="{{ category.image }}" height="400px">
+                            <h3><a href="#!/category/{{ category.id }}">{{ category.name }}</a></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="" ng-if="loaded && categoryBrands.length > 0">
+            <div class="row">
+                <h2>Related Brands</h2>
+                <div ng-repeat="brand in categoryBrands">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail productblock">
+                            <img ng-if="!brand.image" src="../images/noimage.png" height="400px">
+                            <img ng-if="brand.image" ng-src="{{ brand.image }}" height="400px">
+                            <h3><a href="#!/brand/{{ brand.id }}">{{ brand.name }}</a></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="" ng-if="loaded && categoryProducts.length > 0">
+            <div class="row">
+                <h2>Related Products</h2>
+                <div ng-repeat="product in categoryProducts">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail productblock">
+                            <img ng-if="!product.image" src="../images/noimage.png" height="400px">
+                            <img ng-if="product.image" ng-src="{{ product.image }}" height="400px">
+                            <h3><a href="#!/product/{{ product.id }}">{{ product.name }}</a></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="" ng-if="!loaded || brandProducts.length == 0">
+            No products found at this time
+        </div>
+    </div>
