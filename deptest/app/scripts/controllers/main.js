@@ -21,19 +21,19 @@ angular.module('endslaverynowApp')
       
       syncObject.$loaded().then(function() {
         for(var brand in syncObject.brands) {
-            var temp = syncObject.brands[brand];
-            $scope.brands.push(temp);
+            var tempBrand = syncObject.brands[brand];
+            $scope.brands.push(tempBrand);
         }
   
         for(var product in syncObject.products) {
-            var temp = syncObject.products[product];
-            $scope.products.push(temp);
+            var tempProd = syncObject.products[product];
+            $scope.products.push(tempProd);
         }
   
         for(var category in syncObject.categories) {
-            var temp = syncObject.categories[category];
-            if(temp.parentCategoryId == 0) {
-              $scope.categories.push(temp);
+            var tempCat = syncObject.categories[category];
+            if(tempCat.parentCategoryId == 0) {
+              $scope.categories.push(tempCat);
             }
         }
   
