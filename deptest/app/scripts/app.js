@@ -50,6 +50,11 @@ angular
         controller: 'CertificationsCtrl',
         controllerAs: 'certifications'
       })
+      .when('/product/:id', {
+        templateUrl: 'views/product.html',
+        controller: 'ProductCtrl',
+        controllerAs: 'product'
+      })
       .otherwise({
         redirectTo: '/'
       });
