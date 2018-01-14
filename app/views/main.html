@@ -1,5 +1,5 @@
 <div class="col-md-12">
-    <img src="../images/smarterconsumer.jpg" width="100%">
+    <img src="images/smarterconsumer.jpg" width="100%">
 </div>
 
 <div class="col-md-12 text-center">
@@ -15,7 +15,7 @@
         <div ng-repeat="category in categories">
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail productblock">
-                    <img ng-if="!category.image" src="../images/noimage.png" height="400px">
+                    <img ng-if="!category.image" src="images/noimage.png" height="400px">
                     <img ng-if="category.image" ng-src="{{ category.image }}" height="400px">
                     <h3><a href="#!/category/{{ category.id }}">{{ category.name }}</a></h3>
                 </div>
