@@ -430,7 +430,7 @@ module.exports = function (grunt) {
       },
       pages: {
         options: {
-          remote: 'git@github.com:aashnisshah/endslaverynow.git',
+          remote: 'git@github.com:elixirlabsinc/endslaverynow.git',
           branch: 'gh-pages'
         }
       },
