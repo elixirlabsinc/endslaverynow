@@ -5,10 +5,13 @@ version 0.16.0.
 
 ## Build & development
 
-Clone the project `git clone <clone_url>`
+Clone the project `git clone https://github.com/elixirlabsinc/endslaverynow.git`
+
 Enter the directory `cd endslaverynow`
+
 Install dependencies `npm install && bower install`
 Run `grunt` for building and `grunt serve` for preview.
+
 Run `grunt build` to build local dist files that can be deployed
 
 ## Testing
