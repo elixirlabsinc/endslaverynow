@@ -18,6 +18,9 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
+  .constant('CONFIG', {
+    'FIREBASEURL': 'https://end-slavery-now.firebaseio.com'
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

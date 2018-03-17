@@ -13,12 +13,13 @@ angular.module('endslaverynowApp')
     '$firebaseObject',
     '$routeParams',
     '$scope',
-    function($firebaseArray, $firebaseObject, $routeParams, $scope){
+    'CONFIG',
+    function($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG){
       $scope.loaded = false;
       $scope.allCategories = [];
 
       /* firebase */
-      var firebase = new Firebase("https://end-slavery-now.firebaseio.com");
+      var firebase = new Firebase(CONFIG.FIREBASEURL);
       var syncObject = $firebaseObject(firebase);
 
       syncObject.$loaded().then(function() {

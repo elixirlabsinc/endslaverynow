@@ -13,10 +13,11 @@ angular.module('endslaverynowApp')
     '$firebaseObject',
     '$routeParams',
     '$scope',
-    function($firebaseArray, $firebaseObject, $routeParams, $scope){
+    'CONFIG',
+    function($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG){
       $scope.productId = $routeParams.id;
       $scope.productClicked = false;
-      var firebaseRef = "https://end-slavery-now.firebaseio.com";
+      var firebaseRef = CONFIG.FIREBASEURL;
 
       /* firebase */
       var firebase = new Firebase(firebaseRef);

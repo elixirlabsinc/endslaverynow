@@ -8,15 +8,18 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp')
-  .controller('MainCtrl', ['$scope', '$firebaseArray', '$firebaseObject',
-    function ($scope, $firebaseArray, $firebaseObject) {
-    
+  .controller('MainCtrl', [
+    '$scope',
+    '$firebaseArray',
+    '$firebaseObject',
+    'CONFIG',
+    function ($scope, $firebaseArray, $firebaseObject, CONFIG) {
       $scope.brands = [];
       $scope.products = [];
       $scope.categories = [];
   
       /* firebase */
-      var firebase = new Firebase("https://end-slavery-now.firebaseio.com");
+      var firebase = new Firebase(CONFIG.FIREBASEURL);
       var syncObject = $firebaseObject(firebase);
       
       syncObject.$loaded().then(function() {
