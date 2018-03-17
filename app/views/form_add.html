@@ -20,20 +20,21 @@
   </div>
 
 	<div class="form-group">
-		<input type="text" class="form-control" rows=5 value="" placeholder="Name" ng-model="addItem.name">
-	</div>
+    <input type="textarea" class="form-control" rows=5 value="" placeholder="Description" ng-model="addItem.description">
+  </div>
 
-	<div class="form-group">
-		<input type="text" class="form-control" rows=5 value="" placeholder="Email" ng-model="addItem.email">
-	</div>
+  <div class="form-group">
+    <input type="text" class="form-control" rows=5 value="" placeholder="Image" ng-model="addItem.image">
+  </div>
 
-	<div class="form-group">
-		<input type="text" class="form-control" rows=5 value="" placeholder="Phone Number" ng-model="addItem.phone">
-	</div>
+  <div class="form-group">
+    <input type="text" class="form-control" rows=5 value="" placeholder="Name" ng-model="addItem.name">
+  </div>
 
-	<div class="form-group">
-		<input type="text" class="form-control" rows=5 value="" placeholder="Relationship" ng-model="addItem.relationship">
-	</div>
+  <div class="form-group">
+    <input type="text" class="form-control" rows=5 value="" placeholder="Link to Product" ng-model="addItem.purchaseUrl">
+  </div>
+
 
 	<input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm(addItem)" value="Submit">
 </div>
