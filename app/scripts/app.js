@@ -19,7 +19,7 @@ angular
     'ngTouch'
   ])
   .constant('CONFIG', {
-    'FIREBASEURL': 'https://end-slavery-now.firebaseio.com'
+    'FIREBASEURL': 'https://end-slavery-now-test.firebaseio.com'
   })
   .config(function ($routeProvider) {
     $routeProvider
@@ -32,6 +32,11 @@ angular
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
         controllerAs: 'about'
+      })
+      .when('/add', {
+        templateUrl: 'views/form_add.html',
+        controller: 'FormAddCtrl',
+        controllerAs: 'formAdd'
       })
       .when('/brand/:id', {
         templateUrl: 'views/brand.html',

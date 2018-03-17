@@ -41,7 +41,9 @@
   "scripts": {
     "test": "karma start test/karma.conf.js"
   },
+  "peerDependencies": {},
   "dependencies": {
-    "angularfire": "^2.3.0"
+    "angularfire": "^2.3.0",
+    "npm": "^5.7.1"
   }
 }
