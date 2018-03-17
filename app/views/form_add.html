@@ -2,13 +2,22 @@
 <div class="login-form">
 
   <div class="dropdown form-group">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{selectedCategoryName || 'Select Category'}}
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setCategory(category)"class="dropdown-item form-control">{{category.name}}</button>
-      </div>
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{selectedCategoryName || 'Select Category'}}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setCategory(category)"class="dropdown-item form-control">{{category.name}}</button>
     </div>
+  </div>
+
+  <div class="dropdown form-group">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{selectedBrandName || 'Select Brand'}}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <button ng-repeat="brand in brands" ng-if="brand.name.length > 0" ng-click="setBrand(brand)"class="dropdown-item form-control">{{brand.name}}</button>
+    </div>
+  </div>
 
 	<div class="form-group">
 		<input type="text" class="form-control" rows=5 value="" placeholder="Name" ng-model="addItem.name">

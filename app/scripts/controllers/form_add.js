@@ -42,6 +42,11 @@ angular.module('endslaverynowApp')
             $scope.selectedCategoryName = category.name;
           }
 
+          $scope.setBrand = function(brand) {
+            $scope.selectedBrandId = brand.id;
+            $scope.selectedBrandName = brand.name;
+          }
+
           function getId() {
             let id = $scope.products.length;
             while($scope.products[id] !== undefined) {
