@@ -32,9 +32,14 @@ angular.module('endslaverynowApp')
           $scope.loaded = true;
 
           $scope.processForm = function(person) {
-            console.log(person);
+            person = person || {};
             let id = getId();
-            console.log(id);
+            person.id = $scope.selectedCategoryId;
+          }
+
+          $scope.setCategory = function(category) {
+            $scope.selectedCategoryId = category.id;
+            $scope.selectedCategoryName = category.name;
           }
 
           function getId() {
