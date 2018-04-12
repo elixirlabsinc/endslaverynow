@@ -13,13 +13,22 @@ angular
     'firebase',
     'ngAnimate',
     'ngCookies',
+    'ngFileUpload',
     'ngResource',
     'ngRoute',
     'ngSanitize',
     'ngTouch'
   ])
   .constant('CONFIG', {
-    'FIREBASEURL': 'https://end-slavery-now-test.firebaseio.com'
+    'FIREBASEURL': 'https://end-slavery-now-test.firebaseio.com',
+    "APPCONFIG": {
+      apiKey: "AIzaSyAr-mF9ntUnisSJpOj6bEZ7U0kdoOewgRA",
+      authDomain: "end-slavery-now-test.firebaseapp.com",
+      databaseURL: "https://end-slavery-now-test.firebaseio.com",
+      projectId: "end-slavery-now-test",
+      storageBucket: "end-slavery-now-test.appspot.com",
+      messagingSenderId: "285898483037"
+    }
   })
   .config(function ($routeProvider) {
     $routeProvider

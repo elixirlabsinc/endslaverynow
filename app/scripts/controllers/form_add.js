@@ -14,7 +14,8 @@ angular.module('endslaverynowApp')
     '$routeParams',
     '$scope',
     'CONFIG',
-    function ($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG) {
+    'Upload',
+    function ($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG, Upload) {
       $scope.brandId = $routeParams.id;
       $scope.loaded = false;
 
@@ -33,20 +34,23 @@ angular.module('endslaverynowApp')
       });
 
       $scope.processForm = function(item) {
-        item = item || {};
-        let id = getId();
-        item.id = id;
-        item.brandId = $scope.selectedBrandId;
-        item.categoryId = $scope.selectedCategoryId;
-        item.purchaseURlClicks = 0;
-        console.log(item);
-        syncObject.products.push(item);
-        console.log(syncObject);
-        syncObject.$save().then(function() {
-          console.log('success');
-        }).catch(function() {
-          console.log('error');
-        });
+
+        uploadImages(item.image[0], CONFIG.APPCONFIG);
+
+        // item = item || {};
+        // let id = getId();
+        // item.id = id;
+        // item.brandId = $scope.selectedBrandId;
+        // item.categoryId = $scope.selectedCategoryId;
+        // item.purchaseURlClicks = 0;
+        // console.log(item);
+        // syncObject.products.push(item);
+        // console.log(syncObject);
+        // syncObject.$save().then(function() {
+        //   console.log('success');
+        // }).catch(function() {
+        //   console.log('error');
+        // });
       }
 
       $scope.setCategory = function(category) {
