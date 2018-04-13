@@ -81,3 +81,21 @@ a:hover {
   border-radius: none;
   box-shadow: transparent;
 }
+
+.dropdownbtn, .image-upload {
+  width: 100%;
+  margin: 0px;
+}
+
+.dropdown-menu {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+}
+
+.dropdown-item {
+  width: 50%;
+  margin: 0px;
+  padding: 0px;
+  background-color: #fff;
+}
