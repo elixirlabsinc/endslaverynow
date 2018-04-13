@@ -19,12 +19,13 @@
     <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
     <script>
     
-      var uploadImages = function(file, config) {
-        console.log('uploadImages function', file);
+      var uploadImages = function(data, config, uploadType) {
+        var file = data.image[0];
 
-        // debugger;
+        if(!firebase.apps.length) {
+          firebase.initializeApp(config);
+        }
 
-        firebase.initializeApp(config);
         var storage = firebase.storage();
         var storageRef = storage.ref();
 
@@ -34,53 +35,47 @@
         };
     
         // use Firebase push call to upload file to Firebase
-        var uploadTask = storageRef.child('test/images/' + file.name).put(file, metadata);
+        var uploadTask = storageRef.child(uploadType + '/images/' + file.name).put(file, metadata);
     
         // monitor Firebase upload prodress and catch errors
-        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, 
-        function(snapshot) {
-            // calculate progress as a percentage
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-            // check for a change in u0pload state
-            switch(snapshot.state) {
-                case firebase.storage.TaskState.PAUSED:
-                    console.log('Upload is paused');
-                    break;
-                case firebase.storage.TaskState.RUNNING:
-                    console.log('Upload is running');
-                    break;
-            }
-        }, function(error) {
-            // catch an error when it happens, note: there are more error codes
-            switch(error.code) {
-                case 'storage/bucket_not_found':
-                    console.log('The Bucket for this storage could not be found');
-                    break;
-                case 'storage/unauthorized':
-                    console.log('User doesn\'t have access');
-                    break;
-                case 'storage/cancelled':
-                    console.log('User cancelled the upload process');
-                    break;
-                case 'storage/unknown':
-                    console.log('Unknown error');
-                    break;
-            }
-        return;
-        }, function() {
-            // on success, display the uploaded image on the page
-            var downloadURL = uploadTask.snapshot.downloadURL;
-            console.log('the image uploaded and can be found at ' + downloadURL);
-            var filelist = document.getElementById('imagelist');
-            var newFileListElement = document.createElement('li');
-            var fileImage = document.createElement('IMG');
-            fileImage.src = downloadURL;
-            newFileListElement.appendChild(fileImage);
-            filelist.appendChild(newFileListElement);
-            console.log('done');
-        });
+        var uploadedImageUrl = uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, 
+          function(snapshot) {
+          }, function(error) {
+              // catch an error when it happens, note: there are more error codes
+              switch(error.code) {
+                  case 'storage/bucket_not_found':
+                      console.log('The Bucket for this storage could not be found');
+                      break;
+                  case 'storage/unauthorized':
+                      console.log('User doesn\'t have access');
+                      break;
+                  case 'storage/cancelled':
+                      console.log('User cancelled the upload process');
+                      break;
+                  case 'storage/unknown':
+                      console.log('Unknown error');
+                      break;
+              }
+            return;
+          }, function() {
+              // on success, display the uploaded image on the page
+              var downloadURL = uploadTask.snapshot.downloadURL;
+              var filelist = document.getElementById('imagelist');
+              var newFileListElement = document.createElement('li');
+              var fileImage = document.createElement('IMG');
+              fileImage.src = downloadURL;
+              newFileListElement.appendChild(fileImage);
+              filelist.appendChild(newFileListElement);
+              data.image = downloadURL;
+              writeNewPost(data, uploadType);
+          });
 
+      }
+
+      function writeNewPost(data, uploadType) {
+        var updates = {};
+        updates['/' + uploadType + '/' + data.id] = data;
+        return firebase.database().ref().update(updates);
       }
 
     </script>

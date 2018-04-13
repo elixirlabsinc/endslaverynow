@@ -25,7 +25,6 @@ angular.module('endslaverynowApp')
       $scope.products = [];
 
       syncObject.$loaded().then(function() {
-          // Get brand information
           $scope.brands = syncObject.brands;
           $scope.categories = syncObject.categories;
           $scope.products = syncObject.products;
@@ -34,23 +33,14 @@ angular.module('endslaverynowApp')
       });
 
       $scope.processForm = function(item) {
+        item = item || {};
+        let id = getId();
+        item.id = id;
+        item.brandId = $scope.selectedBrandId;
+        item.categoryId = $scope.selectedCategoryId;
+        item.purchaseURlClicks = 0;
 
-        uploadImages(item.image[0], CONFIG.APPCONFIG);
-
-        // item = item || {};
-        // let id = getId();
-        // item.id = id;
-        // item.brandId = $scope.selectedBrandId;
-        // item.categoryId = $scope.selectedCategoryId;
-        // item.purchaseURlClicks = 0;
-        // console.log(item);
-        // syncObject.products.push(item);
-        // console.log(syncObject);
-        // syncObject.$save().then(function() {
-        //   console.log('success');
-        // }).catch(function() {
-        //   console.log('error');
-        // });
+        uploadImages(item, CONFIG.APPCONFIG, 'products');
       }
 
       $scope.setCategory = function(category) {
@@ -64,7 +54,7 @@ angular.module('endslaverynowApp')
       }
 
       function getId() {
-        let id = $scope.products.length;
+        let id = $scope.products.length || 0;
         while($scope.products[id] !== undefined) {
           id = id + 1;
         }
