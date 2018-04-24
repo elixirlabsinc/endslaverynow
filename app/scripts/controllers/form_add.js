@@ -22,6 +22,12 @@ angular.module('endslaverynowApp')
 
       $scope.formType = '';
 
+      var itemTypes = {
+        'categories': 'Category',
+        'brands': 'Brand',
+        'products': 'Products'
+      };
+
       /* firebase */
       var firebase = new Firebase(CONFIG.FIREBASEURL);
       var syncObject = $firebaseObject(firebase);
@@ -60,6 +66,7 @@ angular.module('endslaverynowApp')
       }
 
       $scope.selectItemType = function(itemType) {
+        $scope.itemType = itemTypes[itemType];
         $scope.formType = itemType;
       }
 

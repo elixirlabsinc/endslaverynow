@@ -16,28 +16,11 @@
   </div>
 </div>
 
-<div ng-if="formType == 'categories'">
-  <h2>Add New Category</h2>
-
-  <div class="select-item-type cancel" ng-click="selectItemType('')">
-    Change Submission Type
-  </div>
-</div>
-
-
-<div ng-if="formType == 'brands'">
-  <h2>Add New Brand</h2>
-
-  <div class="select-item-type cancel" ng-click="selectItemType('')">
-    Change Submission Type
-  </div>
-</div>
-
-<div ng-if="formType == 'products'">
+<div ng-if = "formType !== ''">
   <br>
   <div class="add-form" id="add-form">
 
-    <h2>Add New Product</h2>
+    <h2>Add New {{ itemType }}</h2>
 
     <div class="form-group">
       <input type="text" class="form-control" rows=5 value="" placeholder="Name" ng-model="addItem.name">
@@ -51,7 +34,7 @@
       <input type="text" class="form-control" rows=5 value="" placeholder="Link to Product" ng-model="addItem.purchaseUrl">
     </div>
 
-    <div class="dropdown form-group">
+    <div class="dropdown form-group" ng-if="formType !== 'categories'">
       <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{selectedCategoryName || 'Select Category'}}
       </button>
@@ -60,7 +43,7 @@
       </div>
     </div>
 
-    <div class="dropdown form-group">
+    <div class="dropdown form-group" ng-if="formType === 'products'">
       <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{selectedBrandName || 'Select Brand'}}
       </button>
