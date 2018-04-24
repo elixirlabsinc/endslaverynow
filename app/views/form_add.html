@@ -30,7 +30,7 @@
       <textarea type="textarea" class="form-control" rows=5 value="" placeholder="Description" ng-model="addItem.description"></textarea>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" ng-if="formType === 'products'">
       <input type="text" class="form-control" rows=5 value="" placeholder="Link to Product" ng-model="addItem.purchaseUrl">
     </div>
 
@@ -71,7 +71,7 @@
   <h2>Submitted Successfully!</h2>
 
   <div class="select-item-type" ng-click="reloadPage()">
-    Category
+    Add New Item
   </div>
 
 </div>

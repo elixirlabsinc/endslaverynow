@@ -23,9 +23,18 @@ angular.module('endslaverynowApp')
       $scope.formType = '';
 
       var itemTypes = {
-        'categories': 'Category',
-        'brands': 'Brand',
-        'products': 'Products'
+        'categories': {
+          name: 'Category',
+          getIdFunction: getCategoryId,
+        },
+        'brands': {
+          name: 'Brand',
+          getIdFunction: getBrandId,
+        },
+        'products': {
+          name: 'Product',
+          getIdFunction: getProductId,
+        }
       };
 
       /* firebase */
@@ -42,17 +51,21 @@ angular.module('endslaverynowApp')
       });
 
       $scope.processForm = function(item) {
+        item = item || {};
+        let id = itemTypes[$scope.formType].getIdFunction();
+        item.id = id;
 
         if($scope.formType === 'products') {
-          item = item || {};
-          let id = getId();
-          item.id = id;
           item.brandId = $scope.selectedBrandId;
           item.categoryId = $scope.selectedCategoryId;
           item.purchaseURlClicks = 0;
-
-          uploadImages(item, CONFIG.APPCONFIG, $scope.formType);
         }
+
+        if($scope.formType === 'brands') {
+          item.categories = $scope.selectedCategoryId.toString();
+        }
+        
+        uploadImages(item, CONFIG.APPCONFIG, $scope.formType);
       }
 
       $scope.setCategory = function(category) {
@@ -66,7 +79,7 @@ angular.module('endslaverynowApp')
       }
 
       $scope.selectItemType = function(itemType) {
-        $scope.itemType = itemTypes[itemType];
+        $scope.itemType = itemTypes[itemType].name;
         $scope.formType = itemType;
       }
 
@@ -74,7 +87,23 @@ angular.module('endslaverynowApp')
         $window.location.reload();
       }
 
-      function getId() {
+      function getCategoryId() {
+        let id = $scope.categories.length || 0;
+        while($scope.categories[id] !== undefined) {
+          id = id + 1;
+        }
+        return id;
+      }
+
+      function getBrandId() {
+        let id = $scope.brands.length || 0;
+        while($scope.brands[id] !== undefined) {
+          id = id + 1;
+        }
+        return id;
+      }
+
+      function getProductId() {
         let id = $scope.products.length || 0;
         while($scope.products[id] !== undefined) {
           id = id + 1;
