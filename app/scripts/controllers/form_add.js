@@ -37,6 +37,12 @@ angular.module('endslaverynowApp')
         }
       };
 
+      $scope.rankingOptions = {
+        'good': 'Good',
+        'better': 'Better',
+        'best': 'Best'
+      }
+
       /* firebase */
       var firebase = new Firebase(CONFIG.FIREBASEURL);
       var syncObject = $firebaseObject(firebase);
@@ -63,8 +69,9 @@ angular.module('endslaverynowApp')
 
         if($scope.formType === 'brands') {
           item.categories = $scope.selectedCategoryId.toString();
+          item.ranking = $scope.selectedRankName;
         }
-        
+
         uploadImages(item, CONFIG.APPCONFIG, $scope.formType);
       }
 
@@ -78,8 +85,12 @@ angular.module('endslaverynowApp')
         $scope.selectedBrandName = brand.name;
       }
 
+      $scope.setRanking = function(rank) {
+        $scope.selectedRankName = rank;
+      }
+
       $scope.selectItemType = function(itemType) {
-        $scope.itemType = itemTypes[itemType].name;
+        $scope.itemType = itemType ? itemTypes[itemType].name : '';
         $scope.formType = itemType;
       }
 
