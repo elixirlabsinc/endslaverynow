@@ -13,11 +13,14 @@ angular.module('endslaverynowApp')
     '$firebaseObject',
     '$routeParams',
     '$scope',
+    '$window',
     'CONFIG',
     'Upload',
-    function ($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG, Upload) {
+    function ($firebaseArray, $firebaseObject, $routeParams, $scope, $window, CONFIG, Upload) {
       $scope.brandId = $routeParams.id;
       $scope.loaded = false;
+
+      $scope.formType = '';
 
       /* firebase */
       var firebase = new Firebase(CONFIG.FIREBASEURL);
@@ -33,14 +36,17 @@ angular.module('endslaverynowApp')
       });
 
       $scope.processForm = function(item) {
-        item = item || {};
-        let id = getId();
-        item.id = id;
-        item.brandId = $scope.selectedBrandId;
-        item.categoryId = $scope.selectedCategoryId;
-        item.purchaseURlClicks = 0;
 
-        uploadImages(item, CONFIG.APPCONFIG, 'products');
+        if($scope.formType === 'products') {
+          item = item || {};
+          let id = getId();
+          item.id = id;
+          item.brandId = $scope.selectedBrandId;
+          item.categoryId = $scope.selectedCategoryId;
+          item.purchaseURlClicks = 0;
+
+          uploadImages(item, CONFIG.APPCONFIG, $scope.formType);
+        }
       }
 
       $scope.setCategory = function(category) {
@@ -51,6 +57,14 @@ angular.module('endslaverynowApp')
       $scope.setBrand = function(brand) {
         $scope.selectedBrandId = brand.id;
         $scope.selectedBrandName = brand.name;
+      }
+
+      $scope.selectItemType = function(itemType) {
+        $scope.formType = itemType;
+      }
+
+      $scope.reloadPage = function() {
+        $window.location.reload();
       }
 
       function getId() {

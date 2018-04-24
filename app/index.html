@@ -60,14 +60,13 @@
           }, function() {
               // on success, display the uploaded image on the page
               var downloadURL = uploadTask.snapshot.downloadURL;
-              var filelist = document.getElementById('imagelist');
-              var newFileListElement = document.createElement('li');
-              var fileImage = document.createElement('IMG');
-              fileImage.src = downloadURL;
-              newFileListElement.appendChild(fileImage);
-              filelist.appendChild(newFileListElement);
               data.image = downloadURL;
               writeNewPost(data, uploadType);
+
+              var addForm = document.getElementById('add-form');
+              addForm.style.display = 'none';
+              var successMessage = document.getElementById('submitted-form');
+              successMessage.style.display = 'block';
           });
 
       }
