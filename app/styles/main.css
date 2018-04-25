@@ -118,3 +118,9 @@ a:hover {
 #submitted-form {
   display: none;
 }
+
+.errorMessage {
+  font-size: 14px;
+  color: red;
+  text-align: center;
+}

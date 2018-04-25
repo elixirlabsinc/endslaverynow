@@ -21,19 +21,47 @@ angular.module('endslaverynowApp')
       $scope.loaded = false;
 
       $scope.formType = '';
+      $scope.errorMessage = false;
 
       var itemTypes = {
         'categories': {
           name: 'Category',
           getIdFunction: getCategoryId,
+          requiredInputs: {
+            name: true,
+            description: true,
+            purchaseUrl: false,
+            image: true,
+            category: false,
+            brand: false,
+            rank: false
+          },
         },
         'brands': {
           name: 'Brand',
           getIdFunction: getBrandId,
+          requiredInputs: {
+            name: true,
+            description: true,
+            purchaseUrl: false,
+            image: true,
+            category: true,
+            brand: false,
+            rank: true
+          },
         },
         'products': {
           name: 'Product',
           getIdFunction: getProductId,
+          requiredInputs: {
+            name: true,
+            description: true,
+            purchaseUrl: true,
+            image: true,
+            category: true,
+            brand: true,
+            rank: false
+          },
         }
       };
 
@@ -57,7 +85,12 @@ angular.module('endslaverynowApp')
       });
 
       $scope.processForm = function(item) {
-        item = item || {};
+        $scope.errorMessage = false;
+        if(!item) {
+          $scope.errorMessage = true;
+          return;
+        }
+
         let id = itemTypes[$scope.formType].getIdFunction();
         item.id = id;
 
@@ -72,7 +105,24 @@ angular.module('endslaverynowApp')
           item.ranking = $scope.selectedRankName;
         }
 
-        uploadImages(item, CONFIG.APPCONFIG, $scope.formType);
+        if(!invalidInput(item, $scope.formType, itemTypes[$scope.formType].requiredInputs)) {
+          $scope.errorMessage = true;
+          return;
+        } else {
+          uploadImages(item, CONFIG.APPCONFIG, $scope.formType);
+        }
+      }
+
+      var invalidInput = function(item, formType, requiredInputs) {
+        var isValid = !!item;
+
+        for(var req in requiredInputs) {
+          if(requiredInputs[req] && !item[req]) {
+            isValid = false;
+          }
+        }
+
+        return isValid;
       }
 
       $scope.setCategory = function(category) {

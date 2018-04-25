@@ -23,15 +23,39 @@
     <h2>Add New {{ itemType }}</h2>
 
     <div class="form-group">
-      <input type="text" class="form-control" rows=5 value="" placeholder="Name" ng-model="addItem.name">
+      <input
+        type="text"
+        class="form-control"
+        rows=5
+        value=""
+        placeholder="Name"
+        ng-model="addItem.name"
+        required
+      >
     </div>
 
     <div class="form-group">
-      <textarea type="textarea" class="form-control" rows=5 value="" placeholder="Description" ng-model="addItem.description"></textarea>
+      <textarea
+        type="textarea"
+        class="form-control"
+        rows=5
+        value=""
+        placeholder="Description"
+        ng-model="addItem.description"
+        required
+      ></textarea>
     </div>
 
     <div class="form-group" ng-if="formType === 'products'">
-      <input type="text" class="form-control" rows=5 value="" placeholder="Link to Product" ng-model="addItem.purchaseUrl">
+      <input
+      type="text"
+      class="form-control"
+      rows=5
+      value=""
+      placeholder="Link to Product"
+      ng-model="addItem.purchaseUrl"
+      required
+    >
     </div>
 
     <div class="dropdown form-group" ng-if="formType !== 'categories'">
@@ -62,9 +86,22 @@
     </div>
 
     <div class="form-group">
-      <input id="pictures" type="submit" ngf-select ng-model="addItem.image"  name="file" value="Select Image" 
-            accept="image/*" ngf-max-size="2MB"  ngf-keep="true" ngf-keep-distinct="true" class="btn image-upload"/>
+      <input
+        id="pictures"
+        type="submit"
+        ngf-select ng-model="addItem.image"
+        name="file"
+        value="Select Image"
+        accept="image/*"
+        ngf-max-size="2MB"
+        ngf-keep="true"
+        ngf-keep-distinct="true"
+        class="btn image-upload"
+        required
+      />
     </div>
+
+    <div class="errorMessage" ng-if="errorMessage">Error submitting form. Please complete all fields to continue.<br><br></div>
 
     <input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm(addItem)" value="Submit">
 
