@@ -403,8 +403,8 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>'
         }, {
           expand: true,
-          cwd: 'public/',
-          src: 'public/*.js',
+          cwd: 'public',
+          src: 'public/*',
           dest: '<%= yeoman.app %>/public'
         }]
       },
