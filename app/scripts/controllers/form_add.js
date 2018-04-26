@@ -91,7 +91,7 @@ angular.module('endslaverynowApp')
           return;
         }
 
-        let id = itemTypes[$scope.formType].getIdFunction();
+        var id = itemTypes[$scope.formType].getIdFunction();
         item.id = id;
 
         if($scope.formType === 'products') {
@@ -149,7 +149,7 @@ angular.module('endslaverynowApp')
       }
 
       function getCategoryId() {
-        let id = $scope.categories.length || 0;
+        var id = $scope.categories.length || 0;
         while($scope.categories[id] !== undefined) {
           id = id + 1;
         }
@@ -157,7 +157,7 @@ angular.module('endslaverynowApp')
       }
 
       function getBrandId() {
-        let id = $scope.brands.length || 0;
+        var id = $scope.brands.length || 0;
         while($scope.brands[id] !== undefined) {
           id = id + 1;
         }
@@ -165,7 +165,7 @@ angular.module('endslaverynowApp')
       }
 
       function getProductId() {
-        let id = $scope.products.length || 0;
+        var id = $scope.products.length || 0;
         while($scope.products[id] !== undefined) {
           id = id + 1;
         }
