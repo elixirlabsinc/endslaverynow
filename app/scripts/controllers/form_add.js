@@ -77,9 +77,9 @@ angular.module('endslaverynowApp')
       $scope.products = [];
 
       syncObject.$loaded().then(function() {
-          $scope.brands = syncObject.brands;
-          $scope.categories = syncObject.categories;
-          $scope.products = syncObject.products;
+          $scope.brands = syncObject.brands.filter((keys) => !!keys);
+          $scope.categories = syncObject.categories.filter((keys) => !!keys);
+          $scope.products = syncObject.products.filter((keys) => !!keys);
 
           $scope.loaded = true;
       });
