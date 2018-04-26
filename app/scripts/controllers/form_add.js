@@ -80,7 +80,6 @@ angular.module('endslaverynowApp')
           $scope.brands = syncObject.brands.filter((keys) => !!keys);
           $scope.categories = syncObject.categories.filter((keys) => !!keys);
           $scope.products = syncObject.products.filter((keys) => !!keys);
-
           $scope.loaded = true;
       });
 
