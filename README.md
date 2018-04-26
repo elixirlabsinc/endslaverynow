@@ -15,7 +15,6 @@ Run `grunt` for building and `grunt serve` for preview.
 
 ### Deploying
 Run `grunt build` to build local dist files that can be deployed
-
 Run `grunt buildcontrol:pages` to deploy local dist folder to GitHub Pages
 
 ## Testing

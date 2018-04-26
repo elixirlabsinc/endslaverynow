@@ -401,6 +401,11 @@ module.exports = function (grunt) {
           cwd: 'app',
           src: 'fonts/*',
           dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
+          cwd: 'public/',
+          src: 'public/*.js',
+          dest: '<%= yeoman.app %>/public'
         }]
       },
       styles: {
@@ -409,12 +414,6 @@ module.exports = function (grunt) {
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
       },
-      public: {
-        expand: true,
-        cwd: 'public/',
-        src: 'public/*.js',
-        dest: '<%= yeoman.app %>/public'
-      }
     },
 
     // Run some tasks in parallel to speed up the build process
@@ -427,7 +426,6 @@ module.exports = function (grunt) {
       ],
       dist: [
         'copy:styles',
-        'copy:public',
         'imagemin',
         'svgmin'
       ]
@@ -503,7 +501,6 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    'copy:public',
     'cdnify',
     'cssmin',
     'uglify',
