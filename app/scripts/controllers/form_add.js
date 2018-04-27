@@ -60,8 +60,8 @@ angular.module('endslaverynowApp')
             description: true,
             purchaseUrl: true,
             image: true,
-            category: true,
-            brand: true,
+            categoryId: true,
+            brandId: true,
             ranking: false
           },
         }
