@@ -33,8 +33,9 @@ angular.module('endslaverynowApp')
             purchaseUrl: false,
             image: true,
             category: false,
+            categories: false,
             brand: false,
-            rank: false
+            ranking: false
           },
         },
         'brands': {
@@ -45,9 +46,10 @@ angular.module('endslaverynowApp')
             description: true,
             purchaseUrl: false,
             image: true,
-            category: true,
+            category: false,
+            categories: true,
             brand: false,
-            rank: true
+            ranking: true
           },
         },
         'products': {
@@ -60,7 +62,7 @@ angular.module('endslaverynowApp')
             image: true,
             category: true,
             brand: true,
-            rank: false
+            ranking: false
           },
         }
       };
