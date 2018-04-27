@@ -77,9 +77,9 @@ angular.module('endslaverynowApp')
       $scope.products = [];
 
       syncObject.$loaded().then(function() {
-          $scope.brands = syncObject.brands.filter((keys) => !!keys);
-          $scope.categories = syncObject.categories.filter((keys) => !!keys);
-          $scope.products = syncObject.products.filter((keys) => !!keys);
+          $scope.brands = syncObject.brands;
+          $scope.categories = syncObject.categories;
+          $scope.products = syncObject.products;
           $scope.loaded = true;
       });
 
@@ -148,7 +148,7 @@ angular.module('endslaverynowApp')
       }
 
       function getCategoryId() {
-        var id = $scope.categories.length || 0;
+        var id = $scope.categories ? $scope.categories.length : 0;
         while($scope.categories[id] !== undefined) {
           id = id + 1;
         }
@@ -156,7 +156,7 @@ angular.module('endslaverynowApp')
       }
 
       function getBrandId() {
-        var id = $scope.brands.length || 0;
+        var id = $scope.brands ? $scope.brands.length : 0;
         while($scope.brands[id] !== undefined) {
           id = id + 1;
         }
@@ -164,7 +164,7 @@ angular.module('endslaverynowApp')
       }
 
       function getProductId() {
-        var id = $scope.products.length || 0;
+        var id = $scope.products ? $scope.products.length : 0;
         while($scope.products[id] !== undefined) {
           id = id + 1;
         }
