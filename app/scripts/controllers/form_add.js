@@ -62,7 +62,8 @@ angular.module('endslaverynowApp')
             image: true,
             categoryId: true,
             brandId: true,
-            ranking: false
+            ranking: false,
+            parentCategoryId: true
           },
         }
       };
@@ -99,6 +100,7 @@ angular.module('endslaverynowApp')
           item.brandId = $scope.selectedBrandId;
           item.categoryId = $scope.selectedCategoryId;
           item.purchaseURlClicks = 0;
+          item.parentCategoryId = 0;
         }
 
         if($scope.formType === 'brands') {
