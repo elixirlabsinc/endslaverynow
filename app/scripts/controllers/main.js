@@ -35,7 +35,8 @@ angular.module('endslaverynowApp')
   
         for(var category in syncObject.categories) {
             var tempCat = syncObject.categories[category];
-            if(tempCat.parentCategoryId == 0) {
+            debugger
+            if (!(tempCat.parentCategoryId > 0)) {
               $scope.categories.push(tempCat);
             }
         }

@@ -35,7 +35,8 @@ angular.module('endslaverynowApp')
             category: false,
             categories: false,
             brand: false,
-            ranking: false
+            ranking: false,
+            parentCategoryId: false
           },
         },
         'brands': {
@@ -95,6 +96,10 @@ angular.module('endslaverynowApp')
 
         var id = itemTypes[$scope.formType].getIdFunction();
         item.id = id;
+        
+        if ($scope.formType === 'categories') {
+          item.parentCategoryId = 0;
+        }
 
         if($scope.formType === 'products') {
           item.brandId = $scope.selectedBrandId;
