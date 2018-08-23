@@ -1,0 +1,37 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Images</th>
+            <th scope='col'>Products</th>
+            <th scope='col'>Brands</th>
+            <th scope='col'>Category</th>
+            <th scope="col">Description </th>
+            <th scope="col">Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="prod in allProds" >
+            <td>
+                <img ng-if="!prod.image" src="images/noimage.png" height="50px">
+                <img ng-if="prod.image" ng-src="{{ prod.image }}" height="50px">
+            </td>
+
+            <td>{{prod.name}}</td>
+        
+            
+            <td>{{brand}}</td>
+            <td>{{prod.categoryId}}</td>
+            <td>{{prod.description}}</td>
+            <td>
+                <button type="button" class="btn btn-success">
+                    Edit
+                    <!-- <a href="#!/editCategory/{{ category.id }}">Edit</a> -->
+                </button>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
