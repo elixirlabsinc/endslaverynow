@@ -109,6 +109,16 @@ angular
 				controller: 'CertificationsCtrl',
 				controllerAs: 'certifications'
 			})
+			.when('/editBrand/:id',{
+				templateUrl: 'views/editBrand.html',
+				controller: 'EditBrandCtrl',
+				controllerAs: 'editBrand'
+			})
+			.when('/editProduct/:id', {
+				templateUrl: 'views/editProduct.html',
+				controller: 'EditProductCtrl',
+				controllerAs: 'editProduct'
+			})
 			.when('/product/:id', {
 				templateUrl: 'views/product.html',
 				controller: 'ProductCtrl',
