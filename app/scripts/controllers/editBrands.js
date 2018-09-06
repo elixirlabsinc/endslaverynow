@@ -16,6 +16,7 @@ angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
 	function ($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG) {
 		$scope.loaded = false
 		$scope.allBrands = []
+		$scope.categories = []
 
 		/* firebase */
 		var firebase = new Firebase(CONFIG.FIREBASEURL)
@@ -25,6 +26,7 @@ angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
 			for (var brand in syncObject.categories) {
 				$scope.allBrands.push(syncObject.brands[brand])
 			}
+			$scope.categories = syncObject.categories
 
 			$scope.loaded = true
 		})
