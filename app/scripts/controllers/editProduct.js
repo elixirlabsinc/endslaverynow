@@ -1,0 +1,89 @@
+'use strict'
+/**
+ * @ngdoc function
+ * @name endslaverynowApp.controller:EditProductCtrl
+ * @description
+ * # EditCategoryCtrl
+ * Controller of the endslaverynowApp
+ */
+angular.module('endslaverynowApp').controller('EditProductCtrl', [
+	'$firebaseArray',
+	'$firebaseObject',
+	'$routeParams',
+	'$scope',
+	'CONFIG',
+	function($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG) {
+		$scope.productId = $routeParams.id;
+		var firebase = new Firebase(CONFIG.FIREBASEURL);
+		var syncObject = $firebaseObject(firebase);
+		$scope.processForm = function() {
+			console.log($scope.NameValue)
+
+			if ($scope.NameValue) {
+				syncObject.products[$scope.productId].name = $scope.NameValue
+			}
+			if ($scope.DescriptionValue) {
+				syncObject.products[$scope.productId].description = $scope.DescriptionValue
+			}
+			if ($scope.PurchaseURLValue) {
+				syncObject.products[$scope.productId].purchaseUrl = $scope.PurchaseURLValue
+			}
+			if ($scope.selectedCategoryId) {
+				syncObject.products[$scope.productId].categoryId = $scope.selectedCategoryId
+			}
+			if ($scope.selectedBrandId) {
+				syncObject.products[$scope.productId].brandId = $scope.selectedBrandId
+			}
+
+			syncObject.$save().then(
+				function() {
+					console.log('Done') // true
+					window.alert('Edit has been completed!')
+					window.location.reload()
+				},
+				function(error) {
+					window.alert('Error:', error)
+				}
+			)
+		}
+
+		
+		syncObject.$loaded().then(function() {
+			console.log(syncObject)
+			$scope.brands = syncObject.brands
+			$scope.categories = syncObject.categories
+			$scope.products = syncObject.products
+			$scope.loaded = true
+			$scope.name = syncObject.products[$scope.productId].name
+			$scope.description = syncObject.products[$scope.productId].description
+			$scope.ranking = syncObject.products[$scope.productId].ranking
+			$scope.image = syncObject.products[$scope.productId].image
+			
+			$scope.CategoryId = syncObject.products[$scope.productId].categoryId
+			$scope.cat = syncObject.categories[$scope.CategoryId]
+			$scope.BrandId = syncObject.products[$scope.productId].brandId
+			$scope.brand = syncObject.brands[$scope.BrandId]
+			$scope.purchaseURL = syncObject.products[$scope.productId].purchaseUrl
+
+			
+			$scope.setCategory = function (category) {
+				$scope.selectedCategoryId = category.id
+				$scope.selectedCategoryName = category.name
+			}
+			$scope.setBrand = function(brand) {
+				$scope.selectedBrandId = brand.id
+				$scope.selectedBrandName = brand.name
+			};
+
+
+			syncObject.$save().then(
+				function() {
+					console.log('Done') // true
+				},
+				function(error) {
+					console.log('Error:', error)
+				}
+			)
+		})
+	}
+])

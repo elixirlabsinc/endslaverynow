@@ -1,0 +1,25 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Images</th>
+            <th scope='col'>Category</th>
+            <th scope="col">Description </th>
+            <th scope="col">Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="category in allCategories">
+            <td>
+                <img ng-if="!category.image" src="images/noimage.png" height="50px">
+                <img ng-if="category.image" ng-src="{{ category.image }}" height="50px">
+            </td>
+
+            <td>{{category.name}}</td>
+            <td>{{category.description}}</td>
+            <td><button type="button" class="btn btn-success"><a href="#!/editCategory/{{ category.id }}">Edit</a></button> <button type="button" class="btn btn-danger"><a href="#!/deleteCat/{{ category.id }}">Delete</a></button> </td>
+
+        </tr>
+
+    </tbody>
+</table>

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * @ngdoc function
@@ -8,44 +8,44 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp')
-  .controller('BrandCtrl', [
-    '$firebaseArray',
-    '$firebaseObject',
-    '$routeParams',
-    '$scope',
-    'CONFIG',
-    function ($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG) {
-      $scope.brandId = $routeParams.id;
-      $scope.loaded = false;
-      $scope.brandProducts = [];
-      $scope.relatedCategories = [];
+	.controller('BrandCtrl', [
+		'$firebaseArray',
+		'$firebaseObject',
+		'$routeParams',
+		'$scope',
+		'CONFIG',
+		function ($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG) {
+			$scope.brandId = $routeParams.id
+			$scope.loaded = false
+			$scope.brandProducts = []
+			$scope.relatedCategories = []
 
-      /* firebase */
-      var firebase = new Firebase(CONFIG.FIREBASEURL);
-      var syncObject = $firebaseObject(firebase);
+			/* firebase */
+			var firebase = new Firebase(CONFIG.FIREBASEURL)
+			var syncObject = $firebaseObject(firebase)
 
-      syncObject.$loaded().then(function() {
-          // Get brand information
-          $scope.brandDetails = syncObject.brands[$scope.brandId];
+			syncObject.$loaded().then(function() {
+				// Get brand information
+				$scope.brandDetails = syncObject.brands[$scope.brandId]
 
-          if($scope.brandDetails === null) {
-              return;
-          }
+				if($scope.brandDetails === null) {
+					return
+				}
 
-          // Get products for this brand
-          for(var prod in syncObject.products) {
-              var temp = syncObject.products[prod];
-              if(temp.brandId == $scope.brandId) {
-                  $scope.brandProducts.push(temp);
-              }
-          }
+				// Get products for this brand
+				for(var prod in syncObject.products) {
+					var temp = syncObject.products[prod]
+					if(temp.brandId == $scope.brandId) {
+						$scope.brandProducts.push(temp)
+					}
+				}
           
-          $scope.relatedCategoryIds = $scope.brandDetails.categories.split(",");
-          for(var rcat in $scope.relatedCategoryIds) {
-              $scope.relatedCategories.push(syncObject.categories[$scope.relatedCategoryIds[rcat]]);
-          }
+				$scope.relatedCategoryIds = $scope.brandDetails.categories.split(',')
+				for(var rcat in $scope.relatedCategoryIds) {
+					$scope.relatedCategories.push(syncObject.categories[$scope.relatedCategoryIds[rcat]])
+				}
 
-          $scope.loaded = true;
-      });
+				$scope.loaded = true
+			})
 
-  }]);
+		}])
