@@ -96,7 +96,7 @@ angular.module('endslaverynowApp')
 
 				var id = itemTypes[$scope.formType].getIdFunction()
 				item.id = id
-        
+
 				if ($scope.formType === 'categories') {
 					item.parentCategoryId = 0
 				}
@@ -173,7 +173,7 @@ angular.module('endslaverynowApp')
 			}
 
 			function getProductId() {
-				var id = $scope.products ? $scope.products.length : 1
+				var id = $scope.products ? Object.values($scope.products).length : 1
 				while($scope.products[id] !== undefined) {
 					id = id + 1
 				}
