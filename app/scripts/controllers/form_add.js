@@ -64,7 +64,7 @@ angular.module('endslaverynowApp')
 						categoryId: true,
 						brandId: true,
 						ranking: false,
-						parentCategoryId: true
+						parentCategoryId: false
 					},
 				}
 			}
@@ -113,7 +113,7 @@ angular.module('endslaverynowApp')
 					item.ranking = $scope.selectedRankName
 				}
 
-				if(!invalidInput(item, $scope.formType, itemTypes[$scope.formType].requiredInputs)) {
+				if(!validInput(item, $scope.formType, itemTypes[$scope.formType].requiredInputs)) {
 					$scope.errorMessage = true
 					return
 				} else {
@@ -121,7 +121,7 @@ angular.module('endslaverynowApp')
 				}
 			}
 
-			var invalidInput = function(item, formType, requiredInputs) {
+			var validInput = function(item, formType, requiredInputs) {
 				var isValid = !!item
 
 				for(var req in requiredInputs) {
