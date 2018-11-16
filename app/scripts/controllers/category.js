@@ -15,7 +15,7 @@ angular.module('endslaverynowApp')
 		'$scope',
 		'CONFIG',
 		function($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG){
-    
+
 			$scope.categoryId = $routeParams.id
 			$scope.loaded = false
 			$scope.categoryBrands = []
@@ -39,7 +39,7 @@ angular.module('endslaverynowApp')
 						$scope.relatedCategories.push(syncObject.categories[cat])
 					}
 					if (syncObject.categories[cat].parentCategoryId == $scope.categoryId ||
-                  syncObject.categories[cat].parentCategoryId == $scope.categoryDetails.parentCategoryId
+						syncObject.categories[cat].parentCategoryId == $scope.categoryDetails.parentCategoryId
 					) {
 						if(syncObject.categories[cat].id != $scope.categoryId && syncObject.categories[cat].parentCategoryId != 0) {
 							$scope.relatedCategories.push(syncObject.categories[cat])
@@ -49,7 +49,7 @@ angular.module('endslaverynowApp')
 
 				for(var brand in syncObject.brands) {
 					var tempBrand = syncObject.brands[brand]
-					$scope.brandCategories = tempBrand.categories.split(',')
+					$scope.brandCategories = String(tempBrand.categories).split(',')
 					for(var catId in $scope.brandCategories) {
 						if($scope.brandCategories[catId] == $scope.categoryId) {
 							$scope.categoryBrands.push(tempBrand)
