@@ -81,8 +81,8 @@ angular.module('endslaverynowApp')
 			$scope.products = []
 
 			syncObject.$loaded().then(function() {
-				$scope.brands = syncObject.brands
-				$scope.categories = syncObject.categories
+				$scope.brands = alphabetizeCollection(syncObject.brands)
+				$scope.categories = alphabetizeCollection(syncObject.categories)
 				$scope.products = syncObject.products
 				$scope.loaded = true
 			})
@@ -178,6 +178,11 @@ angular.module('endslaverynowApp')
 					id = id + 1
 				}
 				return id
+			}
+
+			function alphabetizeCollection(collection) {
+				collection.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+				return collection
 			}
 
 		}])
