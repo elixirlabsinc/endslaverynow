@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <link rel="shortcut icon" type="image/png" href="images/logo.png"/>    
+    <link rel="shortcut icon" type="image/png" href="images/logo.png"/>
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
@@ -19,7 +19,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
     <!-- <script src="public/firebase.js"></script> -->
     <script type="text/javascript">
-      var uploadImages = function(data, config, uploadType) {
+      var uploadImages = function(data, config, uploadType, syncObject) {
         var file = data.image[0];
 
         if(!firebase.apps.length) {
@@ -37,8 +37,8 @@
         // use Firebase push call to upload file to Firebase
         var uploadTask = storageRef.child(uploadType + '/images/' + file.name).put(file, metadata);
 
-        // monitor Firebase upload prodress and catch errors
-        var uploadedImageUrl = uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, 
+        // monitor Firebase upload progress and catch errors
+        var uploadedImageUrl = uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
           function(snapshot) {
           }, function(error) {
               // catch an error when it happens, note: there are more error codes
@@ -61,12 +61,19 @@
               // on success, display the uploaded image on the page
               var downloadURL = uploadTask.snapshot.downloadURL;
               data.image = downloadURL;
-              writeNewPost(data, uploadType);
 
-              var addForm = document.getElementById('add-form');
-              addForm.style.display = 'none';
-              var successMessage = document.getElementById('submitted-form');
-              successMessage.style.display = 'block';
+              if (syncObject == undefined) {
+                // for creating new item
+                writeNewPost(data, uploadType)
+
+                var addForm = document.getElementById('add-form');
+                addForm.style.display = 'none';
+                var successMessage = document.getElementById('submitted-form');
+                successMessage.style.display = 'block';
+              } else {
+                // for editing an item
+                saveSyncObject(syncObject, 'Edit has been completed!')
+              }
           });
 
       }
@@ -75,6 +82,18 @@
         var updates = {};
         updates['/' + uploadType + '/' + data.id] = data;
         return firebase.database().ref().update(updates);
+      }
+
+      function saveSyncObject(syncObject, successMsg) {
+        syncObject.$save().then(
+          function() {
+            window.alert(successMsg)
+            window.location.reload()
+          },
+          function(error) {
+            window.alert('Error:', error)
+          }
+        )
       }
     </script>
 
@@ -186,12 +205,12 @@
         <script src="scripts/controllers/edit-delete.js"></script>
         <script src="scripts/controllers/editBrands.js"></script>
         <script src="scripts/controllers/editBrand.js"></script>
-      
+
         <script src="scripts/controllers/editProducts.js"></script>
         <script src="scripts/controllers/editProduct.js"></script>
         <script src="scripts/controllers/deletecat.js"></script>
         <!-- endbuild -->
-    
+
     <!-- Styles -->
     <link rel="stylesheet" type="text/css" href="styles/main.css">
     <!-- endstyles-->
