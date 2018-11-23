@@ -3,7 +3,7 @@
             No Brand Details Found
         </div>
     </div>
-    
+
     <div ng-if="brandDetails">
         <div class="col-md-12 thumbnail">
             <br>
@@ -11,18 +11,18 @@
                 <img ng-if="!brandDetails.image" src="images/noimage.png" height="400px" class="img-rounded img-responsive">
                 <img ng-if="brandDetails.image" ng-src="{{ brandDetails.image }}" height="400px" class="img-rounded img-responsive">
             </div>
-    
+
             <div class="col-md-8">
                     <h2>{{ brandDetails.name }}</h2>
                     <p ng-if="brandDetails.ranking">Ranking: <a href="#!/rankings">{{ brandDetails.ranking }}</a></p>
-                    <p ng-if="relatedCategories.length > 0">Category: 
+                    <p ng-if="relatedCategories.length > 0">Category:
                         <span ng-repeat="categoryDetails in relatedCategories">
-                            <a href="#!/category/{{ categoryDetails.id }}">{{ categoryDetails.name }}</a> 
+                            <a href="#!/category/{{ categoryDetails.id }}">{{ categoryDetails.name }}{{$last ? '' : ', '}}</a>
                         </span>
                     </p>
                     <p ng-if="brandDetails.description">{{ brandDetails.description }}</p>
                 </p>
-    
+
                 <a
                     href="{{ brandDetails.brandURL }}"
                     class="btn purchaseButton"
@@ -31,7 +31,7 @@
                 >
                     Visit {{ brandDetails.name }}
                 </a>
-    
+
             </div>
             <br>&nbsp;<br>
             <div class="col-md-12">
@@ -39,8 +39,8 @@
                 </div>
             </div>
         </div>
-    
-    
+
+
         <div class="" ng-if="loaded">
             <h2>Products</h2>
             <div class="row">
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="" ng-if="!loaded || brandProducts.length == 0">
             <p>No products found at this time</p>
             <p>&nbsp;</p>
