@@ -18,34 +18,27 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 		var firebase = new Firebase(
 			firebaseRef + '/categories/' + $scope.categoryId
 		)
-		
 
 		$scope.processForm = function(){
-			console.log($scope.NameValue)
-			
 			if($scope.NameValue){
 				syncObject.name = $scope.NameValue
 			}
 			if($scope.DescriptionValue){
 				syncObject.description = $scope.DescriptionValue
 			}
-			
-			syncObject.$save().then(function () {
-				console.log('Done') // true
-			}, function (error) {
-				console.log('Error:', error)
-			})
+			if ($scope.Image) {
+				syncObject.image = $scope.Image
+				uploadImages(syncObject, CONFIG.APPCONFIG, 'category', syncObject)
+			} else {
+				saveSyncObject(syncObject, 'Edit has been completed!')
+			}
 		}
 
-		
-		
 		var syncObject = $firebaseObject(firebase)
 		syncObject.$loaded().then(function() {
-			console.log(syncObject)
 			$scope.name = syncObject.name
 			$scope.description = syncObject.description
 			$scope.image = syncObject.image
-			
 
 			syncObject.$save().then(function () {
 				console.log('Done') // true
