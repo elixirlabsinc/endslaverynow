@@ -23,7 +23,7 @@ angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
 		var syncObject = $firebaseObject(firebase)
 
 		syncObject.$loaded().then(function () {
-			for (var brand in syncObject.categories) {
+			for (var brand in syncObject.brands) {
 				$scope.allBrands.push(syncObject.brands[brand])
 			}
 			$scope.categories = syncObject.categories
