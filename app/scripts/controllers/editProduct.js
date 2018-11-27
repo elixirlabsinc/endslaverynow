@@ -40,7 +40,6 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 			}
 		}
 
-
 		syncObject.$loaded().then(function() {
 			$scope.brands = syncObject.brands
 			$scope.categories = syncObject.categories
@@ -57,7 +56,6 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 			$scope.brand = syncObject.brands[$scope.BrandId]
 			$scope.purchaseURL = syncObject.products[$scope.productId].purchaseUrl
 
-
 			$scope.setCategory = function (category) {
 				$scope.selectedCategoryId = category.id
 				$scope.selectedCategoryName = category.name
@@ -66,7 +64,6 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 				$scope.selectedBrandId = brand.id
 				$scope.selectedBrandName = brand.name
 			};
-
 
 			syncObject.$save().then(
 				function() {
