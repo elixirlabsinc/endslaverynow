@@ -18,7 +18,7 @@ angular.module('endslaverynowApp').controller('EditProductsCtrl', [
 		$scope.allProds = []
 		$scope.allBrands = []
 		$scope.brand
-		
+
 		/* firebase */
 		var firebase = new Firebase(CONFIG.FIREBASEURL)
 		var syncObject = $firebaseObject(firebase)
@@ -30,8 +30,6 @@ angular.module('endslaverynowApp').controller('EditProductsCtrl', [
 			for (var brand in syncObject.brands) {
 				$scope.allBrands.push(syncObject.brands[brand])
 			}
-
-		
 		})
 		$scope.selectBrand = function(brandId){
 			console.log('hi'+brandId)
