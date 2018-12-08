@@ -19,29 +19,6 @@ angular
 		'ngSanitize',
 		'ngTouch'
 	])
-	.constant('CONFIG', {
-		// // Test Details
-		FIREBASEURL: 'https://end-slavery-now-test.firebaseio.com',
-		APPCONFIG: {
-			apiKey: 'AIzaSyAr-mF9ntUnisSJpOj6bEZ7U0kdoOewgRA',
-			authDomain: 'end-slavery-now-test.firebaseapp.com',
-			databaseURL: 'https://end-slavery-now-test.firebaseio.com',
-			projectId: 'end-slavery-now-test',
-			storageBucket: 'end-slavery-now-test.appspot.com',
-			messagingSenderId: '285898483037'
-		}
-
-		// Staging Details
-		// 'FIREBASEURL': 'https://end-slavery-now.firebaseio.com',
-		// 'APPCONFIG': {
-		// 	apiKey: 'AIzaSyD9_sUa5MnIA0CxsO44Oofd5_7y-j45SXg',
-		// 	authDomain: 'end-slavery-now.firebaseapp.com',
-		// 	databaseURL: 'https://end-slavery-now.firebaseio.com',
-		// 	projectId: 'end-slavery-now',
-		// 	storageBucket: 'end-slavery-now.appspot.com',
-		// 	messagingSenderId: '48416679514'
-		// }
-	})
 	.config(function($routeProvider) {
 		$routeProvider
 			.when('/', {
@@ -130,4 +107,29 @@ angular
 				controllerAs: 'rankings'
 			})
 			.otherwise({ redirectTo: '/' })
+	})
+	.run(function() {
+		// Test details
+		var config = {
+			apiKey: 'AIzaSyAr-mF9ntUnisSJpOj6bEZ7U0kdoOewgRA',
+			authDomain: 'end-slavery-now-test.firebaseapp.com',
+			databaseURL: 'https://end-slavery-now-test.firebaseio.com',
+			projectId: 'end-slavery-now-test',
+			storageBucket: 'end-slavery-now-test.appspot.com',
+			messagingSenderId: '285898483037'
+		}
+		// Staging details
+		// var config = {
+		// 	apiKey: 'AIzaSyD9_sUa5MnIA0CxsO44Oofd5_7y-j45SXg',
+		// 	authDomain: 'end-slavery-now.firebaseapp.com',
+		// 	databaseURL: 'https://end-slavery-now.firebaseio.com',
+		// 	projectId: 'end-slavery-now',
+		// 	storageBucket: 'end-slavery-now.appspot.com',
+		// 	messagingSenderId: '48416679514'
+		// }
+		if (!firebase.apps.length) {
+			firebase.initializeApp(config)
+		}
+		return true
+		// register user observer
 	})

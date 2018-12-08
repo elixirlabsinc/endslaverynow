@@ -7,38 +7,34 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
-	'$firebaseArray',
 	'$firebaseObject',
 	'$routeParams',
 	'$scope',
-	'CONFIG',
-	function($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG) {
+	function($firebaseObject, $routeParams, $scope) {
 		$scope.categoryId = $routeParams.id
-		var firebaseRef = CONFIG.FIREBASEURL
-		var firebase = new Firebase(
-			firebaseRef + '/categories/' + $scope.categoryId
-		)
+
+		var ref = firebase.database().ref()
+		var syncObject = $firebaseObject(ref)
 
 		$scope.processForm = function(){
 			if($scope.NameValue){
-				syncObject.name = $scope.NameValue
+				syncObject.categories[$scope.categoryId].name = $scope.NameValue
 			}
 			if($scope.DescriptionValue){
-				syncObject.description = $scope.DescriptionValue
+				syncObject.categories[$scope.categoryId].description = $scope.DescriptionValue
 			}
 			if ($scope.Image) {
-				syncObject.image = $scope.Image
-				uploadImages(syncObject, CONFIG.APPCONFIG, 'category', syncObject)
+				syncObject.categories[$scope.categoryId].image = $scope.Image
+				uploadImages(syncObject.categories[$scope.categoryId], 'category', syncObject)
 			} else {
 				saveSyncObject(syncObject, 'Edit has been completed!')
 			}
 		}
 
-		var syncObject = $firebaseObject(firebase)
 		syncObject.$loaded().then(function() {
-			$scope.name = syncObject.name
-			$scope.description = syncObject.description
-			$scope.image = syncObject.image
+			$scope.name = syncObject.categories[$scope.categoryId].name
+			$scope.description = syncObject.categories[$scope.categoryId].description
+			$scope.image = syncObject.categories[$scope.categoryId].image
 
 			syncObject.$save().then(function () {
 				console.log('Done') // true

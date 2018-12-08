@@ -7,15 +7,15 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditBrandCtrl', [
-	'$firebaseArray',
 	'$firebaseObject',
 	'$routeParams',
 	'$scope',
-	'CONFIG',
-	function($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG) {
+	function($firebaseObject, $routeParams, $scope) {
 		$scope.brandId = $routeParams.id
-		var firebase = new Firebase(CONFIG.FIREBASEURL)
-		var syncObject = $firebaseObject(firebase)
+
+		var ref = firebase.database().ref()
+		var syncObject = $firebaseObject(ref)
+
 		$scope.products = []
 
 		$scope.processForm = function() {
@@ -33,7 +33,7 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 			}
 			if ($scope.Image) {
 				syncObject.brands[$scope.brandId].image = $scope.Image
-				uploadImages(syncObject.brands[$scope.brandId], CONFIG.APPCONFIG, 'brand', syncObject)
+				uploadImages(syncObject.brands[$scope.brandId], 'brand', syncObject)
 			} else {
 				saveSyncObject(syncObject, 'Edit has been completed!')
 			}
