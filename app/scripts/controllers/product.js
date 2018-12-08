@@ -9,19 +9,16 @@
  */
 angular.module('endslaverynowApp')
 	.controller('ProductCtrl', [
-		'$firebaseArray',
 		'$firebaseObject',
 		'$routeParams',
 		'$scope',
-		'CONFIG',
-		function($firebaseArray, $firebaseObject, $routeParams, $scope, CONFIG){
+		function($firebaseObject, $routeParams, $scope){
 			$scope.productId = $routeParams.id
 			$scope.productClicked = false
-			var firebaseRef = CONFIG.FIREBASEURL
 
-			/* firebase */
-			var firebase = new Firebase(firebaseRef)
-			var syncObject = $firebaseObject(firebase)
+			var ref = firebase.database().ref()
+			var syncObject = $firebaseObject(ref)
+
 			syncObject.$loaded().then(function() {
 				// Get product information
 				$scope.productDetails = syncObject.products[$scope.productId]
@@ -44,7 +41,7 @@ angular.module('endslaverynowApp')
 				if(!$scope.productClicked) {
 					$scope.productClicked = true
 					var updatedClickCount = parseInt($scope.productDetails.purchaseURlClicks) + 1
-					$scope.data.products[$scope.productId].purchaseURlClicks = updatedClickCount   
+					$scope.data.products[$scope.productId].purchaseURlClicks = updatedClickCount
 				}
 			}
 		}])

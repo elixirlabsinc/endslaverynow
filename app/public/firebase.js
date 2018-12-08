@@ -1,9 +1,5 @@
-var uploadImages = function(data, config, uploadType) {
+var uploadImages = function(data, uploadType) {
 	var file = data.image[0]
-
-	if(!firebase.apps.length) {
-		firebase.initializeApp(config)
-	}
 
 	var storage = firebase.storage()
 	var storageRef = storage.ref()

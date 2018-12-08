@@ -19,12 +19,8 @@
     <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
     <!-- <script src="public/firebase.js"></script> -->
     <script type="text/javascript">
-      var uploadImages = function(data, config, uploadType, syncObject) {
+      var uploadImages = function(data, uploadType, syncObject) {
         var file = data.image[0];
-
-        if(!firebase.apps.length) {
-          firebase.initializeApp(config);
-        }
 
         var storage = firebase.storage();
         var storageRef = storage.ref();
@@ -216,8 +212,8 @@
     <!-- endstyles-->
 
     <!-- firebase -->
-    <script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
-    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
     <!-- endfirebase -->
 </body>
 </html>

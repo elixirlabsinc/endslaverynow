@@ -9,14 +9,12 @@
  */
 angular.module('endslaverynowApp')
 	.controller('FormAddCtrl',[
-		'$firebaseArray',
 		'$firebaseObject',
 		'$routeParams',
 		'$scope',
 		'$window',
-		'CONFIG',
 		'Upload',
-		function ($firebaseArray, $firebaseObject, $routeParams, $scope, $window, CONFIG, Upload) {
+		function ($firebaseObject, $routeParams, $scope, $window, Upload) {
 			$scope.brandId = $routeParams.id
 			$scope.loaded = false
 
@@ -75,9 +73,9 @@ angular.module('endslaverynowApp')
 				'best': 'Best'
 			}
 
-			/* firebase */
-			var firebase = new Firebase(CONFIG.FIREBASEURL)
-			var syncObject = $firebaseObject(firebase)
+			var ref = firebase.database().ref()
+			var syncObject = $firebaseObject(ref)
+
 			$scope.products = []
 
 			syncObject.$loaded().then(function() {
@@ -117,7 +115,7 @@ angular.module('endslaverynowApp')
 					$scope.errorMessage = true
 					return
 				} else {
-					uploadImages(item, CONFIG.APPCONFIG, $scope.formType)
+					uploadImages(item, $scope.formType)
 				}
 			}
 

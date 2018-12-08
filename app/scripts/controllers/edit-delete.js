@@ -11,12 +11,10 @@
 angular
 	.module('endslaverynowApp')
 	.controller('EditDeleteCtrl', [
-		'$firebaseArray',
 		'$firebaseObject',
 		'$routeParams',
 		'$scope',
 		'$window',
-		'CONFIG',
 		'Upload',
 		function($scope) {}
 	])

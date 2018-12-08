@@ -10,17 +10,15 @@
 angular.module('endslaverynowApp')
 	.controller('MainCtrl', [
 		'$scope',
-		'$firebaseArray',
 		'$firebaseObject',
-		'CONFIG',
-		function ($scope, $firebaseArray, $firebaseObject, CONFIG) {
+		function ($scope, $firebaseObject) {
 			$scope.brands = []
 			$scope.products = []
 			$scope.categories = []
 
 			/* firebase */
-			var firebase = new Firebase(CONFIG.FIREBASEURL)
-			var syncObject = $firebaseObject(firebase)
+			var ref = firebase.database().ref()
+			var syncObject = $firebaseObject(ref)
 
 			syncObject.$loaded().then(function() {
 				for(var brand in syncObject.brands) {
