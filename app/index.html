@@ -118,15 +118,16 @@
           </div>
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
             <ul class="nav navbar-nav">
               <li><a ng-href="#!/">Home</a></li>
               <li><a ng-href="#!/rankings">Ranking System</a></li>
               <li><a ng-href="#!/certifications">Certifications</a></li>
               <li><a ng-href="#!/categories">Shop Categories</a></li>
               <li><a ng-href="#!/about">About Us</a></li>
-
             </ul>
+            <div ng--show="currentUser" ng-controller="SessionsCtrl">
+              <button ng-click="logoutUser()" id="log-out-btn" class="btn">Log out</button>
+            </div>
           </div>
         </div>
       </div>
@@ -201,6 +202,8 @@
         <script src="scripts/controllers/edit-delete.js"></script>
         <script src="scripts/controllers/editBrands.js"></script>
         <script src="scripts/controllers/editBrand.js"></script>
+        <script src="scripts/controllers/sessions.js"></script>
+        <script src="scripts/controllers/users.js"></script>
 
         <script src="scripts/controllers/editProducts.js"></script>
         <script src="scripts/controllers/editProduct.js"></script>
