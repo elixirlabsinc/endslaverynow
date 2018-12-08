@@ -96,6 +96,16 @@ angular
 				controller: 'EditProductCtrl',
 				controllerAs: 'editProduct'
 			})
+			.when('/login', {
+				templateUrl: 'views/login.html',
+				controller: 'LoginCtrl',
+				controllerAs: 'login'
+			})
+			.when('/users', {
+				templateUrl: 'views/users.html',
+				controller: 'UsersCtrl',
+				controllerAs: 'users'
+			})
 			.when('/product/:id', {
 				templateUrl: 'views/product.html',
 				controller: 'ProductCtrl',
@@ -108,7 +118,7 @@ angular
 			})
 			.otherwise({ redirectTo: '/' })
 	})
-	.run(function() {
+	.run(function($rootScope) {
 		// Test details
 		var config = {
 			apiKey: 'AIzaSyAr-mF9ntUnisSJpOj6bEZ7U0kdoOewgRA',
@@ -130,6 +140,12 @@ angular
 		if (!firebase.apps.length) {
 			firebase.initializeApp(config)
 		}
-		return true
-		// register user observer
+
+		firebase.auth().onAuthStateChanged(function(user) {
+		  if (user) {
+		    $rootScope.currentUser = user
+		  } else {
+		    $rootScope.currentUser = null
+		  }
+		});
 	})

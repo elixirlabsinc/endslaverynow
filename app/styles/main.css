@@ -124,3 +124,8 @@ a:hover {
   color: red;
   text-align: center;
 }
+
+#log-out-btn {
+  float: right;
+  margin-top: 1%;
+}

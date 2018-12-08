@@ -1,0 +1,13 @@
+<h2>Create a new user</h2>
+<form name="newUserForm" ng-controller="UsersCtrl" ng-submit="createUser(credentials)">
+  <label for="email">Email:</label>
+  <br />
+  <input type="text" id="email" ng-model="credentials.email">
+  <br />
+  <label for="password">Password:</label>
+  <br />
+  <input type="password" id="password" ng-model="credentials.password">
+  <br />
+  <br />
+  <button type="submit" class="btn btn-primary btn-lg">Create user</button>
+</form>
