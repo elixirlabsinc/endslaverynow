@@ -34,12 +34,14 @@ angular
 			.when('/deleteCat/:id', {
 				templateUrl: 'views/deleteCategory.html',
 				controller: 'DeleteCatCtrl',
-				controllerAs: 'deletecat'
+				controllerAs: 'deletecat',
+				authorize: true
 			})
 			.when('/add', {
 				templateUrl: 'views/form_add.html',
 				controller: 'FormAddCtrl',
-				controllerAs: 'formAdd'
+				controllerAs: 'formAdd',
+				authorize: true
 			})
 			.when('/brand/:id', {
 				templateUrl: 'views/brand.html',
@@ -49,27 +51,32 @@ angular
 			.when('/editCategories', {
 				templateUrl: 'views/editCategories.html',
 				controller: 'EditCategoriesCtrl',
-				controllerAs: 'editCategories'
+				controllerAs: 'editCategories',
+				authorize: true
 			})
 			.when('/editBrands', {
 				templateUrl: 'views/editBrands.html',
 				controller: 'EditBrandsCtrl',
-				controllerAs: 'editBrands'
+				controllerAs: 'editBrands',
+				authorize: true
 			})
 			.when('/editProducts', {
 				templateUrl: 'views/editProducts.html',
 				controller: 'EditProductsCtrl',
-				controllerAs: 'editProducts'
+				controllerAs: 'editProducts',
+				authorize: true
 			})
 			.when('/edit-delete', {
 				templateUrl: 'views/edit-delete.html',
 				controller: 'EditDeleteCtrl',
-				controllerAs: 'edit-delete'
+				controllerAs: 'edit-delete',
+				authorize: true
 			})
 			.when('/editCategory/:id', {
 				templateUrl: 'views/editCategory.html',
 				controller: 'EditCategoryCtrl',
-				controllerAs: 'editCategory'
+				controllerAs: 'editCategory',
+				authorize: true
 			})
 			.when('/categories', {
 				templateUrl: 'views/categories.html',
@@ -89,22 +96,25 @@ angular
 			.when('/editBrand/:id',{
 				templateUrl: 'views/editBrand.html',
 				controller: 'EditBrandCtrl',
-				controllerAs: 'editBrand'
+				controllerAs: 'editBrand',
+				authorize: true
 			})
 			.when('/editProduct/:id', {
 				templateUrl: 'views/editProduct.html',
 				controller: 'EditProductCtrl',
-				controllerAs: 'editProduct'
+				controllerAs: 'editProduct',
+				authorize: true
 			})
 			.when('/login', {
 				templateUrl: 'views/login.html',
-				controller: 'LoginCtrl',
-				controllerAs: 'login'
+				controller: 'SessionsCtrl',
+				controllerAs: 'sessions'
 			})
 			.when('/users', {
 				templateUrl: 'views/users.html',
 				controller: 'UsersCtrl',
-				controllerAs: 'users'
+				controllerAs: 'users',
+				authorize: true
 			})
 			.when('/product/:id', {
 				templateUrl: 'views/product.html',
@@ -118,7 +128,17 @@ angular
 			})
 			.otherwise({ redirectTo: '/' })
 	})
-	.run(function($rootScope) {
+	.factory('authorize',
+		['$rootScope', function($rootScope) {
+			return function() {
+				if ($rootScope.currentUser) {
+					return true
+				} else {
+					location.href = '#!/login'
+				}
+			}
+	}])
+	.run(['$rootScope', 'authorize', function($rootScope, authorize) {
 		// Test details
 		var config = {
 			apiKey: 'AIzaSyAr-mF9ntUnisSJpOj6bEZ7U0kdoOewgRA',
@@ -141,11 +161,18 @@ angular
 			firebase.initializeApp(config)
 		}
 
+		// register firebase observer on user
 		firebase.auth().onAuthStateChanged(function(user) {
-		  if (user) {
-		    $rootScope.currentUser = user
-		  } else {
-		    $rootScope.currentUser = null
-		  }
-		});
-	})
+			if (user) {
+				$rootScope.currentUser = user
+			} else {
+				$rootScope.currentUser = null
+			}
+
+			$rootScope.$on('$routeChangeStart', function(event, to, from){
+				if (to.authorize === true) {
+					authorize()
+				}
+			})
+		})
+	}])
