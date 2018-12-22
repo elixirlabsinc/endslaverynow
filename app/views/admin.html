@@ -1,2 +1,20 @@
-<h2>Admin dashboard</h2>
-<ui-view></ui-view>
+<div class='admin'>
+  <div id='navbar-container'>
+    <h2>Admin</h2>
+    <ul id='navbar'>
+      <li><a ui-sref='admin'>Dashboard</a></li>
+      <li><a ui-sref='admin.editProducts'>Products</a></li>
+      <li><a ui-sref='admin.editBrands'>Brands</a></li>
+      <li><a ui-sref='admin.editCategories'>Categories</a></li>
+      <li><a ui-sref='admin.users'>Add an admin</a></li>
+    </ul>
+  </div>
+
+  <div class='main'>
+    <ui-view>
+      <h2 id='welcome'>
+        Welcome to the admin dashboard!
+      </h2>
+    </ui-view>
+  </div>
+</div>

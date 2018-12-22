@@ -69,8 +69,6 @@ a:hover {
   font-size: 0.9em;
 }
 
-
-
 .navbar, .navbar-default, .navbar-toggle, .collapsed, .navbar-header {
   background: transparent;
   border: none;
@@ -129,3 +127,38 @@ a:hover {
   float: right;
   margin-top: 1%;
 }
+
+.admin
+  h2 {
+    font-size: 1.3em;
+  }
+
+  .main {
+    width: 85%;
+    height: 100%;
+    margin: 0;
+    float: right;
+  }
+
+  #navbar-container {
+    width: 15%;
+    position: fixed;
+    left: 2%;
+  }
+
+  #navbar {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  #navbar li {
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+
+  #welcome {
+    padding: 15%;
+    padding-top: 20%;
+    padding-bottom: 20%;
+    font-size: 2em;
+  }
