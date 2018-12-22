@@ -10,10 +10,10 @@
 angular.module('endslaverynowApp')
 	.controller('DeleteCatCtrl', [
 		'$firebaseObject',
-		'$routeParams',
+		'$transition$',
 		'$scope',
-		function ($firebaseObject, $routeParams, $scope) {
-			$scope.categoryId = $routeParams.id
+		function ($firebaseObject, $transition$, $scope) {
+			$scope.categoryId = $transition$.params().id
 
 			var ref = firebase.database().ref()
 			var syncObject = $firebaseObject(ref)

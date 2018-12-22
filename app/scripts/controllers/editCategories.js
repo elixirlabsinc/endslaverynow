@@ -9,9 +9,8 @@
  */
 angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
 	'$firebaseObject',
-	'$routeParams',
 	'$scope',
-	function($firebaseObject, $routeParams, $scope) {
+	function($firebaseObject, $scope) {
 		$scope.loaded = false
 		$scope.allCategories = []
 

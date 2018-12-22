@@ -10,10 +10,10 @@
 angular.module('endslaverynowApp')
 	.controller('BrandCtrl', [
 		'$firebaseObject',
-		'$routeParams',
+		'$transition$',
 		'$scope',
-		function ($firebaseObject, $routeParams, $scope) {
-			$scope.brandId = $routeParams.id
+		function ($firebaseObject, $transition$, $scope) {
+			$scope.brandId = $transition$.params().id
 			$scope.loaded = false
 			$scope.brandProducts = []
 			$scope.relatedCategories = []
@@ -37,7 +37,7 @@ angular.module('endslaverynowApp')
 						$scope.brandProducts.push(temp)
 					}
 				}
-          
+
 				$scope.relatedCategoryIds = $scope.brandDetails.categories.split(',')
 				for(var rcat in $scope.relatedCategoryIds) {
 					$scope.relatedCategories.push(syncObject.categories[$scope.relatedCategoryIds[rcat]])
