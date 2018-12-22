@@ -10,10 +10,10 @@
 angular.module('endslaverynowApp')
 	.controller('ProductCtrl', [
 		'$firebaseObject',
-		'$routeParams',
+		'$transition$',
 		'$scope',
-		function($firebaseObject, $routeParams, $scope){
-			$scope.productId = $routeParams.id
+		function($firebaseObject, $transition$, $scope){
+			$scope.productId = $transition$.params().id
 			$scope.productClicked = false
 
 			var ref = firebase.database().ref()

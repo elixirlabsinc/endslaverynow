@@ -7,7 +7,6 @@
             <th scope='col'>Category</th>
             <th scope="col">Description </th>
             <th scope="col">Action</th>
-
         </tr>
     </thead>
     <tbody>
@@ -18,20 +17,16 @@
             </td>
 
             <td>{{prod.name}}</td>
-        
-            
+
             <td>{{brand}}</td>
             <td>{{prod.categoryId}}</td>
             <td>{{prod.description}}</td>
             <td>
                 <button type="button" class="btn btn-success">
-                    
                     <a href="#!/editProduct/{{ prod.id }}">Edit</a>
                 </button>
                 <button type="button" class="btn btn-danger">Delete</button>
             </td>
-
         </tr>
-
     </tbody>
 </table>

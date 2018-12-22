@@ -10,11 +10,10 @@
 angular.module('endslaverynowApp')
 	.controller('CategoryCtrl', [
 		'$firebaseObject',
-		'$routeParams',
+		'$transition$',
 		'$scope',
-		function($firebaseObject, $routeParams, $scope){
-
-			$scope.categoryId = $routeParams.id
+		function($firebaseObject, $transition$, $scope){
+			$scope.categoryId = $transition$.params().id
 			$scope.loaded = false
 			$scope.categoryBrands = []
 			$scope.categoryProducts = []

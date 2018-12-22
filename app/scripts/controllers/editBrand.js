@@ -8,10 +8,10 @@
  */
 angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 	'$firebaseObject',
-	'$routeParams',
+	'$transition$',
 	'$scope',
-	function($firebaseObject, $routeParams, $scope) {
-		$scope.brandId = $routeParams.id
+	function($firebaseObject, $transition$, $scope) {
+		$scope.brandId = $transition$.params().id
 
 		var ref = firebase.database().ref()
 		var syncObject = $firebaseObject(ref)

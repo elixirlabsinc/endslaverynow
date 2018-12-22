@@ -17,116 +17,142 @@ angular
 		'ngResource',
 		'ngRoute',
 		'ngSanitize',
-		'ngTouch'
+		'ngTouch',
+		'ui.router'
 	])
-	.config(function($routeProvider) {
-		$routeProvider
-			.when('/', {
+	.config(function($stateProvider, $urlRouterProvider) {
+		$stateProvider
+			.state('/', {
+				url: '/',
 				templateUrl: 'views/main.html',
 				controller: 'MainCtrl',
 				controllerAs: 'main'
 			})
-			.when('/about', {
+			.state('about', {
+				url: '/about',
 				templateUrl: 'views/about.html',
 				controller: 'AboutCtrl',
 				controllerAs: 'about'
 			})
-			.when('/deleteCat/:id', {
-				templateUrl: 'views/deleteCategory.html',
+			.state('admin.deleteCat', {
+				url: '/deleteCat/:id',
+				templateUrl: 'views/admin.deleteCategory.html',
 				controller: 'DeleteCatCtrl',
 				controllerAs: 'deletecat',
 				authorize: true
 			})
-			.when('/add', {
-				templateUrl: 'views/form_add.html',
+			.state('admin.add', {
+				url: '/add',
+				templateUrl: 'views/admin.formAdd.html',
 				controller: 'FormAddCtrl',
 				controllerAs: 'formAdd',
 				authorize: true
 			})
-			.when('/brand/:id', {
+			.state('brand', {
+				url: '/brand/:id',
 				templateUrl: 'views/brand.html',
 				controller: 'BrandCtrl',
 				controllerAs: 'brand'
 			})
-			.when('/editCategories', {
-				templateUrl: 'views/editCategories.html',
+			.state('admin', {
+				url: '/admin',
+				templateUrl: 'views/admin.html',
+				authorize: true
+			})
+			.state('admin.editCategories', {
+				url: '/editCategories',
+				templateUrl: 'views/admin.editCategories.html',
 				controller: 'EditCategoriesCtrl',
 				controllerAs: 'editCategories',
 				authorize: true
 			})
-			.when('/editBrands', {
-				templateUrl: 'views/editBrands.html',
+			.state('admin.editBrands', {
+				url: '/editBrands',
+				templateUrl: 'views/admin.editBrands.html',
 				controller: 'EditBrandsCtrl',
 				controllerAs: 'editBrands',
 				authorize: true
 			})
-			.when('/editProducts', {
-				templateUrl: 'views/editProducts.html',
+			.state('admin.editProducts', {
+				url: '/editProducts',
+				templateUrl: 'views/admin.editProducts.html',
 				controller: 'EditProductsCtrl',
 				controllerAs: 'editProducts',
 				authorize: true
 			})
-			.when('/edit-delete', {
-				templateUrl: 'views/edit-delete.html',
+			.state('admin.editDelete', {
+				url: '/editDelete',
+				templateUrl: 'views/admin.editDelete.html',
 				controller: 'EditDeleteCtrl',
-				controllerAs: 'edit-delete',
+				controllerAs: 'editDelete',
 				authorize: true
 			})
-			.when('/editCategory/:id', {
-				templateUrl: 'views/editCategory.html',
+			.state('admin.editCategory', {
+				url: '/editCategory/:id',
+				templateUrl: 'views/admin.editCategory.html',
 				controller: 'EditCategoryCtrl',
 				controllerAs: 'editCategory',
 				authorize: true
 			})
-			.when('/categories', {
+			.state('categories', {
+				url: '/categories',
 				templateUrl: 'views/categories.html',
 				controller: 'CategoriesCtrl',
 				controllerAs: 'categories'
 			})
-			.when('/category/:id', {
+			.state('category', {
+				url: '/category/:id',
 				templateUrl: 'views/category.html',
 				controller: 'CategoryCtrl',
 				controllerAs: 'category'
 			})
-			.when('/certifications', {
+			.state('certifications', {
+				url: '/certifications',
 				templateUrl: 'views/certifications.html',
 				controller: 'CertificationsCtrl',
 				controllerAs: 'certifications'
 			})
-			.when('/editBrand/:id',{
-				templateUrl: 'views/editBrand.html',
+			.state('admin.editBrand', {
+				url: '/editBrand/:id',
+				templateUrl: 'views/admin.editBrand.html',
 				controller: 'EditBrandCtrl',
 				controllerAs: 'editBrand',
 				authorize: true
 			})
-			.when('/editProduct/:id', {
-				templateUrl: 'views/editProduct.html',
+			.state('admin.editProduct', {
+				url: '/editProduct/:id',
+				templateUrl: 'views/admin.editProduct.html',
 				controller: 'EditProductCtrl',
 				controllerAs: 'editProduct',
 				authorize: true
 			})
-			.when('/login', {
+			.state('login', {
+				url: '/login',
 				templateUrl: 'views/login.html',
 				controller: 'SessionsCtrl',
 				controllerAs: 'sessions'
 			})
-			.when('/users', {
-				templateUrl: 'views/users.html',
+			.state('admin.users', {
+				url: '/users',
+				templateUrl: 'views/admin.users.html',
 				controller: 'UsersCtrl',
 				controllerAs: 'users',
 				authorize: true
 			})
-			.when('/product/:id', {
+			.state('product', {
+				url: '/product/:id',
 				templateUrl: 'views/product.html',
 				controller: 'ProductCtrl',
 				controllerAs: 'product'
 			})
-			.when('/rankings', {
+			.state('rankings', {
+				url: '/rankings',
 				templateUrl: 'views/rankings.html',
 				controller: 'RankingsCtrl',
 				controllerAs: 'rankings'
 			})
-			.otherwise({ redirectTo: '/' })
+
+			$urlRouterProvider.otherwise('/')
 	})
 	.factory('authorize',
 		['$rootScope', function($rootScope) {
