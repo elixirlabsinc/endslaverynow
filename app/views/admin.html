@@ -8,6 +8,10 @@
       <li><a ui-sref='admin.editCategories'>Categories</a></li>
       <li><a ui-sref='admin.users'>Add an admin</a></li>
     </ul>
+
+    <div ng--show="currentUser" ng-controller="SessionsCtrl">
+      <a ng-click="logoutUser()" id="log-out-btn">Log out</a>
+    </div>
   </div>
 
   <div class='main'>
