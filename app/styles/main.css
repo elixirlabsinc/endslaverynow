@@ -124,8 +124,9 @@ a:hover {
 }
 
 #log-out-btn {
-  float: right;
-  margin-top: 1%;
+  float: bottom;
+  bottom: 5%;
+  position: fixed;
 }
 
 .admin
