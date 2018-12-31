@@ -19,7 +19,7 @@ angular.module('endslaverynowApp')
         ).then(
           function(user) {
             $rootScope.currentUser = user
-            window.location.href = '/#!/editCategories'
+            window.location.href = '/#!/admin'
           },
           function(error) {
             window.alert(`Error: ${error.message}`)
