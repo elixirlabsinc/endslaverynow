@@ -39,14 +39,22 @@ angular
 				templateUrl: 'views/admin.deleteCategory.html',
 				controller: 'DeleteCatCtrl',
 				controllerAs: 'deletecat',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('admin.add', {
 				url: '/add',
 				templateUrl: 'views/admin.formAdd.html',
 				controller: 'FormAddCtrl',
 				controllerAs: 'formAdd',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('brand', {
 				url: '/brand/:id',
@@ -57,42 +65,66 @@ angular
 			.state('admin', {
 				url: '/admin',
 				templateUrl: 'views/admin.html',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn()
+					}]
+				}
 			})
 			.state('admin.editCategories', {
 				url: '/editCategories',
 				templateUrl: 'views/admin.editCategories.html',
 				controller: 'EditCategoriesCtrl',
 				controllerAs: 'editCategories',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('admin.editBrands', {
 				url: '/editBrands',
 				templateUrl: 'views/admin.editBrands.html',
 				controller: 'EditBrandsCtrl',
 				controllerAs: 'editBrands',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('admin.editProducts', {
 				url: '/editProducts',
 				templateUrl: 'views/admin.editProducts.html',
 				controller: 'EditProductsCtrl',
 				controllerAs: 'editProducts',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('admin.editDelete', {
 				url: '/editDelete',
 				templateUrl: 'views/admin.editDelete.html',
 				controller: 'EditDeleteCtrl',
 				controllerAs: 'editDelete',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('admin.editCategory', {
 				url: '/editCategory/:id',
 				templateUrl: 'views/admin.editCategory.html',
 				controller: 'EditCategoryCtrl',
 				controllerAs: 'editCategory',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('categories', {
 				url: '/categories',
@@ -117,14 +149,22 @@ angular
 				templateUrl: 'views/admin.editBrand.html',
 				controller: 'EditBrandCtrl',
 				controllerAs: 'editBrand',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('admin.editProduct', {
 				url: '/editProduct/:id',
 				templateUrl: 'views/admin.editProduct.html',
 				controller: 'EditProductCtrl',
 				controllerAs: 'editProduct',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('login', {
 				url: '/login',
@@ -137,7 +177,11 @@ angular
 				templateUrl: 'views/admin.users.html',
 				controller: 'UsersCtrl',
 				controllerAs: 'users',
-				authorize: true
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn
+					}]
+				}
 			})
 			.state('product', {
 				url: '/product/:id',
@@ -154,17 +198,12 @@ angular
 
 			$urlRouterProvider.otherwise('/')
 	})
-	.factory('authorize',
-		['$rootScope', function($rootScope) {
-			return function() {
-				if ($rootScope.currentUser) {
-					return true
-				} else {
-					location.href = '#!/login'
-				}
-			}
-	}])
-	.run(['$rootScope', 'authorize', function($rootScope, authorize) {
+	.factory('Auth', ['$firebaseAuth',
+		function($firebaseAuth) {
+			return $firebaseAuth()
+		}
+	])
+	.run(['$rootScope', '$transitions', '$state', function($rootScope, $transitions, $state) {
 		// Test details
 		var config = {
 			apiKey: 'AIzaSyAr-mF9ntUnisSJpOj6bEZ7U0kdoOewgRA',
@@ -187,6 +226,12 @@ angular
 			firebase.initializeApp(config)
 		}
 
+		$transitions.onError({}, function(transition) {
+			if (transition.error().detail === 'AUTH_REQUIRED') {
+				$state.go('login')
+			}
+		})
+
 		// register firebase observer on user
 		firebase.auth().onAuthStateChanged(function(user) {
 			if (user) {
@@ -194,11 +239,5 @@ angular
 			} else {
 				$rootScope.currentUser = null
 			}
-
-			$rootScope.$on('$routeChangeStart', function(event, to, from){
-				if (to.authorize === true) {
-					authorize()
-				}
-			})
 		})
 	}])
