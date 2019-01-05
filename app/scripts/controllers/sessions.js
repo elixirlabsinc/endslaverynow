@@ -22,7 +22,7 @@ angular.module('endslaverynowApp')
             window.location.href = '/#!/admin'
           },
           function(error) {
-            window.alert(`Error: ${error.message}`)
+            window.alert('Error: ' + error.message)
           }
         )
       }
@@ -33,7 +33,7 @@ angular.module('endslaverynowApp')
             location.href = '#!/login'
           },
           function(error) {
-            window.alert(`Error logging out: ${error}`)
+            window.alert('Error logging out: ' + error)
           }
         )
       }

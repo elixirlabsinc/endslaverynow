@@ -17,11 +17,11 @@
           credentials["password"]
         ).then(
           function(userData) {
-            window.alert(`Login created for ${userData.email}`)
+            window.alert('Login created for ' + userData.email)
             window.location.reload()
           },
           function(error) {
-            window.alert(`Error: ${error.message}`)
+            window.alert('Error: ' + error.message)
           }
         )
       }

@@ -6,18 +6,24 @@ describe('Controller: MainCtrl', function () {
   beforeEach(module('endslaverynowApp'));
 
   var MainCtrl,
-    scope;
+    scope,
+    mockFirebaseObject;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
+    mockFirebaseObject = function(databaseRef) {
+      return {
+        $loaded: function() { return { then: function() {} }}
+      }
+    }
     MainCtrl = $controller('MainCtrl', {
-      $scope: scope
-      // place here mocked dependencies
+      $scope: scope,
+      $firebaseObject: mockFirebaseObject
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(MainCtrl.awesomeThings.length).toBe(3);
+  it('should have a list of categories', function () {
+    expect(scope.categories).toBeDefined();
   });
 });
