@@ -12,8 +12,6 @@ angular.module('endslaverynowApp')
 		'$scope',
 		'$firebaseObject',
 		function ($scope, $firebaseObject) {
-			$scope.brands = []
-			$scope.products = []
 			$scope.categories = []
 
 			/* firebase */
@@ -21,16 +19,6 @@ angular.module('endslaverynowApp')
 			var syncObject = $firebaseObject(ref)
 
 			syncObject.$loaded().then(function() {
-				for(var brand in syncObject.brands) {
-					var tempBrand = syncObject.brands[brand]
-					$scope.brands.push(tempBrand)
-				}
-
-				for(var product in syncObject.products) {
-					var tempProd = syncObject.products[product]
-					$scope.products.push(tempProd)
-				}
-
 				for(var category in syncObject.categories) {
 					var tempCat = syncObject.categories[category]
 					if (!(tempCat.parentCategoryId > 0)) {
