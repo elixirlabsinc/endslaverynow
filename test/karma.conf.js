@@ -33,6 +33,8 @@ module.exports = function(config) {
       'bower_components/ng-file-upload/ng-file-upload.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
+      'https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js',
+      'https://www.gstatic.com/firebasejs/3.6.6/firebase.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
