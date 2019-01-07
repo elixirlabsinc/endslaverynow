@@ -104,17 +104,6 @@ angular
 					}]
 				}
 			})
-			.state('admin.editDelete', {
-				url: '/editDelete',
-				templateUrl: 'views/admin.editDelete.html',
-				controller: 'EditDeleteCtrl',
-				controllerAs: 'editDelete',
-				resolve: {
-					'currentAuth': ['Auth', function(Auth) {
-						return Auth.$requireSignIn
-					}]
-				}
-			})
 			.state('admin.editCategory', {
 				url: '/editCategory/:id',
 				templateUrl: 'views/admin.editCategory.html',
