@@ -102,6 +102,7 @@ angular.module('endslaverynowApp')
 				if($scope.formType === 'products') {
 					item.brandId = $scope.selectedBrandId
 					item.categoryId = $scope.selectedCategoryId
+					item.purchaseUrl = prependHttp(item.purchaseUrl)
 					item.purchaseURlClicks = 0
 					item.parentCategoryId = 0
 				}
@@ -188,4 +189,11 @@ angular.module('endslaverynowApp')
 				return collection
 			}
 
+			function prependHttp(url) {
+				if(/^(http)/.test(url)) {
+					return url
+				} else {
+					return 'http://' + url
+				}
+			}
 		}])
