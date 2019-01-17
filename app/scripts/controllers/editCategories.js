@@ -8,21 +8,33 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
-	'$firebaseObject',
+	'$firebaseArray',
 	'$scope',
-	function($firebaseObject, $scope) {
+	function($firebaseArray, $scope) {
 		$scope.loaded = false
-		$scope.allCategories = []
 
 		/* firebase */
-		var ref = firebase.database().ref()
-		var syncObject = $firebaseObject(ref)
+    var ref = firebase.database().ref('categories')
+    $scope.categories = $firebaseArray(ref)
 
-		syncObject.$loaded().then(function() {
-			for (var cat in syncObject.categories) {
-				$scope.allCategories.push(syncObject.categories[cat])
-			}
+    $scope.deleteCategory = function(categoriesRef, category) {
+      var categoryName = category.name
+      var prompt = "Are you sure you want to delete category '" + categoryName + "'?"
+      if (!confirm(prompt)) {
+        return
+      }
+      categoriesRef.$remove(category).then(
+        function() {
+          var successMsg = "Successfully deleted category '" + categoryName + "'"
+          window.alert(successMsg)
+        },
+        function(error) {
+          console.log("Error deleting category: ", error)
+        }
+      )
+    }
 
+		$scope.categories.$loaded().then(function() {
 			$scope.loaded = true
 		})
 	}

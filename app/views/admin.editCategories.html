@@ -8,7 +8,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="category in allCategories">
+        <tr ng-repeat="category in categories">
             <td>
                 <img ng-if="!category.image" src="images/noimage.png" height="50px">
                 <img ng-if="category.image" ng-src="{{ category.image }}" height="50px">
@@ -16,7 +16,14 @@
 
             <td>{{category.name}}</td>
             <td>{{category.description}}</td>
-            <td><button type="button" class="btn btn-success"><a href="#!/admin/editCategory/{{ category.id }}">Edit</a></button> <button type="button" class="btn btn-danger"><a href="#!/deleteCat/{{ category.id }}">Delete</a></button> </td>
+            <td>
+              <button type="button" class="btn btn-success">
+                <a href="#!/admin/editCategory/{{ category.id }}">Edit</a>
+              </button>
+              <button type="button" class="btn btn-danger" ng-click="deleteCategory(categories, category)">
+                Delete
+              </button>
+            </td>
         </tr>
     </tbody>
 </table>
