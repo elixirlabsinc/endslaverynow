@@ -34,17 +34,6 @@ angular
 				controller: 'AboutCtrl',
 				controllerAs: 'about'
 			})
-			.state('admin.deleteCat', {
-				url: '/deleteCat/:id',
-				templateUrl: 'views/admin.deleteCategory.html',
-				controller: 'DeleteCatCtrl',
-				controllerAs: 'deletecat',
-				resolve: {
-					'currentAuth': ['Auth', function(Auth) {
-						return Auth.$requireSignIn
-					}]
-				}
-			})
 			.state('admin.add', {
 				url: '/add',
 				templateUrl: 'views/admin.formAdd.html',
