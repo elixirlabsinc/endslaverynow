@@ -81,7 +81,7 @@ angular.module('endslaverynowApp')
 			syncObject.$loaded().then(function() {
 				$scope.brands = alphabetizeCollection(syncObject.brands)
 				$scope.categories = alphabetizeCollection(syncObject.categories)
-				$scope.products = syncObject.products
+				$scope.products = syncObject.products || []
 				$scope.loaded = true
 			})
 
@@ -156,7 +156,7 @@ angular.module('endslaverynowApp')
 			}
 
 			function getCategoryId() {
-				var id = $scope.categories ? $scope.categories.length : 1
+				var id = $scope.categories.length === 0 ? 1: $scope.categories.length
 				while($scope.categories[id] !== undefined) {
 					id = id + 1
 				}
@@ -164,7 +164,7 @@ angular.module('endslaverynowApp')
 			}
 
 			function getBrandId() {
-				var id = $scope.brands ? $scope.brands.length : 1
+				var id = $scope.brands.length === 0 ? 1 : $scope.brands.length
 				while($scope.brands[id] !== undefined) {
 					id = id + 1
 				}
@@ -172,7 +172,7 @@ angular.module('endslaverynowApp')
 			}
 
 			function getProductId() {
-				var id = $scope.products ? Object.values($scope.products).length : 1
+				var id = $scope.products.length === 0 ? 1 : $scope.products.length
 				while($scope.products[id] !== undefined) {
 					id = id + 1
 				}
