@@ -10,7 +10,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="brand in allBrands">
+        <tr ng-repeat="brand in brands">
             <td>
                 <img ng-if="!brand.image" src="images/noimage.png" height="50px">
                 <img ng-if="brand.image" ng-src="{{ brand.image }}" height="50px">
@@ -19,13 +19,14 @@
             <td>{{brand.name}}</td>
             <td>{{brand.ranking}}</td>
             <td>{{brand.description}}</td>
-            
+
             <td>
                 <button type="button" class="btn btn-success">
-
                     <a href="#!/admin/editBrand/{{ brand.id }}">Edit</a>
                 </button>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-danger" ng-click="deleteBrand(brands, brand)">
+                  Delete
+                </button>
             </td>
 
         </tr>

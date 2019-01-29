@@ -8,24 +8,32 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
-	'$firebaseObject',
+	'$firebaseArray',
 	'$routeParams',
 	'$scope',
-	function ($firebaseObject, $routeParams, $scope) {
+	function ($firebaseArray, $routeParams, $scope) {
 		$scope.loaded = false
-		$scope.allBrands = []
-		$scope.categories = []
+		$scope.brands = []
 
 		/* firebase */
-		var ref = firebase.database().ref()
-		var syncObject = $firebaseObject(ref)
+    var ref = firebase.database().ref('brands')
+    $scope.brands = $firebaseArray(ref)
 
-		syncObject.$loaded().then(function () {
-			for (var brand in syncObject.brands) {
-				$scope.allBrands.push(syncObject.brands[brand])
-			}
-			$scope.categories = syncObject.categories
+    $scope.deleteBrand = function(brandsRef, brand) {
+      var brandName = brand.name
+      var prompt = "Are you sure you want to delete brand '" + brandName + "'?"
 
+      if (!confirm(prompt)) {
+        return
+      }
+      brandsRef.$remove(brand).catch(
+        function(error) {
+          console.log("Error deleting brand: ", error)
+        }
+      )
+    }
+
+		$scope.brands.$loaded().then(function () {
 			$scope.loaded = true
 		})
 	}
