@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: CertificationsCtrl', function () {
+xdescribe('Controller: CertificationsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('endslaverynowApp'));

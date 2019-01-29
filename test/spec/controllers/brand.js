@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: BrandCtrl', function () {
+xdescribe('Controller: BrandCtrl', function () {
 
   // load the controller's module
   beforeEach(module('endslaverynowApp'));

@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: CategoriesCtrl', function () {
+xdescribe('Controller: CategoriesCtrl', function () {
 
   // load the controller's module
   beforeEach(module('endslaverynowApp'));

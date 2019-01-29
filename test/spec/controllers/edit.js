@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: EditCtrl', function () {
+xdescribe('Controller: EditCtrl', function () {
 
     // load the controller's module
     beforeEach(module('endslaverynowApp'));
