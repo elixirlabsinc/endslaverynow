@@ -6,18 +6,74 @@ describe('Controller: FormAddCtrl', function () {
   beforeEach(module('endslaverynowApp'));
 
   var FormAddCtrl,
-    scope;
+    scope,
+    mockFirebaseObject;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
-    scope = $rootScope.$new();
+    scope = $rootScope.$new({formType: 'products'});
+    mockFirebaseObject = function(databaseRef) {
+      return {
+        $loaded: function() { return { then: function() {} }},
+        brands: undefined,
+        categories: undefined,
+        products: undefined
+      }
+    }
     FormAddCtrl = $controller('FormAddCtrl', {
-      $scope: scope
-      // place here mocked dependencies
+      $scope: scope,
+      $firebaseObject: mockFirebaseObject
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(FormAddCtrl.awesomeThings.length).toBe(3);
-  });
+  describe('.processForm', function() {
+    describe('adding products', function() {
+      beforeEach(function() {
+        scope.formType = 'products'
+        scope.products = []
+      })
+
+      describe('when link does not start with http', function() {
+        var item = {
+          purchaseUrl: 'chocolate.com'
+        }
+
+        it('should prepend http:// to the link', function() {
+          expect(item.purchaseUrl).toEqual('chocolate.com')
+
+          scope.processForm(item)
+
+          expect(item.purchaseUrl).toEqual('http://chocolate.com')
+        })
+      })
+
+      describe('when link starts with http://', function() {
+        var item = {
+          purchaseUrl: 'http://chocolate.com'
+        }
+
+        it('should not prepend http to the link', function() {
+          expect(item.purchaseUrl).toEqual('http://chocolate.com')
+
+          scope.processForm(item)
+
+          expect(item.purchaseUrl).toEqual('http://chocolate.com')
+        })
+      })
+
+      describe('when link starts with https://', function() {
+        var item = {
+          purchaseUrl: 'https://chocolate.com'
+        }
+
+        it('should not prepend http to the link', function() {
+          expect(item.purchaseUrl).toEqual('https://chocolate.com')
+
+          scope.processForm(item)
+
+          expect(item.purchaseUrl).toEqual('https://chocolate.com')
+        })
+      })
+    })
+  })
 });
