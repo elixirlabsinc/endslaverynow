@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: RankingsCtrl', function () {
+xdescribe('Controller: RankingsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('endslaverynowApp'));
