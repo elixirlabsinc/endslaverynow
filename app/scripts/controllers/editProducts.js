@@ -8,39 +8,30 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditProductsCtrl', [
-	'$firebaseObject',
+	'$firebaseArray',
 	'$routeParams',
 	'$scope',
-	function($firebaseObject, $routeParams, $scope) {
+	function($firebaseArray, $routeParams, $scope) {
 		$scope.loaded = false
-		$scope.allProds = []
-		$scope.allBrands = []
-		$scope.brand
 
 		/* firebase */
-		var ref = firebase.database().ref()
-		var syncObject = $firebaseObject(ref)
+    var ref = firebase.database().ref('products')
+    $scope.products = $firebaseArray(ref)
 
-		syncObject.$loaded().then(function() {
-			for (var prod in syncObject.products) {
-				$scope.allProds.push(syncObject.products[prod])
-			}
-			for (var brand in syncObject.brands) {
-				$scope.allBrands.push(syncObject.brands[brand])
-			}
+    $scope.deleteProduct = function(productsRef, product) {
+      var prompt = "Are you sure you want to delete product '" + product.name + "'?"
+      if (!confirm(prompt)) {
+        return
+      }
+      productsRef.$remove(product).catch(
+        function(error) {
+          console.log("Error deleting product: ", error)
+        }
+      )
+    }
+
+    $scope.products.$loaded().then(function() {
+      $scope.loaded = true
 		})
-		$scope.selectBrand = function(brandId){
-			console.log('hi'+brandId)
-			for(var brand in $scope.allBrands)
-			{
-				if(brand.id===brandId)
-				{
-					$scope.brand = brand.name
-					console.log($scope.brand)
-				}
-			}
-		}
-
-		$scope.loaded = true
 	}
 ])

@@ -10,7 +10,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="prod in allProds" >
+        <tr ng-repeat="prod in products" >
             <td>
                 <img ng-if="!prod.image" src="images/noimage.png" height="50px">
                 <img ng-if="prod.image" ng-src="{{ prod.image }}" height="50px">
@@ -25,7 +25,9 @@
                 <button type="button" class="btn btn-success">
                     <a href="#!/admin/editProduct/{{ prod.id }}">Edit</a>
                 </button>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-danger" ng-click="deleteProduct(products, prod)">
+                  Delete
+                </button>
             </td>
         </tr>
     </tbody>
