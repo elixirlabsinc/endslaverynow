@@ -23,11 +23,7 @@ angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
       if (!confirm(prompt)) {
         return
       }
-      categoriesRef.$remove(category).then(
-        function() {
-          var successMsg = "Successfully deleted category '" + categoryName + "'"
-          window.alert(successMsg)
-        },
+      categoriesRef.$remove(category).catch(
         function(error) {
           console.log("Error deleting category: ", error)
         }
