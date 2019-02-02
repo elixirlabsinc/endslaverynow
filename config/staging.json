@@ -1,0 +1,10 @@
+{
+  "firebase": {
+    "apiKey": "AIzaSyD9_sUa5MnIA0CxsO44Oofd5_7y-j45SXg",
+    "authDomain": "end-slavery-now.firebaseapp.com",
+    "databaseURL": "https://end-slavery-now.firebaseio.com",
+    "messagingSenderId": "48416679514",
+    "projectId": "end-slavery-now.appspot.com",
+    "storageBucket": "end-slavery-now-test.appspot.com"
+  }
+}
