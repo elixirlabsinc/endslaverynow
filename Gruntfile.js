@@ -20,7 +20,8 @@ module.exports = function (grunt) {
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
-    cdnify: 'grunt-google-cdn'
+    cdnify: 'grunt-google-cdn',
+    ngconstant: 'grunt-ng-constant'
   });
 
   // Configurable paths for the application
@@ -224,7 +225,7 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -336,6 +337,38 @@ module.exports = function (grunt) {
           src: ['*.html'],
           dest: '<%= yeoman.dist %>'
         }]
+      }
+    },
+
+    ngconstant: {
+      options: {
+        space: '  ',
+        wrap: '"use strict";\n\n {\%= __ngModule %}',
+        name: 'env',
+      },
+      development: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/envConfig.js'
+        },
+        constants: {
+          ENV: grunt.file.readJSON('config/development.json')
+        }
+      },
+      staging: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/envConfig.js'
+        },
+        constants: {
+          ENV: grunt.file.readJSON('config/staging.json')
+        }
+      },
+      production: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/envConfig.js'
+        },
+        constants: {
+          ENV: grunt.file.readJSON('config/production.json')
+        }
       }
     },
 
@@ -468,6 +501,7 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+      'ngconstant:development',
       'clean:server',
       'wiredep',
       'concurrent:server',
@@ -491,23 +525,33 @@ module.exports = function (grunt) {
     'karma'
   ]);
 
-  grunt.registerTask('build', [
-    'clean:dist',
-    'wiredep',
-    'useminPrepare',
-    'concurrent:dist',
-    'postcss',
-    'ngtemplates',
-    'concat',
-    'ngAnnotate',
-    'copy:dist',
-    'cdnify',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin'
-  ]);
+  grunt.registerTask('build', 'Build app', function (target) {
+    var envConfigTask = 'ngconstant:staging'
+    if (target === 'production') {
+      envConfigTask = 'ngconstant:production'
+    }
+
+    console.log(envConfigTask)
+
+    grunt.task.run([
+      envConfigTask,
+      'clean:dist',
+      'wiredep',
+      'useminPrepare',
+      'concurrent:dist',
+      'postcss',
+      'ngtemplates',
+      'concat',
+      'ngAnnotate',
+      'copy:dist',
+      'cdnify',
+      'cssmin',
+      'uglify',
+      'filerev',
+      'usemin',
+      'htmlmin'
+    ])
+  });
 
   grunt.registerTask('default', [
     'newer:jshint',
