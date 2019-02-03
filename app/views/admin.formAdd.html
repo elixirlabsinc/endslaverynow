@@ -67,6 +67,17 @@
       </div>
     </div>
 
+    <div class="dropdown form-group" ng-if="formType === 'categories'">
+      <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{selectedParentCategoryName || 'Select Parent Category'}}
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setParentCategory(category)" class="dropdown-item form-control">
+          {{category.name}}
+        </button>
+      </div>
+    </div>
+
     <div class="dropdown form-group" ng-if="formType === 'products'">
       <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{selectedBrandName || 'Select Brand'}}
