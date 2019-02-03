@@ -107,10 +107,7 @@ a:hover {
 }
 
 .select-item-type.cancel {
-  margin: none;
-  padding: none;
   border: none;
-  text-align: center;
 }
 
 #submitted-form {
