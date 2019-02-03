@@ -13,6 +13,22 @@
       <textarea type="textarea" class="form-control" rows=5 ng-value="description" placeholder="Description" ng-model="DescriptionValue" required></textarea>
     </div>
     <div class="form-group">
+      Parent Category:
+      <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{selectedParentCategoryName || parentCategory.name || 'Select Parent Category'}}
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setParentCategory(category)" class="dropdown-item form-control">
+          {{category.name}}
+        </button>
+      </div>
+      <div class="edit-form-btn">
+        <button class="btn btn-danger edit-form-btn" ng-click="removeParentCategory()">
+          Clear parent category selection
+        </button>
+      </div>
+    </div>
+    <div class="form-group">
       Image:
       <img ng-if="!image" src="images/noimage.png" height="100px">
       <img ng-if="image" ng-src="{{ image }}" height="100px">
