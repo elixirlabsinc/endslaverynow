@@ -80,7 +80,7 @@ angular.module('endslaverynowApp')
 
       syncObject.$loaded().then(function() {
         $scope.brands = alphabetizeCollection(syncObject.brands)
-        $scope.categories = alphabetizeCollection(syncObject.categories)
+        $scope.categories = alphabetizeCollection(syncObject.categories.filter(Boolean))
         $scope.products = syncObject.products || []
         $scope.loaded = true
       })
