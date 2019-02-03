@@ -24,6 +24,11 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 			if($scope.DescriptionValue){
 				syncObject.categories[$scope.categoryId].description = $scope.DescriptionValue
 			}
+			if ($scope.selectedParentCategoryId) {
+				syncObject.categories[$scope.categoryId].parentCategoryId = $scope.selectedParentCategoryId
+			} else {
+				syncObject.categories[$scope.categoryId].parentCategoryId = null
+			}
 			if ($scope.Image) {
 				syncObject.categories[$scope.categoryId].image = $scope.Image
 				uploadImages(syncObject.categories[$scope.categoryId], 'category', syncObject)
@@ -33,10 +38,26 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 			$state.go('admin.editCategories')
 		}
 
-		syncObject.$loaded().then(function() {
-			$scope.name = syncObject.categories[$scope.categoryId].name
-			$scope.description = syncObject.categories[$scope.categoryId].description
-			$scope.image = syncObject.categories[$scope.categoryId].image
+    syncObject.$loaded().then(function() {
+      $scope.categories = syncObject.categories.filter(function(category) {
+        return category !== undefined
+      })
+
+      var category = syncObject.categories[$scope.categoryId]
+      $scope.name = category.name
+      $scope.description = category.description
+      $scope.parentCategory = syncObject.categories[category.parentCategoryId]
+      $scope.image = category.image
+
+      $scope.setParentCategory = function(category) {
+        $scope.selectedParentCategoryId = category.id
+        $scope.selectedParentCategoryName = category.name
+      }
+
+      $scope.removeParentCategory = function() {
+        $scope.parentCategory = null
+        $scope.setParentCategory({})
+      }
 
 			syncObject.$save().then(function () {
 				console.log('Done') // true

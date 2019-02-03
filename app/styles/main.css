@@ -138,6 +138,11 @@ a:hover {
     float: right;
   }
 
+  .edit-form-btn {
+    margin: 5px;
+    text-align: center;
+  }
+
   #navbar-container {
     width: 15%;
     position: fixed;
