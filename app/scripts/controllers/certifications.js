@@ -9,9 +9,8 @@
  */
 angular.module('endslaverynowApp').controller('CertificationsCtrl', [
 	'$firebaseObject',
-	'$routeParams',
 	'$scope',
-	function($firebaseObject, $routeParams, $scope) {
+	function($firebaseObject, $scope) {
 		/* firebase */
 		var ref = firebase.database().ref()
 		var syncObject = $firebaseObject(ref)

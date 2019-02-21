@@ -9,9 +9,8 @@
  */
 angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
 	'$firebaseArray',
-	'$routeParams',
 	'$scope',
-	function ($firebaseArray, $routeParams, $scope) {
+	function ($firebaseArray, $scope) {
 		$scope.loaded = false
 		$scope.brands = []
 
