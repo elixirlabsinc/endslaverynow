@@ -10,7 +10,8 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 	'$firebaseObject',
 	'$transition$',
 	'$scope',
-	function($firebaseObject, $transition$, $scope) {
+	'$state',
+	function($firebaseObject, $transition$, $scope, $state) {
 		$scope.categoryId = $transition$.params().id
 
 		var ref = firebase.database().ref()
@@ -29,6 +30,7 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 			} else {
 				saveSyncObject(syncObject, 'Edit has been completed!')
 			}
+			$state.go('admin.editCategories')
 		}
 
 		syncObject.$loaded().then(function() {

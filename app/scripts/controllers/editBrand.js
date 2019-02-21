@@ -10,7 +10,8 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 	'$firebaseObject',
 	'$transition$',
 	'$scope',
-	function($firebaseObject, $transition$, $scope) {
+	'$state',
+	function($firebaseObject, $transition$, $scope, $state) {
 		$scope.brandId = $transition$.params().id
 
 		var ref = firebase.database().ref()
@@ -37,6 +38,7 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 			} else {
 				saveSyncObject(syncObject, 'Edit has been completed!')
 			}
+			$state.go('admin.editBrands')
 		}
 
 		syncObject.$loaded().then(function() {

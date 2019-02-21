@@ -10,7 +10,8 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 	'$firebaseObject',
 	'$stateParams',
 	'$scope',
-	function($firebaseObject, $stateParams, $scope) {
+  '$state',
+	function($firebaseObject, $stateParams, $scope, $state) {
 		$scope.productId = $stateParams.id;
 
 		var ref = firebase.database().ref()
@@ -38,6 +39,7 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 			} else {
 				saveSyncObject(syncObject, 'Edit has been completed!')
 			}
+			$state.go('admin.editProducts')
 		}
 
 		syncObject.$loaded().then(function() {
