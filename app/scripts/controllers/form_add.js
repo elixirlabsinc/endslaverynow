@@ -10,12 +10,12 @@
 angular.module('endslaverynowApp')
 	.controller('FormAddCtrl',[
 		'$firebaseObject',
-		'$routeParams',
+		'$stateParams',
 		'$scope',
 		'$window',
 		'Upload',
-		function ($firebaseObject, $routeParams, $scope, $window, Upload) {
-			$scope.brandId = $routeParams.id
+		function ($firebaseObject, $stateParams, $scope, $window, Upload) {
+			$scope.brandId = $stateParams.id
 			$scope.loaded = false
 
 			$scope.formType = ''
