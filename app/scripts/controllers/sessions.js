@@ -11,7 +11,8 @@ angular.module('endslaverynowApp')
   .controller('SessionsCtrl', [
     '$scope',
     '$rootScope',
-    function($scope, $rootScope) {
+    '$state',
+    function($scope, $rootScope, $state) {
       $scope.loginUser = function(credentials) {
         firebase.auth().signInWithEmailAndPassword(
           credentials["email"],
@@ -19,7 +20,7 @@ angular.module('endslaverynowApp')
         ).then(
           function(user) {
             $rootScope.currentUser = user
-            window.location.href = '/#!/admin'
+            $state.go('admin')
           },
           function(error) {
             window.alert('Error: ' + error.message)
@@ -30,7 +31,7 @@ angular.module('endslaverynowApp')
       $scope.logoutUser = function() {
         firebase.auth().signOut().then(
           function() {
-            location.href = '#!/login'
+            $state.go('login')
           },
           function(error) {
             window.alert('Error logging out: ' + error)
