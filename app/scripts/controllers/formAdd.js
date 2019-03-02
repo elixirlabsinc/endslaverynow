@@ -162,8 +162,8 @@ angular.module('endslaverynowApp')
       }
 
       function getCategoryId() {
-        var id = $scope.categories.length === 0 ? 1: $scope.categories.length
-        while($scope.categories[id] !== undefined) {
+        var id = $scope.categories.length === 0 ? 1 : $scope.categories.length + 1
+        while($scope.categories.find(function(c) { return c.id === id }) !== undefined) {
           id = id + 1
         }
         return id
