@@ -110,6 +110,10 @@ a:hover {
   border: none;
 }
 
+.category-title {
+  text-align: center;
+}
+
 .thumbnail img {
   height: 200px;
 }
