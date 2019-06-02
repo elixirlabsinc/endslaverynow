@@ -12,7 +12,8 @@ angular.module('endslaverynowApp')
 		'$firebaseObject',
 		'$transition$',
 		'$scope',
-		function($firebaseObject, $transition$, $scope){
+		'ModelService',
+		function($firebaseObject, $transition$, $scope, modelService){
 			$scope.categoryId = $transition$.params().id
 			$scope.loaded = false
 			$scope.categoryBrands = []
@@ -24,26 +25,20 @@ angular.module('endslaverynowApp')
 			var syncObject = $firebaseObject(ref)
 
 			syncObject.$loaded().then(function() {
+
+				// Convert the raw data into models.
+				modelService.parse(syncObject);
+
 				// Get brand information
-				$scope.categoryDetails = syncObject.categories[$scope.categoryId]
+				$scope.categoryDetails = modelService.getCategoryById($scope.categoryId);
 
 				if($scope.categoryDetails === null) {
 					return
 				}
 
-				for(var cat in syncObject.categories) {
-					if(syncObject.categories[cat].id == $scope.categoryDetails.parentCategoryId) {
-						$scope.relatedCategories.push(syncObject.categories[cat])
-					}
-					if (syncObject.categories[cat].parentCategoryId == $scope.categoryId ||
-						syncObject.categories[cat].parentCategoryId == $scope.categoryDetails.parentCategoryId
-					) {
-						if(syncObject.categories[cat].id != $scope.categoryId && syncObject.categories[cat].parentCategoryId != 0) {
-							$scope.relatedCategories.push(syncObject.categories[cat])
-						}
-					}
-				}
+				$scope.relatedCategories = modelService.getRelatedCategoriesForCategory($scope.categoryDetails);
 
+				// This block would be replaced by: $scope.brandCategories = modelService.getBrandCategoriesForCategory($scope.categoryDetails);
 				for(var brand in syncObject.brands) {
 					var tempBrand = syncObject.brands[brand]
 					$scope.brandCategories = String(tempBrand.categories).split(',')
@@ -54,6 +49,7 @@ angular.module('endslaverynowApp')
 					}
 				}
 
+				// This block would be replaced by: $scope.categoryProducts = modelService.getCategoryProductsForCategory($scope.categoryDetails);
 				for(var product in syncObject.products) {
 					var tempProd = syncObject.products[product]
 					if(tempProd.categoryId == $scope.categoryId) {

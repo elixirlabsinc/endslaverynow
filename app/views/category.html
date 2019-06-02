@@ -9,14 +9,14 @@
         <div class="col-md-12 thumbnail">
             <br>
             <div class="col-md-4">
-                <img ng-if="!categoryDetails.image" src="images/noimage.png" height="400px" class="img-rounded img-responsive">
-                <img ng-if="categoryDetails.image" ng-src="{{ categoryDetails.image }}" height="400px" class="img-rounded img-responsive">
+                <img ng-if="!categoryDetails.hasImage()" src="images/noimage.png" height="400px" class="img-rounded img-responsive">
+                <img ng-if="categoryDetails.hasImage()" ng-src="{{ categoryDetails.getImage() }}" height="400px" class="img-rounded img-responsive">
             </div>
 
             <div class="col-md-8">
                 <p>
-                    <h2>{{ categoryDetails.name }}</h2>
-                    <p ng-if="categoryDetails.description">{{ categoryDetails.description }}</p>
+                    <h2>{{ categoryDetails.getName() }}</h2>
+                    <p ng-if="categoryDetails.getDescription()">{{ categoryDetails.getDescription() }}</p>
                 </p>
             </div>
             <br>&nbsp;<br>
@@ -32,9 +32,9 @@
                 <div ng-repeat="category in relatedCategories">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail productblock">
-                            <img ng-if="!category.image" src="images/noimage.png" height="400px">
-                            <img ng-if="category.image" ng-src="{{ category.image }}" height="400px">
-                            <h3><a href="#!/category/{{ category.id }}">{{ category.name }}</a></h3>
+                            <img ng-if="!category.hasImage()" src="images/noimage.png" height="400px">
+                            <img ng-if="category.hasImage()" ng-src="{{ category.getImage() }}" height="400px">
+                            <h3><a href="#!/category/{{ category.getId() }}">{{ category.getName() }}</a></h3>
                         </div>
                     </div>
                 </div>

@@ -182,6 +182,11 @@ angular
 			return $firebaseAuth()
 		}
 	])
+	.factory('ModelService',
+		function() {
+			return new ModelService();
+		}
+	)
 	.run(['$rootScope', '$transitions', '$state', 'ENV', function($rootScope, $transitions, $state, ENV) {
 		var config = {
 			apiKey: ENV.firebase.apiKey,
