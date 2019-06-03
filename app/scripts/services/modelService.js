@@ -40,6 +40,14 @@ var ModelService = function() {
 		return this.categories;
 	};
 
+	this.getTopLevelCategories = function getTopLevelCategories() {
+		return this.categories.filter(
+			function (category) {
+				return !category.hasParentCategory();
+			}
+		);
+	};
+
 	this.getCategoryById = function getCategoryById(categoryId) {
 		categoryId = parseInt(categoryId);
 		var matching = this.categories.filter(

@@ -3,7 +3,7 @@
 </div>
 
 <div class="col-md-12 text-center">
-    <h1>Slave Free Buying Guide</h1>        
+    <h1>Slave Free Buying Guide</h1>
     <div class="thumbnail">
         <p>One of the most impactful ways everyday people can get involved in the fight against modern-day slavery and human trafficking is to begin purchasing slavery-free goods. When scaled, these purchases create demand for goods produced with audited, slavery-free labor; simultaneously, this shift also shrinks the market for goods produced with forced or slave labor. Search for products below or browse by category.</p>
     </div>
@@ -15,9 +15,9 @@
         <div ng-repeat="category in categories">
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail productblock">
-                    <img ng-if="!category.image" src="images/noimage.png" height="400px">
-                    <img ng-if="category.image" ng-src="{{ category.image }}" height="400px">
-                    <h3><a href="#!/category/{{ category.id }}">{{ category.name }}</a></h3>
+                    <img ng-if="!category.hasImage()" src="images/noimage.png" height="400px">
+                    <img ng-if="category.hasImage()" ng-src="{{ category.getImage() }}" height="400px">
+                    <h3><a href="#!/category/{{ category.getId() }}">{{ category.getName() }}</a></h3>
                 </div>
             </div>
         </div>

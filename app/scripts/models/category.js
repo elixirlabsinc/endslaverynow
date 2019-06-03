@@ -33,6 +33,10 @@ var Category = (function () {
 
 		getParentCategoryId: function getParentCategoryId() {
 			return this.parentCategoryId;
+		},
+
+		hasParentCategory: function hasParentCategory() {
+			return this.getParentCategoryId() > 0;
 		}
 	};
 
