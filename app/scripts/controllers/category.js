@@ -37,17 +37,7 @@ angular.module('endslaverynowApp')
 				}
 
 				$scope.relatedCategories = modelService.getRelatedCategoriesForCategory($scope.categoryDetails);
-
-				// This block would be replaced by: $scope.brandCategories = modelService.getBrandCategoriesForCategory($scope.categoryDetails);
-				for(var brand in syncObject.brands) {
-					var tempBrand = syncObject.brands[brand]
-					$scope.brandCategories = String(tempBrand.categories).split(',')
-					for(var catId in $scope.brandCategories) {
-						if($scope.brandCategories[catId] == $scope.categoryId) {
-							$scope.categoryBrands.push(tempBrand)
-						}
-					}
-				}
+				$scope.categoryBrands = modelService.getBrandCategoriesForCategory($scope.categoryDetails);
 
 				// This block would be replaced by: $scope.categoryProducts = modelService.getCategoryProductsForCategory($scope.categoryDetails);
 				for(var product in syncObject.products) {

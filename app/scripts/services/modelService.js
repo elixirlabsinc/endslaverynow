@@ -1,17 +1,26 @@
 'use strict';
 
 var ModelService = function() {
+	this.brands = [];
 	this.categories = [];
 
 	this.parse = function parse(rawData) {
+		this.brands = [];
 		this.categories = [];
+		var self = this;
+
+		if (rawData.hasOwnProperty('brands')) {
+			rawData.brands.forEach(
+				function(brand) {
+					self.brands.push(new Brand(brand));
+				}
+			);
+		}
+
 		if (rawData.hasOwnProperty('categories')) {
-			var self = this;
 			rawData.categories.forEach(
 				function(category) {
-					self.categories.push(
-						new Category(category)
-					);
+					self.categories.push(new Category(category));
 				}
 			);
 		}
@@ -50,5 +59,13 @@ var ModelService = function() {
 				}
 			}
 		);
-	}
+	};
+
+	this.getBrandCategoriesForCategory = function getBrandCategoriesForCategory(sourceCategory) {
+		return this.brands.filter(
+			function (brand) {
+				return brand.getCategoryIdAsArray().indexOf(sourceCategory.getId()) !== -1;
+			}
+		);
+	};
 };
