@@ -11,7 +11,8 @@ angular.module('endslaverynowApp')
 	.controller('CategoriesCtrl', [
 		'$firebaseObject',
 		'$scope',
-		function($firebaseObject, $scope){
+		'ModelService',
+		function($firebaseObject, $scope, modelService){
 			$scope.loaded = false
 			$scope.allCategories = []
 
@@ -20,9 +21,11 @@ angular.module('endslaverynowApp')
 			var syncObject = $firebaseObject(ref)
 
 			syncObject.$loaded().then(function() {
-				for(var cat in syncObject.categories) {
-					$scope.allCategories.push(syncObject.categories[cat])
-				}
+
+				// Convert the raw data into models.
+				modelService.parse(syncObject);
+
+				$scope.allCategories = modelService.getCategories();
 
 				$scope.loaded = true
 			})

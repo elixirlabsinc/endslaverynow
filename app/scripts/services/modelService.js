@@ -36,6 +36,10 @@ var ModelService = function() {
 		}
 	};
 
+	this.getCategories = function getCategories() {
+		return this.categories;
+	};
+
 	this.getCategoryById = function getCategoryById(categoryId) {
 		categoryId = parseInt(categoryId);
 		var matching = this.categories.filter(
