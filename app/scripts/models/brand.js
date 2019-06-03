@@ -15,6 +15,22 @@ var Brand = (function () {
 	};
 
 	Brand.prototype = {
+		getId: function getId() {
+			return this.id;
+		},
+
+		getName: function getName() {
+			return this.name;
+		},
+
+		hasImage: function hasImage() {
+			return this.image !== null;
+		},
+
+		getImage: function getImage() {
+			return this.image;
+		},
+
 		getCategoryIdAsArray: function getCategoryIdAsArray() {
 			return this.categoryIds;
 		}

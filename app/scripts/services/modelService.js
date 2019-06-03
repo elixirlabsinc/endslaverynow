@@ -3,10 +3,12 @@
 var ModelService = function() {
 	this.brands = [];
 	this.categories = [];
+	this.products = [];
 
 	this.parse = function parse(rawData) {
 		this.brands = [];
 		this.categories = [];
+		this.products = [];
 		var self = this;
 
 		if (rawData.hasOwnProperty('brands')) {
@@ -21,6 +23,14 @@ var ModelService = function() {
 			rawData.categories.forEach(
 				function(category) {
 					self.categories.push(new Category(category));
+				}
+			);
+		}
+
+		if (rawData.hasOwnProperty('products')) {
+			rawData.products.forEach(
+				function(product) {
+					self.products.push(new Product(product));
 				}
 			);
 		}
@@ -65,6 +75,14 @@ var ModelService = function() {
 		return this.brands.filter(
 			function (brand) {
 				return brand.getCategoryIdAsArray().indexOf(sourceCategory.getId()) !== -1;
+			}
+		);
+	};
+
+	this.getCategoryProductsForCategory = function getCategoryProductsForCategory(sourceCategory) {
+		return this.products.filter(
+			function (product) {
+				return product.getCategoryId() === sourceCategory.getId();
 			}
 		);
 	};

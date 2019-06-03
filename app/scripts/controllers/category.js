@@ -36,16 +36,10 @@ angular.module('endslaverynowApp')
 					return
 				}
 
+				// Get lists of related objects.
 				$scope.relatedCategories = modelService.getRelatedCategoriesForCategory($scope.categoryDetails);
 				$scope.categoryBrands = modelService.getBrandCategoriesForCategory($scope.categoryDetails);
-
-				// This block would be replaced by: $scope.categoryProducts = modelService.getCategoryProductsForCategory($scope.categoryDetails);
-				for(var product in syncObject.products) {
-					var tempProd = syncObject.products[product]
-					if(tempProd.categoryId == $scope.categoryId) {
-						$scope.categoryProducts.push(tempProd)
-					}
-				}
+				$scope.categoryProducts = modelService.getCategoryProductsForCategory($scope.categoryDetails);
 
 				$scope.loaded = true
 			})

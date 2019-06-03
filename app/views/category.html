@@ -47,9 +47,9 @@
                 <div ng-repeat="brand in categoryBrands">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail productblock">
-                            <img ng-if="!brand.image" src="images/noimage.png" height="400px">
-                            <img ng-if="brand.image" ng-src="{{ brand.image }}" height="400px">
-                            <h3><a href="#!/brand/{{ brand.id }}">{{ brand.name }}</a></h3>
+                            <img ng-if="!brand.hasImage()" src="images/noimage.png" height="400px">
+                            <img ng-if="brand.hasImage()" ng-src="{{ brand.getImage() }}" height="400px">
+                            <h3><a href="#!/brand/{{ brand.getId() }}">BOOM {{ brand.getName() }}</a></h3>
                         </div>
                     </div>
                 </div>
@@ -62,9 +62,9 @@
                 <div ng-repeat="product in categoryProducts">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail productblock">
-                            <img ng-if="!product.image" src="images/noimage.png" height="400px">
-                            <img ng-if="product.image" ng-src="{{ product.image }}" height="400px">
-                            <h3><a href="#!/product/{{ product.id }}">{{ product.name }}</a></h3>
+                            <img ng-if="!product.hasImage()" src="images/noimage.png" height="400px">
+                            <img ng-if="product.hasImage()" ng-src="{{ product.getImage() }}" height="400px">
+                            <h3><a href="#!/product/{{ product.getId() }}">{{ product.getName() }}</a></h3>
                         </div>
                     </div>
                 </div>
