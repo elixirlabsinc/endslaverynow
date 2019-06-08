@@ -141,4 +141,25 @@ var DataRepository = function(syncObject) {
 
 		return result;
 	};
+
+	this.getProductById = function getProductById(productId) {
+		productId = parseInt(productId);
+		var matching = this.products.filter(
+			function(product) {
+				return productId === product.getId();
+			}
+		);
+
+		if (matching.length === 1) {
+			return matching.shift(); // Take the first one (index not necessarily 0)
+		}
+
+		return null;
+	};
+
+	this.persistProduct = function persistProduct(product) {
+		alert('This has not been implemented yet!');
+		// @TODO: Finish this. When updating the number of clicks, it did this:
+		// $scope.data.products[$scope.productId].purchaseURlClicks = updatedClickCount
+	};
 };

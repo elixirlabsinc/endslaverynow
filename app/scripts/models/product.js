@@ -38,6 +38,18 @@ var Product = (function () {
 
 		getBrandId: function getBrandId() {
 			return this.brandId;
+		},
+
+		hasPurchaseUrl: function hasPurchaseUrl() {
+			return this.purchaseUrl !== null;
+		},
+
+		getPurchaseUrl: function getPurchaseUrl() {
+			return this.purchaseUrl;
+		},
+
+		incrementPurchaseUrlClicks: function incrementPurchaseUrlClicks() {
+			++this.purchaseURlClicks;
 		}
 	};
 

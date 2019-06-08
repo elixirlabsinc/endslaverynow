@@ -20,6 +20,10 @@ var Brand = (function () {
 			return this.id;
 		},
 
+		hasName: function hasName() {
+			return this.name !== null;
+		},
+
 		getName: function getName() {
 			return this.name;
 		},

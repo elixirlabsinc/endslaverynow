@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -9,39 +9,39 @@
  */
 angular.module('endslaverynowApp')
 	.controller('ProductCtrl', [
-		'$firebaseObject',
 		'$transition$',
 		'$scope',
-		function($firebaseObject, $transition$, $scope){
-			$scope.productId = $transition$.params().id
-			$scope.productClicked = false
+		'dataRepositoryFactory',
+		function($transition$, $scope, dataRepositoryFactory){
+			$scope.productId = $transition$.params().id;
+			$scope.productClicked = false;
+			$scope.dataRepository = null;
 
-			var ref = firebase.database().ref()
-			var syncObject = $firebaseObject(ref)
+			dataRepositoryFactory.ready(
+				function(dataRepository) {
+					// Get product information
+					$scope.productDetails = dataRepository.getProductById($scope.productId);
 
-			syncObject.$loaded().then(function() {
-				// Get product information
-				$scope.productDetails = syncObject.products[$scope.productId]
+					if($scope.productDetails === null) {
+						return;
+					}
 
-				if($scope.productDetails === null) {
-					return
-				}
+					$scope.brandDetails = dataRepository.getBrandById($scope.productDetails.getBrandId());
+					$scope.categoryDetails = dataRepository.getCategoryById($scope.productDetails.getCategoryId());
 
-				// TODO: CHECK FOR BRAND ID IN PRODUCTD DETAILS BEFORE ASSIGNING BRAND DETAILS
-				$scope.brandDetails = syncObject.brands[$scope.productDetails.brandId]
-				$scope.categoryDetails = syncObject.categories[$scope.productDetails.categoryId]
+					$scope.loaded = true;
+					$scope.dataRepository = dataRepository;
+				});
 
-				$scope.loaded = true
-			})
-
-			syncObject.$bindTo($scope, 'data')
+			dataRepositoryFactory.getSyncObject().$bindTo($scope, 'data');
 
 			$scope.updateClickCount = function() {
 				// Spam Click check - not too sophisticated atm
-				if(!$scope.productClicked) {
-					$scope.productClicked = true
-					var updatedClickCount = parseInt($scope.productDetails.purchaseURlClicks) + 1
-					$scope.data.products[$scope.productId].purchaseURlClicks = updatedClickCount
+				if(!$scope.productClicked && $scope.dataRepository !== null) {
+					$scope.productClicked = true;
+					$scope.productDetails.incrementPurchaseUrlClicks();
+					$scope.dataRepository.persistProduct($scope.productDetails);
 				}
-			}
-		}])
+			};
+
+		}]);
