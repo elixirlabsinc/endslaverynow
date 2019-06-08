@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -7,18 +7,16 @@
  * # CertificationsCtrl
  * Controller of the endslaverynowApp
  */
-angular.module('endslaverynowApp').controller('CertificationsCtrl', [
-	'$firebaseObject',
-	'$scope',
-	function($firebaseObject, $scope) {
-		/* firebase */
-		var ref = firebase.database().ref()
-		var syncObject = $firebaseObject(ref)
+angular.module('endslaverynowApp')
+	.controller('CertificationsCtrl', [
+		'$scope',
+		'dataRepositoryFactory',
+		function($scope, dataRepositoryFactory) {
+			dataRepositoryFactory.ready(
+				function(dataRepository) {
+					// Get certification information
+					$scope.certifications = dataRepository.getCertifications();
 
-		syncObject.$loaded().then(function() {
-			// Get product information
-			$scope.certifications = syncObject.certifications
-			$scope.loaded = true
-		})
-	}
-])
+					$scope.loaded = true;
+				});
+		}]);

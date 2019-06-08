@@ -9,6 +9,7 @@ var DataRepository = function(syncObject) {
 		this.brands = [];
 		this.categories = [];
 		this.products = [];
+		this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
 		var self = this;
 
 		if (rawData.hasOwnProperty('brands')) {
@@ -40,6 +41,11 @@ var DataRepository = function(syncObject) {
 
 	this.getCategories = function getCategories() {
 		return this.categories;
+	};
+
+	// Note: at the moment, this.certifications will always be an empty array.
+	this.getCertifications = function getCertifications() {
+		return this.certifications;
 	};
 
 	this.getTopLevelCategories = function getTopLevelCategories() {
