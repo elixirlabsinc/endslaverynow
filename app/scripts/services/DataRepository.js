@@ -100,4 +100,39 @@ var DataRepository = function(syncObject) {
 			}
 		);
 	};
+
+	this.getBrandById = function getBrandById(brandId) {
+		brandId = parseInt(brandId);
+		var matching = this.brands.filter(
+			function(brand) {
+				return brandId === brand.getId();
+			}
+		);
+
+		if (matching.length === 1) {
+			return matching.shift(); // Take the first one (index not necessarily 0)
+		}
+
+		return null;
+	};
+
+	this.getBrandProductsForBrand = function getBrandProductsForBrand(sourceBrand) {
+		return this.products.filter(
+			function (product) {
+				return product.getBrandId() === sourceBrand.getId();
+			}
+		);
+	};
+
+	this.getRelatedCategoriesForBrand = function getRelatedCategoriesForBrand(sourceBrand) {
+		var result = [];
+		var self = this;
+		sourceBrand.getCategoryIdAsArray().forEach(
+			function (categoryId) {
+				result.push(self.getCategoryById(categoryId));
+			}
+		);
+
+		return result;
+	};
 };

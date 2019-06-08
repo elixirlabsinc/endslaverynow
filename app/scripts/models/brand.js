@@ -9,6 +9,7 @@ var Brand = (function () {
 		this.image = data.hasOwnProperty('image') ? data.image : null;
 		this.name = data.hasOwnProperty('name') ? data.name : null;
 		this.ranking = data.hasOwnProperty('ranking') ? data.ranking : null;
+		this.brandUrl = null; // @TODO: There does not seem to be a URL property in the data.
 
 		// Convert the category ids CSL to an array and remember it.
 		this.categoryIds = this.categoryIdsCsl === null ? [] : String(this.categoryIdsCsl).split(',');
@@ -33,6 +34,30 @@ var Brand = (function () {
 
 		getCategoryIdAsArray: function getCategoryIdAsArray() {
 			return this.categoryIds;
+		},
+
+		hasRanking: function hasRanking() {
+			return this.ranking !== null;
+		},
+
+		getRanking: function getRanking() {
+			return this.ranking;
+		},
+
+		hasDescription: function hasDescription() {
+			return this.description !== null;
+		},
+
+		getDescription: function getDescription() {
+			return this.description;
+		},
+
+		hasBrandURL: function hasBrandURL() {
+			return this.brandUrl !== null;
+		},
+
+		getBrandURL: function getBrandURL() {
+			return this.brandUrl;
 		}
 	};
 

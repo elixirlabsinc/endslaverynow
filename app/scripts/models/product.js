@@ -34,6 +34,10 @@ var Product = (function () {
 
 		getCategoryId: function getCategoryId() {
 			return this.categoryId;
+		},
+
+		getBrandId: function getBrandId() {
+			return this.brandId;
 		}
 	};
 

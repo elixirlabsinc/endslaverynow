@@ -9,41 +9,31 @@
  */
 angular.module('endslaverynowApp')
 	.controller('BrandCtrl', [
-		'$firebaseObject',
 		'$transition$',
 		'$scope',
-		function ($firebaseObject, $transition$, $scope) {
-			$scope.brandId = $transition$.params().id
-			$scope.loaded = false
-			$scope.brandProducts = []
-			$scope.relatedCategories = []
+		'dataRepositoryFactory',
+		function ($transition$, $scope, dataRepositoryFactory) {
+			$scope.brandId = $transition$.params().id;
+			$scope.loaded = false;
+			$scope.brandProducts = [];
+			$scope.relatedCategories = [];
 
-			/* firebase */
-			var ref = firebase.database().ref()
-			var syncObject = $firebaseObject(ref)
+			dataRepositoryFactory.ready(
+				function(dataRepository) {
+					// Get brand information
+					$scope.brandDetails = dataRepository.getBrandById($scope.brandId);
 
-			syncObject.$loaded().then(function() {
-				// Get brand information
-				$scope.brandDetails = syncObject.brands[$scope.brandId]
-
-				if($scope.brandDetails === null) {
-					return
-				}
-
-				// Get products for this brand
-				for(var prod in syncObject.products) {
-					var temp = syncObject.products[prod]
-					if(temp.brandId == $scope.brandId) {
-						$scope.brandProducts.push(temp)
+					if($scope.brandDetails === null) {
+						return;
 					}
-				}
 
-				$scope.relatedCategoryIds = $scope.brandDetails.categories.split(',')
-				for(var rcat in $scope.relatedCategoryIds) {
-					$scope.relatedCategories.push(syncObject.categories[$scope.relatedCategoryIds[rcat]])
-				}
+					// Get products for this brand
+					$scope.brandProducts = dataRepository.getBrandProductsForBrand($scope.brandDetails);
 
-				$scope.loaded = true
-			})
+					// Get categories related to this brand
+					$scope.relatedCategories = dataRepository.getRelatedCategoriesForBrand($scope.brandDetails);
 
-		}])
+					$scope.loaded = true;
+			});
+
+		}]);

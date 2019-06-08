@@ -8,28 +8,28 @@
         <div class="col-md-12 thumbnail">
             <br>
             <div class="col-md-4">
-                <img ng-if="!brandDetails.image" src="images/noimage.png" height="400px" class="img-rounded img-responsive">
-                <img ng-if="brandDetails.image" ng-src="{{ brandDetails.image }}" height="400px" class="img-rounded img-responsive">
+                <img ng-if="!brandDetails.hasImage()" src="images/noimage.png" height="400px" class="img-rounded img-responsive">
+                <img ng-if="brandDetails.hasImage()" ng-src="{{ brandDetails.getImage() }}" height="400px" class="img-rounded img-responsive">
             </div>
 
             <div class="col-md-8">
-                    <h2>{{ brandDetails.name }}</h2>
-                    <p ng-if="brandDetails.ranking">Ranking: <a href="#!/rankings">{{ brandDetails.ranking }}</a></p>
+                    <h2>{{ brandDetails.getName() }}</h2>
+                    <p ng-if="brandDetails.hasRanking()">Ranking: <a href="#!/rankings">{{ brandDetails.getRanking() }}</a></p>
                     <p ng-if="relatedCategories.length > 0">Category:
                         <span ng-repeat="categoryDetails in relatedCategories">
-                            <a href="#!/category/{{ categoryDetails.id }}">{{ categoryDetails.name }}{{$last ? '' : ', '}}</a>
+                            <a href="#!/category/{{ categoryDetails.getId() }}">{{ categoryDetails.getName() }}{{$last ? '' : ', '}}</a>
                         </span>
                     </p>
-                    <p ng-if="brandDetails.description">{{ brandDetails.description }}</p>
+                    <p ng-if="brandDetails.hasDescription()">{{ brandDetails.getDescription() }}</p>
                 </p>
 
                 <a
-                    href="{{ brandDetails.brandURL }}"
+                    ng-if="brandDetails.hasBrandURL()"
+                    href="{{ brandDetails.getBrandURL() }}"
                     class="btn purchaseButton"
-                    ng-if="brandDetails.brandURL"
                     target="_blank"
                 >
-                    Visit {{ brandDetails.name }}
+                    Visit {{ brandDetails.getName() }}
                 </a>
 
             </div>
@@ -47,9 +47,9 @@
                 <div ng-repeat="product in brandProducts">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail productblock">
-                            <img ng-if="!product.image" src="images/noimage.png" height="400px">
-                            <img ng-if="product.image" ng-src="{{ product.image }}" height="400px">
-                            <h3><a href="#!/product/{{ product.id }}">{{ product.name }}</a></h3>
+                            <img ng-if="!product.hasImage()" src="images/noimage.png" height="400px">
+                            <img ng-if="product.hasImage()" ng-src="{{ product.getImage() }}" height="400px">
+                            <h3><a href="#!/product/{{ product.getId() }}">{{ product.getName() }}</a></h3>
                         </div>
                     </div>
                 </div>
