@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -9,39 +9,31 @@
  */
 angular.module('endslaverynowApp')
 	.controller('CategoryCtrl', [
-		'$firebaseObject',
 		'$transition$',
 		'$scope',
-		'ModelService',
-		function($firebaseObject, $transition$, $scope, modelService){
-			$scope.categoryId = $transition$.params().id
-			$scope.loaded = false
-			$scope.categoryBrands = []
-			$scope.categoryProducts = []
-			$scope.relatedCategories = []
+		'dataRepositoryFactory',
+		function($transition$, $scope, dataRepositoryFactory){
+			$scope.categoryId = $transition$.params().id;
+			$scope.loaded = false;
+			$scope.categoryBrands = [];
+			$scope.categoryProducts = [];
+			$scope.relatedCategories = [];
 
-			/* firebase */
-			var ref = firebase.database().ref()
-			var syncObject = $firebaseObject(ref)
+			dataRepositoryFactory.ready(
+				function(dataRepository) {
+					// Get brand information
+					$scope.categoryDetails = dataRepository.getCategoryById($scope.categoryId);
 
-			syncObject.$loaded().then(function() {
+					if($scope.categoryDetails === null) {
+						return;
+					}
 
-				// Convert the raw data into models.
-				modelService.parse(syncObject);
+					// Get lists of related objects.
+					$scope.relatedCategories = dataRepository.getRelatedCategoriesForCategory($scope.categoryDetails);
+					$scope.categoryBrands = dataRepository.getBrandCategoriesForCategory($scope.categoryDetails);
+					$scope.categoryProducts = dataRepository.getCategoryProductsForCategory($scope.categoryDetails);
 
-				// Get brand information
-				$scope.categoryDetails = modelService.getCategoryById($scope.categoryId);
+					$scope.loaded = true;
+				});
 
-				if($scope.categoryDetails === null) {
-					return
-				}
-
-				// Get lists of related objects.
-				$scope.relatedCategories = modelService.getRelatedCategoriesForCategory($scope.categoryDetails);
-				$scope.categoryBrands = modelService.getBrandCategoriesForCategory($scope.categoryDetails);
-				$scope.categoryProducts = modelService.getCategoryProductsForCategory($scope.categoryDetails);
-
-				$scope.loaded = true
-			})
-
-		}])
+		}]);

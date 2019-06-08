@@ -1,6 +1,6 @@
 'use strict';
 
-var ModelService = function() {
+var DataRepository = function(syncObject) {
 	this.brands = [];
 	this.categories = [];
 	this.products = [];
@@ -35,6 +35,8 @@ var ModelService = function() {
 			);
 		}
 	};
+
+	this.parse(syncObject);
 
 	this.getCategories = function getCategories() {
 		return this.categories;

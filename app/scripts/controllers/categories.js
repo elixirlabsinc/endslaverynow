@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -9,24 +9,18 @@
  */
 angular.module('endslaverynowApp')
 	.controller('CategoriesCtrl', [
-		'$firebaseObject',
 		'$scope',
-		'ModelService',
-		function($firebaseObject, $scope, modelService){
-			$scope.loaded = false
-			$scope.allCategories = []
+		'dataRepositoryFactory',
+		function($scope, dataRepositoryFactory) {
+			$scope.loaded = false;
+			$scope.allCategories = [];
 
-			/* firebase */
-			var ref = firebase.database().ref()
-			var syncObject = $firebaseObject(ref)
+			dataRepositoryFactory.ready(
+				function(dataRepository) {
+					$scope.allCategories = dataRepository.getCategories();
 
-			syncObject.$loaded().then(function() {
+					$scope.loaded = true;
+				}
+			);
 
-				// Convert the raw data into models.
-				modelService.parse(syncObject);
-
-				$scope.allCategories = modelService.getCategories();
-
-				$scope.loaded = true
-			})
-		}])
+		}]);
