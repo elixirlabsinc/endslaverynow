@@ -15,6 +15,7 @@ angular.module('endslaverynowApp')
 			$scope.categories = [];
 
 			dataRepositoryFactory.ready(
+				$scope,
 				function(dataRepository) {
 					$scope.categories = dataRepository.getTopLevelCategories();
 

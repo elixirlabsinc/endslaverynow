@@ -2,6 +2,7 @@
 
 var Product = (function () {
 
+	// @TODO: Get these properties and the getters/setters into a sensible order.
 	var Product = function Product(data) {
 		this.brandId = data.hasOwnProperty('brandId') ? parseInt(data.brandId) : null;
 		this.categoryId = data.hasOwnProperty('categoryId') ? parseInt(data.categoryId) : null;
@@ -50,6 +51,18 @@ var Product = (function () {
 
 		incrementPurchaseUrlClicks: function incrementPurchaseUrlClicks() {
 			++this.purchaseURlClicks;
+		},
+
+		getPurchaseUrlClicks: function getPurchaseUrlClicks() {
+			return this.purchaseURlClicks;
+		},
+
+		getDescription: function getDescription() {
+			return this.description;
+		},
+
+		getParentCategoryId: function getParentCategoryId() {
+			return this.parentCategoryId;
 		}
 	};
 

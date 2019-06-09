@@ -18,6 +18,7 @@ angular.module('endslaverynowApp')
 			$scope.dataRepository = null;
 
 			dataRepositoryFactory.ready(
+				$scope,
 				function(dataRepository) {
 					// Get product information
 					$scope.productDetails = dataRepository.getProductById($scope.productId);
@@ -32,8 +33,6 @@ angular.module('endslaverynowApp')
 					$scope.loaded = true;
 					$scope.dataRepository = dataRepository;
 				});
-
-			dataRepositoryFactory.getSyncObject().$bindTo($scope, 'data');
 
 			$scope.updateClickCount = function() {
 				// Spam Click check - not too sophisticated atm

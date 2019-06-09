@@ -1,11 +1,21 @@
 'use strict';
 
-var DataRepository = function(syncObject) {
+/**
+ * This class handles the interface between the raw source data and the application. It exposes the raw data in
+ * the form of models (and arrays of models). The "persist" methods write the data back to the data property in
+ * the container that's passed in. The container is actually a scope object (controller) as it's the only way we
+ * can bind to the raw data.
+ *
+ * @param dataContainer
+ * @param syncObject
+ * @constructor
+ */
+var DataRepository = function(dataContainer, syncObject) {
 	this.brands = [];
 	this.categories = [];
 	this.products = [];
 
-	this.parse = function parse(rawData) {
+	this.init = function init(rawData) {
 		this.brands = [];
 		this.categories = [];
 		this.products = [];
@@ -37,7 +47,7 @@ var DataRepository = function(syncObject) {
 		}
 	};
 
-	this.parse(syncObject);
+	this.init(syncObject);
 
 	this.getCategories = function getCategories() {
 		return this.categories;
@@ -157,9 +167,23 @@ var DataRepository = function(syncObject) {
 		return null;
 	};
 
+	/**
+	 * Save the given product back to the data store.
+	 *
+	 * @param product {Product}
+	 */
 	this.persistProduct = function persistProduct(product) {
-		alert('This has not been implemented yet!');
-		// @TODO: Finish this. When updating the number of clicks, it did this:
-		// $scope.data.products[$scope.productId].purchaseURlClicks = updatedClickCount
+		// @TODO: We need to handle this being a new product.
+		var productSource = dataContainer.data.products[product.getId()];
+		productSource.brandId = product.getBrandId();
+		productSource.categoryId = product.getCategoryId();
+		productSource.description = product.getDescription();
+		productSource.id = product.getId();
+		productSource.image = product.getImage();
+		productSource.name = product.getName();
+		productSource.parentCategoryId = product.getParentCategoryId();
+		productSource.purchaseURlClicks = product.getPurchaseUrlClicks();
+		productSource.purchaseUrl = product.getPurchaseUrl();
+		// productSource.$$hashKey = product.$$hashKey(); @TODO: Do we save this? When does it change?
 	};
 };

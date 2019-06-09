@@ -19,6 +19,7 @@ angular.module('endslaverynowApp')
 			$scope.relatedCategories = [];
 
 			dataRepositoryFactory.ready(
+				$scope,
 				function(dataRepository) {
 					// Get brand information
 					$scope.brandDetails = dataRepository.getBrandById($scope.brandId);
