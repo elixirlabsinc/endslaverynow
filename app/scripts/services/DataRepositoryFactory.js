@@ -11,7 +11,6 @@ var DataRepositoryFactory = function ($firebaseObject) {
 	 * bind to a controller ($scope), otherwise we could just use the repository class or whatever.
 	 * It then waits until the firebase object has been initialised, and then constructs a new data repository
 	 * with it, passing in the scope, and then passes that in to the callback function provided by the calling code.
-	 * @TODO: I wonder if the scope could be passed in at the same time as $firebaseObject. Depends on whether it exists at that point.
 	 *
 	 * @param $scope
 	 * @param callback
