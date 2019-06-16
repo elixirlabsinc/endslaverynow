@@ -39,7 +39,7 @@
                 {{selectedCategoryName || cat.name}}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setCategory(category)" class="dropdown-item form-control">{{category.name}}</button>
+                <button ng-repeat="category in categories" ng-if="category.getName().length > 0" ng-click="setCategory(category)" class="dropdown-item form-control">{{category.getName()}}</button>
             </div>
         </div>
         <div class="errorMessage" ng-if="errorMessage">Error submitting form. Please complete all fields to continue.

@@ -28,6 +28,10 @@ var Brand = (function () {
 			return this.name;
 		},
 
+		setName: function setName(name) {
+			this.name = name;
+		},
+
 		hasImage: function hasImage() {
 			return this.image !== null;
 		},
@@ -36,8 +40,26 @@ var Brand = (function () {
 			return this.image;
 		},
 
+		setImage: function setImage(imageName) {
+			this.image = imageName;
+		},
+
 		getCategoryIdAsArray: function getCategoryIdAsArray() {
 			return this.categoryIds;
+		},
+
+		getCategoryIdAsCsl: function getCategoryIdAsCsl() {
+			return this.categoryIds.join(',');
+		},
+
+		getFirstCategoryId: function getFirstCategoryId() {
+			// We create the array in this class, so we know it uses a zero-based index.
+			return this.categoryIds.length ? this.categoryIds[0] : null;
+		},
+
+		setCategoryIds: function setCategoryIds(categoryIds) {
+			// @TODO: we should check that categoryIds is an array (or null).
+			this.categoryIds = categoryIds;
 		},
 
 		hasRanking: function hasRanking() {
@@ -48,12 +70,20 @@ var Brand = (function () {
 			return this.ranking;
 		},
 
+		setRanking: function setRanking(ranking) {
+			this.ranking = ranking;
+		},
+
 		hasDescription: function hasDescription() {
 			return this.description !== null;
 		},
 
 		getDescription: function getDescription() {
 			return this.description;
+		},
+
+		setDescription: function setDescription(description) {
+			this.description = description;
 		},
 
 		hasBrandURL: function hasBrandURL() {

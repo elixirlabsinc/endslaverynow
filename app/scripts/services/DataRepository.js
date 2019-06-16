@@ -11,35 +11,36 @@
  * @constructor
  */
 var DataRepository = function(dataContainer, syncObject) {
+	this.syncObject = syncObject;
 	this.brands = [];
 	this.categories = [];
 	this.products = [];
 
-	this.init = function init(rawData) {
+	this.init = function init() {
 		this.brands = [];
 		this.categories = [];
 		this.products = [];
 		this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
 		var self = this;
 
-		if (rawData.hasOwnProperty('brands')) {
-			rawData.brands.forEach(
+		if (this.syncObject.hasOwnProperty('brands')) {
+			this.syncObject.brands.forEach(
 				function(brand) {
 					self.brands.push(new Brand(brand));
 				}
 			);
 		}
 
-		if (rawData.hasOwnProperty('categories')) {
-			rawData.categories.forEach(
+		if (this.syncObject.hasOwnProperty('categories')) {
+			this.syncObject.categories.forEach(
 				function(category) {
 					self.categories.push(new Category(category));
 				}
 			);
 		}
 
-		if (rawData.hasOwnProperty('products')) {
-			rawData.products.forEach(
+		if (this.syncObject.hasOwnProperty('products')) {
+			this.syncObject.products.forEach(
 				function(product) {
 					self.products.push(new Product(product));
 				}
@@ -47,10 +48,18 @@ var DataRepository = function(dataContainer, syncObject) {
 		}
 	};
 
-	this.init(syncObject);
+	this.init();
+
+	this.getBrands = function getBrands() {
+		return this.brands;
+	};
 
 	this.getCategories = function getCategories() {
 		return this.categories;
+	};
+
+	this.getProducts = function getProducts() {
+		return this.products;
 	};
 
 	// Note: at the moment, this.certifications will always be an empty array.
@@ -167,6 +176,41 @@ var DataRepository = function(dataContainer, syncObject) {
 		return null;
 	};
 
+	this.save = function save(successMsg, callback) {
+		this.syncObject.$save().then(
+			function() {
+				if (successMsg) {
+					window.alert(successMsg);
+				}
+				if (callback) {
+					callback();
+				}
+			},
+			function(error) {
+				window.alert('Error: ' + error.toString());
+			}
+		);
+	};
+
+	/**
+	 * Save the given brand back to the data store.
+	 *
+	 * @param brand {Brand}
+	 * @param successMsg {string|null}
+	 * @param callback {Function|null}
+	 */
+	this.persistBrand = function persistBrand(brand, successMsg, callback) {
+		// @TODO: We need to handle this being a new brand.
+		var brandSource = dataContainer.data.brands[brand.getId()];
+		brandSource.name = brand.getName();
+		brandSource.description = brand.getDescription();
+		brandSource.categories = brand.getCategoryIdAsCsl();
+		brandSource.image = brand.getImage();
+		brandSource.ranking = brand.getRanking();
+		// brandSource.brandUrl = brand.getBrandURL(); // @TODO: There does not seem to be a URL property in the data.
+		this.save(successMsg, callback);
+	};
+
 	/**
 	 * Save the given product back to the data store.
 	 *
@@ -185,5 +229,6 @@ var DataRepository = function(dataContainer, syncObject) {
 		productSource.purchaseURlClicks = product.getPurchaseUrlClicks();
 		productSource.purchaseUrl = product.getPurchaseUrl();
 		// productSource.$$hashKey = product.$$hashKey(); @TODO: Do we save this? When does it change?
+		this.save(null);
 	};
 };
