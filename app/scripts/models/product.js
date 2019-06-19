@@ -25,6 +25,10 @@ var Product = (function () {
 			return this.name;
 		},
 
+		setName: function setName(name) {
+			this.name = name;
+		},
+
 		hasImage: function hasImage() {
 			return this.image !== null;
 		},
@@ -33,12 +37,24 @@ var Product = (function () {
 			return this.image;
 		},
 
+		setImage: function setImage(image) {
+			this.image = image;
+		},
+
 		getCategoryId: function getCategoryId() {
 			return this.categoryId;
 		},
 
+		setCategoryId: function setCategoryId(categoryId) {
+			this.categoryId = categoryId;
+		},
+
 		getBrandId: function getBrandId() {
 			return this.brandId;
+		},
+
+		setBrandId: function setBrandId(brandId) {
+			this.brandId = brandId;
 		},
 
 		hasPurchaseUrl: function hasPurchaseUrl() {
@@ -47,6 +63,10 @@ var Product = (function () {
 
 		getPurchaseUrl: function getPurchaseUrl() {
 			return this.purchaseUrl;
+		},
+
+		setPurchaseUrl: function setPurchaseUrl(purchaseUrl) {
+			this.purchaseUrl = purchaseUrl;
 		},
 
 		incrementPurchaseUrlClicks: function incrementPurchaseUrlClicks() {
@@ -61,8 +81,16 @@ var Product = (function () {
 			return this.description;
 		},
 
+		setDescription: function setDescription(description) {
+			this.description = description;
+		},
+
 		getParentCategoryId: function getParentCategoryId() {
 			return this.parentCategoryId;
+		},
+
+		getRanking: function getRanking() {
+			return null; // Products don't seem to have a ranking, but it's displayed on screen...
 		}
 	};
 

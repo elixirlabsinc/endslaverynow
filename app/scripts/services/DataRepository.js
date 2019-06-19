@@ -212,11 +212,30 @@ var DataRepository = function(dataContainer, syncObject) {
 	};
 
 	/**
+	 * Save the given category back to the data store.
+	 *
+	 * @param category {Category}
+	 * @param successMsg {string|null}
+	 * @param callback {Function|null}
+	 */
+	this.persistCategory = function persistCategory(category, successMsg, callback) {
+		// @TODO: We need to handle this being a new category.
+		var categorySource = dataContainer.data.categories[category.getId()];
+		categorySource.description = category.getDescription();
+		categorySource.image = category.getImage();
+		categorySource.name = category.getName();
+		categorySource.parentCategoryId = category.getParentCategoryId();
+		this.save(successMsg, callback);
+	};
+
+	/**
 	 * Save the given product back to the data store.
 	 *
 	 * @param product {Product}
+	 * @param successMsg
+	 * @param callback
 	 */
-	this.persistProduct = function persistProduct(product) {
+	this.persistProduct = function persistProduct(product, successMsg, callback) {
 		// @TODO: We need to handle this being a new product.
 		var productSource = dataContainer.data.products[product.getId()];
 		productSource.brandId = product.getBrandId();
@@ -229,6 +248,6 @@ var DataRepository = function(dataContainer, syncObject) {
 		productSource.purchaseURlClicks = product.getPurchaseUrlClicks();
 		productSource.purchaseUrl = product.getPurchaseUrl();
 		// productSource.$$hashKey = product.$$hashKey(); @TODO: Do we save this? When does it change?
-		this.save(null);
+		this.save(successMsg, callback);
 	};
 };

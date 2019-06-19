@@ -23,8 +23,16 @@ var Category = (function () {
 			return this.name;
 		},
 
+		setName: function setName(name) {
+			this.name = name;
+		},
+
 		getDescription: function getDescription() {
 			return this.description;
+		},
+
+		setDescription: function setDescription(description) {
+			this.description = description;
 		},
 
 		hasImage: function hasImage() {
@@ -35,8 +43,16 @@ var Category = (function () {
 			return this.image;
 		},
 
+		setImage: function setImage(imageName) {
+			this.image = imageName;
+		},
+
 		getParentCategoryId: function getParentCategoryId() {
 			return this.parentCategoryId;
+		},
+
+		setParentCategoryId: function setParentCategoryId(parentCategoryId) {
+			this.parentCategoryId = parentCategoryId;
 		},
 
 		hasParentCategory: function hasParentCategory() {

@@ -6,23 +6,22 @@
             <th scope='col'>Ranking</th>
             <th scope="col">Description </th>
             <th scope="col">Action</th>
-
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="brand in brands">
             <td>
-                <img ng-if="!brand.image" src="images/noimage.png" height="50px">
-                <img ng-if="brand.image" ng-src="{{ brand.image }}" height="50px">
+                <img ng-if="!brand.hasImage()" src="images/noimage.png" height="50px">
+                <img ng-if="brand.hasImage()" ng-src="{{ brand.getImage() }}" height="50px">
             </td>
 
-            <td>{{brand.name}}</td>
-            <td>{{brand.ranking}}</td>
-            <td>{{brand.description}}</td>
+            <td>{{brand.getName()}}</td>
+            <td>{{brand.getRanking()}}</td>
+            <td>{{brand.getDescription()}}</td>
 
             <td>
                 <button type="button" class="btn btn-success">
-                    <a href="#!/admin/editBrand/{{ brand.id }}">Edit</a>
+                    <a href="#!/admin/editBrand/{{ brand.getId() }}">Edit</a>
                 </button>
                 <button type="button" class="btn btn-danger" ng-click="deleteBrand(brands, brand)">
                   Delete

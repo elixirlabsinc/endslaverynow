@@ -27,11 +27,15 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 			$scope,
 			function(dataRepository) {
 				$scope.dataRepository = dataRepository;
+
 				$scope.brands = $scope.dataRepository.getBrands();
 				$scope.categories = $scope.dataRepository.getCategories();
 				$scope.products = $scope.dataRepository.getProducts();
 
 				// Set up the individual field values.
+				/**
+				 * @var {Brand} brand
+				 */
 				var brand = $scope.dataRepository.getBrandById($scope.brandId);
 				$scope.name = brand.getName();
 				$scope.description = brand.getDescription();

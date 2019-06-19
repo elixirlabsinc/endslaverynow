@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -8,29 +8,34 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditProductsCtrl', [
-	'$firebaseArray',
 	'$scope',
-	function($firebaseArray, $scope) {
-		$scope.loaded = false
+	'dataRepositoryFactory',
+	function($scope, dataRepositoryFactory) {
+		$scope.loaded = false;
 
-		/* firebase */
-    var ref = firebase.database().ref('products')
-    $scope.products = $firebaseArray(ref)
+		$scope.products = [];
 
-    $scope.deleteProduct = function(productsRef, product) {
-      var prompt = "Are you sure you want to delete product '" + product.name + "'?"
-      if (!confirm(prompt)) {
-        return
-      }
-      productsRef.$remove(product).catch(
-        function(error) {
-          console.log("Error deleting product: ", error)
-        }
-      )
-    }
+		dataRepositoryFactory.ready(
+			$scope,
+			function (dataRepository) {
+				$scope.products = dataRepository.getProducts();
 
-    $scope.products.$loaded().then(function() {
-      $scope.loaded = true
-		})
+				$scope.loaded = true;
+			}
+		);
+
+	    // @TODO: product is now an instance of a model
+		$scope.deleteProduct = function(productsRef, product) {
+	      var prompt = "Are you sure you want to delete product '" + product.name + "'?"
+	      if (!confirm(prompt)) {
+	        return
+	      }
+	      productsRef.$remove(product).catch(
+	        function(error) {
+	          console.log("Error deleting product: ", error)
+	        }
+	      )
+	    }
+
 	}
 ])

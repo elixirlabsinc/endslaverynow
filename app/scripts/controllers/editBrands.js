@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -8,32 +8,36 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
-	'$firebaseArray',
 	'$scope',
-	function ($firebaseArray, $scope) {
-		$scope.loaded = false
-		$scope.brands = []
+	'dataRepositoryFactory',
+	function ($scope, dataRepositoryFactory) {
+		$scope.loaded = false;
 
-		/* firebase */
-    var ref = firebase.database().ref('brands')
-    $scope.brands = $firebaseArray(ref)
+		$scope.brands = [];
 
-    $scope.deleteBrand = function(brandsRef, brand) {
-      var brandName = brand.name
-      var prompt = "Are you sure you want to delete brand '" + brandName + "'?"
+		dataRepositoryFactory.ready(
+			$scope,
+			function (dataRepository) {
+				$scope.brands = dataRepository.getBrands();
 
-      if (!confirm(prompt)) {
-        return
-      }
-      brandsRef.$remove(brand).catch(
-        function(error) {
-          console.log("Error deleting brand: ", error)
-        }
-      )
-    }
+				$scope.loaded = true;
+			}
+		);
 
-		$scope.brands.$loaded().then(function () {
-			$scope.loaded = true
-		})
+		// @TODO: brand is now an instance of a model!
+	    $scope.deleteBrand = function(brandsRef, brand) {
+	      var brandName = brand.name
+	      var prompt = "Are you sure you want to delete brand '" + brandName + "'?"
+
+	      if (!confirm(prompt)) {
+	        return
+	      }
+	      brandsRef.$remove(brand).catch(
+	        function(error) {
+	          console.log("Error deleting brand: ", error)
+	        }
+	      )
+	    }
+
 	}
 ])

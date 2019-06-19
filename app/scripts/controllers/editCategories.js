@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -8,30 +8,34 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
-	'$firebaseArray',
 	'$scope',
-	function($firebaseArray, $scope) {
-		$scope.loaded = false
+	'dataRepositoryFactory',
+	function($scope, dataRepositoryFactory) {
+		$scope.loaded = false;
 
-		/* firebase */
-    var ref = firebase.database().ref('categories')
-    $scope.categories = $firebaseArray(ref)
+		$scope.categories = [];
 
-    $scope.deleteCategory = function(categoriesRef, category) {
-      var categoryName = category.name
-      var prompt = "Are you sure you want to delete category '" + categoryName + "'?"
-      if (!confirm(prompt)) {
-        return
-      }
-      categoriesRef.$remove(category).catch(
-        function(error) {
-          console.log("Error deleting category: ", error)
-        }
-      )
-    }
+		dataRepositoryFactory.ready(
+			$scope,
+			function (dataRepository) {
+				$scope.categories = dataRepository.getCategories();
 
-		$scope.categories.$loaded().then(function() {
-			$scope.loaded = true
-		})
+				$scope.loaded = true;
+			}
+		);
+
+		// @TODO: category is now an instance of a model.
+		$scope.deleteCategory = function (categoriesRef, category) {
+			var categoryName = category.name
+			var prompt = "Are you sure you want to delete category '" + categoryName + "'?"
+			if (!confirm(prompt)) {
+				return
+			}
+			categoriesRef.$remove(category).catch(
+				function (error) {
+					console.log("Error deleting category: ", error)
+				}
+			)
+		}
 	}
 ])
