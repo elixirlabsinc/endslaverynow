@@ -18,6 +18,11 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 
 		$scope.categories = [];
 
+		$scope.NameValue = null;
+		$scope.DescriptionValue = null;
+		$scope.selectedParentCategoryId = null;
+		$scope.Image = null;
+
 		dataRepositoryFactory.ready(
 			$scope,
 			function(dataRepository) {

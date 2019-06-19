@@ -18,6 +18,13 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 
 		$scope.dataRepository = null;
 
+		$scope.NameValue = null;
+		$scope.DescriptionValue = null;
+		$scope.PurchaseURLValue = null;
+		$scope.selectedCategoryId = null;
+		$scope.selectedBrandId = null;
+		$scope.Image = null;
+
 		dataRepositoryFactory.ready(
 			$scope,
 			function(dataRepository) {

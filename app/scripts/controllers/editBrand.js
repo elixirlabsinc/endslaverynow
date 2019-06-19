@@ -23,6 +23,13 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 
 		$scope.dataRepository = null;
 
+		$scope.NameValue = null;
+		$scope.DescriptionValue = null;
+		$scope.selectedRankName = null;
+		$scope.selectedCategoryId = null;
+		$scope.selectedCategoryName = null;
+		$scope.Image = null;
+
 		dataRepositoryFactory.ready(
 			$scope,
 			function(dataRepository) {
