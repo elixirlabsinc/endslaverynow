@@ -21,6 +21,14 @@ var Product = (function () {
 			return this.id;
 		},
 
+		hasId: function hasId() {
+			return this.id !== null;
+		},
+
+		setId: function setId(newId) {
+			this.id = newId;
+		},
+
 		getName: function getName() {
 			return this.name;
 		},

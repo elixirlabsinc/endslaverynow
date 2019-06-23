@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -9,22 +9,27 @@
  */
 angular.module('endslaverynowApp')
   .controller('FormAddCtrl',[
-    '$firebaseObject',
     '$stateParams',
     '$scope',
     '$window',
     'Upload',
-    function ($firebaseObject, $stateParams, $scope, $window, Upload) {
-      $scope.brandId = $stateParams.id
-      $scope.loaded = false
+    'dataRepositoryFactory',
+    function ($stateParams, $scope, $window, Upload, dataRepositoryFactory) {
+      $scope.brandId = $stateParams.id;
+      $scope.loaded = false;
 
-      $scope.formType = ''
-      $scope.errorMessage = false
+      $scope.formType = '';
+      $scope.errorMessage = false;
+
+        $scope.availableTypes ={
+	        Brands: 'brands',
+	        Categories: 'categories',
+	        Products: 'products'
+        };
 
       var itemTypes = {
         'categories': {
           name: 'Category',
-          getIdFunction: getCategoryId,
           requiredInputs: {
             name: true,
             description: true,
@@ -35,11 +40,10 @@ angular.module('endslaverynowApp')
             brand: false,
             ranking: false,
             parentCategoryId: false
-          },
+          }
         },
         'brands': {
           name: 'Brand',
-          getIdFunction: getBrandId,
           requiredInputs: {
             name: true,
             description: true,
@@ -49,11 +53,10 @@ angular.module('endslaverynowApp')
             categories: true,
             brand: false,
             ranking: true
-          },
+          }
         },
         'products': {
           name: 'Product',
-          getIdFunction: getProductId,
           requiredInputs: {
             name: true,
             description: true,
@@ -63,146 +66,157 @@ angular.module('endslaverynowApp')
             brandId: true,
             ranking: false,
             parentCategoryId: false
-          },
-        }
-      }
-
-      $scope.rankingOptions = {
-        'good': 'Good',
-        'better': 'Better',
-        'best': 'Best'
-      }
-
-      var ref = firebase.database().ref()
-      var syncObject = $firebaseObject(ref)
-
-      $scope.products = []
-
-      syncObject.$loaded().then(function() {
-        var categories = syncObject.categories || []
-        $scope.categories = alphabetizeCollection(categories.filter(Boolean))
-        $scope.brands = alphabetizeCollection(syncObject.brands)
-        $scope.products = syncObject.products || []
-        $scope.loaded = true
-      })
-
-      $scope.processForm = function(item) {
-        $scope.errorMessage = false
-        if(!item) {
-          $scope.errorMessage = true
-          return
-        }
-
-        var id = itemTypes[$scope.formType].getIdFunction()
-        item.id = id
-
-        if ($scope.formType === 'categories') {
-          item.parentCategoryId = $scope.selectedParentCategoryId || 0
-        }
-
-        if($scope.formType === 'products') {
-          item.brandId = $scope.selectedBrandId
-          item.categoryId = $scope.selectedCategoryId
-          item.purchaseUrl = prependHttp(item.purchaseUrl)
-          item.purchaseURlClicks = 0
-          item.parentCategoryId = 0
-        }
-
-        if($scope.formType === 'brands') {
-          item.categories = $scope.selectedCategoryId.toString()
-          item.ranking = $scope.selectedRankName
-        }
-
-        if(!validInput(item, $scope.formType, itemTypes[$scope.formType].requiredInputs)) {
-          $scope.errorMessage = true
-          return
-        } else {
-          uploadImages(item, $scope.formType)
-        }
-      }
-
-      var validInput = function(item, formType, requiredInputs) {
-        var isValid = !!item
-
-        for(var req in requiredInputs) {
-          if(requiredInputs[req] && !item[req]) {
-            isValid = false
           }
         }
+      };
 
-        return isValid
-      }
+      $scope.rankingOptions = (new Ranking()).getRankingOptions();
 
+      $scope.addItem = {
+        name: null,
+        description: null,
+        purchaseUrl: null,
+        image: null
+      };
+
+      $scope.selectedBrandId = null;
+      $scope.selectedBrandName = null;
+      $scope.selectedCategoryId = null;
+      $scope.selectedCategoryName = null;
+      $scope.selectedParentCategoryId = null;
+      $scope.selectedParentCategoryName = null;
+      $scope.selectedRankName = null;
+
+      $scope.products = [];
+      $scope.dataRepository = null;
+
+	    var alphabetizeCollection = function alphabetizeCollection(collection) {
+		    if (collection === undefined) {
+			    return [];
+		    }
+		    if (!Array.isArray(collection)) {
+			    return [collection];
+		    }
+		    collection.sort(function (a, b) {
+			    return a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
+		    });
+		    return collection;
+	    };
+
+	    dataRepositoryFactory.ready(
+        $scope,
+        function(dataRepository) {
+          $scope.categories = alphabetizeCollection(dataRepository.getCategories().filter(Boolean));
+          $scope.brands = alphabetizeCollection(dataRepository.getBrands());
+          $scope.products = dataRepository.getProducts();
+          $scope.dataRepository = dataRepository;
+          $scope.loaded = true;
+        }
+      );
+
+	    var validInput = function validInput(item, requiredInputs) {
+		    var isValid = !!item;
+
+		    for(var req in requiredInputs) {
+			    if (requiredInputs[req] && !item[req]) {
+				    isValid = false;
+			    }
+		    }
+
+		    return isValid;
+	    };
+
+	    function prependHttp(url) {
+		    if(/^(http)/.test(url)) {
+			    return url;
+		    } else {
+			    return 'http://' + url;
+		    }
+	    }
+
+	    $scope.processForm = function(item) {
+            $scope.errorMessage = false;
+            if(!item) {
+              $scope.errorMessage = true;
+              return;
+            }
+
+          switch ($scope.formType) {
+              case $scope.availableTypes.Brands:
+	              item.categories = $scope.selectedCategoryId.toString();
+	              item.ranking = $scope.selectedRankName;
+                  break;
+	          case $scope.availableTypes.Categories:
+		          item.parentCategoryId = $scope.selectedParentCategoryId || 0;
+		          break;
+	          case $scope.availableTypes.Products:
+		          item.brandId = $scope.selectedBrandId;
+		          item.categoryId = $scope.selectedCategoryId;
+		          item.purchaseUrl = prependHttp(item.purchaseUrl);
+		          item.purchaseURlClicks = 0;
+		          item.parentCategoryId = 0;
+		          break;
+          }
+
+        if (!validInput(item, itemTypes[$scope.formType].requiredInputs)) {
+          $scope.errorMessage = true;
+        } else {
+            // @TODO: Need callback function to do what uploadImages does when it saves a new entity.
+            var onCompletion = function onCompletion() {
+	            var addForm = document.getElementById('add-form');
+	            addForm.style.display = 'none';
+	            var successMessage = document.getElementById('submitted-form');
+	            successMessage.style.display = 'block';
+            }
+	        switch ($scope.formType) {
+		        case $scope.availableTypes.Brands:
+			        $scope.dataRepository.persistBrand(new Brand(item), null, onCompletion);
+			        break;
+		        case $scope.availableTypes.Categories:
+			        $scope.dataRepository.persistCategory(new Category(item), null, onCompletion);
+			        break;
+		        case $scope.availableTypes.Products:
+			        $scope.dataRepository.persistProduct(new Product(item), null, onCompletion);
+			        break;
+	        }
+          // uploadImages(item, $scope.formType)
+        }
+      };
+
+      /**
+       * @param category {Category}
+       */
       $scope.setCategory = function(category) {
-        $scope.selectedCategoryId = category.id
-        $scope.selectedCategoryName = category.name
-      }
+        $scope.selectedCategoryId = category.getId();
+        $scope.selectedCategoryName = category.getName();
+      };
 
+      /**
+       * @param category {Category}
+       */
       $scope.setParentCategory = function(category) {
-        $scope.selectedParentCategoryId = category.id
-        $scope.selectedParentCategoryName = category.name
-      }
+        $scope.selectedParentCategoryId = category.getId();
+        $scope.selectedParentCategoryName = category.getName();
+      };
 
+      /**
+       * @param brand {Brand}
+       */
       $scope.setBrand = function(brand) {
-        $scope.selectedBrandId = brand.id
-        $scope.selectedBrandName = brand.name
-      }
+        $scope.selectedBrandId = brand.getId();
+        $scope.selectedBrandName = brand.getName();
+      };
 
       $scope.setRanking = function(rank) {
-        $scope.selectedRankName = rank
-      }
+        $scope.selectedRankName = rank;
+      };
 
       $scope.selectItemType = function(itemType) {
-        $scope.itemType = itemType ? itemTypes[itemType].name : ''
-        $scope.formType = itemType
-      }
+        $scope.itemType = itemType ? itemTypes[itemType].name : '';
+        $scope.formType = itemType;
+      };
 
       $scope.reloadPage = function() {
-        $window.location.reload()
-      }
-
-      function getCategoryId() {
-        var id = $scope.categories.length === 0 ? 1 : $scope.categories.length + 1
-        while($scope.categories.find(function(c) { return c.id === id }) !== undefined) {
-          id = id + 1
-        }
-        return id
-      }
-
-      function getBrandId() {
-        var id = $scope.brands.length === 0 ? 1 : $scope.brands.length
-        while($scope.brands[id] !== undefined) {
-          id = id + 1
-        }
-        return id
-      }
-
-      function getProductId() {
-        var id = $scope.products.length === 0 ? 1 : $scope.products.length
-        while($scope.products[id] !== undefined) {
-          id = id + 1
-        }
-        return id
-      }
-
-      function alphabetizeCollection(collection) {
-        if (collection === undefined) {
-          return []
-        }
-        if (!Array.isArray(collection)) {
-          return [collection]
-        }
-        collection.sort(function (a, b) {
-          return a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-        })
-        return collection
-      }
-
-      function prependHttp(url) {
-        if(/^(http)/.test(url)) {
-          return url
-        } else {
-          return 'http://' + url
-        }
-      }
-    }])
+        $window.location.reload();
+      };
+}]);

@@ -15,6 +15,14 @@ var Category = (function () {
 			return this.id;
 		},
 
+		hasId: function hasId() {
+			return this.id !== null;
+		},
+
+		setId: function setId(newId) {
+			this.id = newId;
+		},
+
 		hasName: function hasName() {
 			return this.name !== null;
 		},

@@ -200,12 +200,17 @@ var DataRepository = function(dataContainer, syncObject) {
 	 * @param callback {Function|null}
 	 */
 	this.persistBrand = function persistBrand(brand, successMsg, callback) {
-		// @TODO: We need to handle this being a new brand.
+		if (!brand.hasId()) {
+			// This is an insert.
+			brand.setId(this.generateNextBrandId());
+			dataContainer.data.brands[brand.getId()] = {id: brand.getId()};
+		}
 		var brandSource = dataContainer.data.brands[brand.getId()];
 		brandSource.name = brand.getName();
 		brandSource.description = brand.getDescription();
 		brandSource.categories = brand.getCategoryIdAsCsl();
-		brandSource.image = brand.getImage();
+		// @TODO: Re-instate this line.
+		// brandSource.image = brand.getImage();
 		brandSource.ranking = brand.getRanking();
 		// brandSource.brandUrl = brand.getBrandURL(); // @TODO: There does not seem to be a URL property in the data.
 		this.save(successMsg, callback);
@@ -219,10 +224,15 @@ var DataRepository = function(dataContainer, syncObject) {
 	 * @param callback {Function|null}
 	 */
 	this.persistCategory = function persistCategory(category, successMsg, callback) {
-		// @TODO: We need to handle this being a new category.
+		if (!category.hasId()) {
+			// This is an insert.
+			category.setId(this.generateNextCategoryId());
+			dataContainer.data.categories[category.getId()] = {id: category.getId()};
+		}
 		var categorySource = dataContainer.data.categories[category.getId()];
 		categorySource.description = category.getDescription();
-		categorySource.image = category.getImage();
+		// @TODO: Re-instate this line.
+		// categorySource.image = category.getImage();
 		categorySource.name = category.getName();
 		categorySource.parentCategoryId = category.getParentCategoryId();
 		this.save(successMsg, callback);
@@ -236,18 +246,47 @@ var DataRepository = function(dataContainer, syncObject) {
 	 * @param callback
 	 */
 	this.persistProduct = function persistProduct(product, successMsg, callback) {
-		// @TODO: We need to handle this being a new product.
+		if (!product.hasId()) {
+			// This is an insert.
+			product.setId(this.generateNextProductId());
+			dataContainer.data.products[product.getId()] = {id: product.getId()};
+		}
 		var productSource = dataContainer.data.products[product.getId()];
 		productSource.brandId = product.getBrandId();
 		productSource.categoryId = product.getCategoryId();
 		productSource.description = product.getDescription();
 		productSource.id = product.getId();
-		productSource.image = product.getImage();
+		// @TODO: Re-instate this line.
+		// productSource.image = product.getImage();
 		productSource.name = product.getName();
 		productSource.parentCategoryId = product.getParentCategoryId();
 		productSource.purchaseURlClicks = product.getPurchaseUrlClicks();
 		productSource.purchaseUrl = product.getPurchaseUrl();
 		// productSource.$$hashKey = product.$$hashKey(); @TODO: Do we save this? When does it change?
 		this.save(successMsg, callback);
+	};
+
+	this.generateNextBrandId = function generateNextBrandId() {
+		var id = Math.max(1, dataContainer.data.brands.length);
+		while(dataContainer.data.brands[id] !== undefined) {
+			++id;
+		}
+		return id;
+	};
+
+	this.generateNextCategoryId = function generateNextCategoryId() {
+		var id = Math.max(1, dataContainer.data.categories.length);
+		while(dataContainer.data.categories[id] !== undefined) {
+			++id;
+		}
+		return id;
+	};
+
+	this.generateNextProductId = function generateNextProductId() {
+		var id = Math.max(1, dataContainer.data.products.length);
+		while(dataContainer.data.products[id] !== undefined) {
+			++id;
+		}
+		return id;
 	};
 };
