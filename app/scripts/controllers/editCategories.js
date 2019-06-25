@@ -17,8 +17,8 @@ angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
 
 		dataRepositoryFactory.ready(
 			$scope,
-			function (dataRepository) {
-				$scope.categories = dataRepository.getCategories();
+			function () {
+				$scope.categories = dataRepositoryFactory.getDataRepository().getCategories();
 
 				$scope.loaded = true;
 			}

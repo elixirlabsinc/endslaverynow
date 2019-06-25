@@ -32,8 +32,8 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 
 		dataRepositoryFactory.ready(
 			$scope,
-			function(dataRepository) {
-				$scope.dataRepository = dataRepository;
+			function() {
+				$scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
 				$scope.brands = $scope.dataRepository.getBrands();
 				$scope.categories = $scope.dataRepository.getCategories();
@@ -88,7 +88,6 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 				// @TODO: the uploadImages method needs to be moved to the DataRepository class.
 				uploadImages(syncObject.brands[$scope.brandId], 'brand', syncObject)
 			} else {
-				// @TODO: I'm sure this should not be in the "else", but executed every time "processForm" is called.
 				$scope.dataRepository.persistBrand(
 					brand,
 					'Edit has been completed!',

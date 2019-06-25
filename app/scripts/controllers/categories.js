@@ -17,8 +17,8 @@ angular.module('endslaverynowApp')
 
 			dataRepositoryFactory.ready(
 				$scope,
-				function(dataRepository) {
-					$scope.allCategories = dataRepository.getCategories();
+				function() {
+					$scope.allCategories = dataRepositoryFactory.getDataRepository().getCategories();
 
 					$scope.loaded = true;
 				}

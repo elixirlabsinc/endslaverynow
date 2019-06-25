@@ -25,16 +25,16 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 
 		dataRepositoryFactory.ready(
 			$scope,
-			function(dataRepository) {
-				$scope.dataRepository = dataRepository;
+			function() {
+				$scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
-				$scope.categories = dataRepository.getCategories();
+				$scope.categories = $scope.dataRepository.getCategories();
 
 				// Set up the individual field values.
-				var category = dataRepository.getCategoryById($scope.categoryId);
+				var category = $scope.dataRepository.getCategoryById($scope.categoryId);
 				$scope.name = category.getName();
 				$scope.description = category.getDescription();
-				$scope.parentCategory = dataRepository.getCategoryById(category.getParentCategoryId());
+				$scope.parentCategory = $scope.dataRepository.getCategoryById(category.getParentCategoryId());
 				$scope.image = category.getImage();
 
 				/**
@@ -76,7 +76,6 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 				category.setImage($scope.Image);
 				uploadImages(syncObject.categories[$scope.categoryId], 'category', syncObject)
 			} else {
-				// @TODO: I'm sure this should not be in the "else", but executed every time "processForm" is called.
 				$scope.dataRepository.persistCategory(
 					category,
 					'Edit has been completed!',

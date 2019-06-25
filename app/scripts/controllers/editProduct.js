@@ -27,18 +27,18 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 
 		dataRepositoryFactory.ready(
 			$scope,
-			function(dataRepository) {
-				$scope.dataRepository = dataRepository;
+			function() {
+				$scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
-				$scope.brands = dataRepository.getBrands();
-				$scope.categories = dataRepository.getCategories();
-				$scope.products = dataRepository.getProducts();
+				$scope.brands = $scope.dataRepository.getBrands();
+				$scope.categories = $scope.dataRepository.getCategories();
+				$scope.products = $scope.dataRepository.getProducts();
 
 				// Set up the individual field values.
 				/**
 				 * @var {Product} product
 				 */
-				var product = dataRepository.getProductById($scope.productId);
+				var product = $scope.dataRepository.getProductById($scope.productId);
 				$scope.name = product.getName();
 				$scope.description = product.getDescription();
 				$scope.ranking = product.getRanking();
@@ -47,8 +47,8 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 				$scope.BrandId = product.getBrandId();
 				$scope.purchaseURL = product.getPurchaseUrl();
 
-				$scope.brand = dataRepository.getBrandById($scope.BrandId);
-				$scope.cat = dataRepository.getCategoryById($scope.CategoryId);
+				$scope.brand = $scope.dataRepository.getBrandById($scope.BrandId);
+				$scope.cat = $scope.dataRepository.getCategoryById($scope.CategoryId);
 
 				$scope.loaded = true;
 
@@ -97,7 +97,6 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 				product.setImage($scope.Image);
 				uploadImages(syncObject.products[$scope.productId], 'product', syncObject)
 			} else {
-				// @TODO: I'm sure this should not be in the "else", but executed every time "processForm" is called.
 				$scope.dataRepository.persistProduct(
 					product,
 					'Edit has been completed!',

@@ -19,19 +19,20 @@ angular.module('endslaverynowApp')
 
 			dataRepositoryFactory.ready(
 				$scope,
-				function(dataRepository) {
+				function() {
+					$scope.dataRepository = dataRepositoryFactory.getDataRepository();
+
 					// Get product information
-					$scope.productDetails = dataRepository.getProductById($scope.productId);
+					$scope.productDetails = $scope.dataRepository.getProductById($scope.productId);
 
 					if($scope.productDetails === null) {
 						return;
 					}
 
-					$scope.brandDetails = dataRepository.getBrandById($scope.productDetails.getBrandId());
-					$scope.categoryDetails = dataRepository.getCategoryById($scope.productDetails.getCategoryId());
+					$scope.brandDetails = $scope.dataRepository.getBrandById($scope.productDetails.getBrandId());
+					$scope.categoryDetails = $scope.dataRepository.getCategoryById($scope.productDetails.getCategoryId());
 
 					$scope.loaded = true;
-					$scope.dataRepository = dataRepository;
 				});
 
 			$scope.updateClickCount = function() {
