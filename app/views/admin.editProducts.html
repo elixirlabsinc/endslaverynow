@@ -18,8 +18,8 @@
 
             <td>{{product.getName()}}</td>
 
-            <td>{{product.getBrandId()}}</td>
-            <td>{{product.getCategoryId()}}</td>
+            <td>{{getNameForBrandId(product.getBrandId())}}</td>
+            <td>{{getNameForCategoryId(product.getCategoryId())}}</td>
             <td>{{product.getDescription()}}</td>
             <td>
                 <button type="button" class="btn btn-success">

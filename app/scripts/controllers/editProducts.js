@@ -11,6 +11,8 @@ angular.module('endslaverynowApp').controller('EditProductsCtrl', [
   '$scope',
   'dataRepositoryFactory',
   function ($scope, dataRepositoryFactory) {
+    $scope.dataRepository = null;
+
     $scope.loaded = false;
 
     $scope.products = [];
@@ -18,11 +20,30 @@ angular.module('endslaverynowApp').controller('EditProductsCtrl', [
     dataRepositoryFactory.ready(
       $scope,
       function () {
-        $scope.products = dataRepositoryFactory.getDataRepository().getProducts();
+        $scope.dataRepository = dataRepositoryFactory.getDataRepository();
+        $scope.products = $scope.dataRepository.getProducts();
 
         $scope.loaded = true;
       }
     );
+
+    $scope.getNameForBrandId = function getNameForBrandId(brandId) {
+      if (brandId) {
+        // Of course, this assumes a brand is found!
+        return $scope.dataRepository.getBrandById(brandId).getName();
+      } else {
+        return '';
+      }
+    };
+
+    $scope.getNameForCategoryId = function getNameForCategoryId(categoryId) {
+      if (categoryId) {
+        // Of course, this assumes a category is found!
+        return $scope.dataRepository.getCategoryById(categoryId).getName();
+      } else {
+        return '';
+      }
+    };
 
     /**
      * @param productsRef
