@@ -69,9 +69,6 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 			}
 		);
 
-		var ref = firebase.database().ref()
-		var syncObject = $firebaseObject(ref)
-
 		$scope.processForm = function() {
 			// Start with the original product object, and overwrite any values with values the user has changed.
 			/**
@@ -110,16 +107,5 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 				}
 			);
 		};
-
-		syncObject.$loaded().then(function() {
-			syncObject.$save().then(
-				function() {
-					console.log('Done') // true
-				},
-				function(error) {
-					console.log('Error:', error)
-				}
-			)
-		})
 	}
-])
+]);

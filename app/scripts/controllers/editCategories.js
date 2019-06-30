@@ -24,7 +24,6 @@ angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
 			}
 		);
 
-		// @TODO: category is now an instance of a model.
 		/**
 		 * @param categoriesRef
 		 * @param {Category} category
@@ -34,6 +33,7 @@ angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
 			if (!window.confirm(prompt)) {
 				return;
 			}
+			// @TODO: This will need to use the new-style delete process.
 			categoriesRef.$remove(category).catch(
 				function (error) {
 					console.log("Error deleting category: ", error);

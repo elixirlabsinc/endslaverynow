@@ -24,7 +24,6 @@ angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
 			}
 		);
 
-		// @TODO: brand is now an instance of a model!
 		/**
 		 * @param brandsRef
 		 * @param {Brand} brand
@@ -34,12 +33,12 @@ angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
 	      if (!window.confirm(prompt)) {
 	        return;
 	      }
+		    // @TODO: This will need to use the new-style delete process.
 	      brandsRef.$remove(brand).catch(
 	        function(error) {
 	          console.log("Error deleting brand: ", error);
 	        }
 	      );
 	    };
-
 	}
 ]);

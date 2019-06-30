@@ -87,5 +87,4 @@ var PersistService = function(dataRepositoryFactory, dataRepository, storageRepo
 			doPersist();
 		}
 	};
-
 };

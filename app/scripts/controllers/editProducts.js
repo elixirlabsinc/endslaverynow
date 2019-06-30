@@ -24,7 +24,6 @@ angular.module('endslaverynowApp').controller('EditProductsCtrl', [
 			}
 		);
 
-	    // @TODO: product is now an instance of a model
 		/**
 		 * @param productsRef
 		 * @param {Product} product
@@ -34,6 +33,7 @@ angular.module('endslaverynowApp').controller('EditProductsCtrl', [
 	      if (!window.confirm(prompt)) {
 	        return;
 	      }
+	      // @TODO: This will need to use the new-style delete process.
 	      productsRef.$remove(product).catch(
 	        function(error) {
 	          console.log("Error deleting product: ", error);

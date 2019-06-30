@@ -30,6 +30,17 @@ var DataRepositoryFactory = function ($firebaseObject) {
 		self.bind();
 
 		this.syncObject.$loaded().then(function() {
+			// @TODO: I'm not sure if this block is needed, or what it's trying to do, because it always seems
+			// @TODO: to fire as soon as the controller loads.
+			self.syncObject.$save().then(
+				function() {
+					console.log('Done'); // true
+				},
+				function(error) {
+					console.log('Error:', error);
+				}
+			);
+
 			self.dataRepository = new DataRepository($scope, self.syncObject);
 			// @TODO: We should probably check that "callback" is defined and is a function.
 			callback();
