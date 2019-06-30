@@ -1,7 +1,6 @@
 'use strict';
 
 /**
-
  * @param {DataRepositoryFactory} dataRepositoryFactory
  * @param {DataRepository} dataRepository
  * @param {StorageRepository} storageRepository
@@ -41,12 +40,52 @@ var PersistService = function(dataRepositoryFactory, dataRepository, storageRepo
 		}
 	};
 
-	this.processCategory = function processCategory(category, callback) {
-alert('This is yet to be implemented (processCategory)');
+	this.processCategory = function processCategory(category, message, callback) {
+		var localCategory = category;
+		// Build the process that will persist the category (mainly so we don't have to duplicate fairly complex code).
+		var self = this;
+		var doPersist = function doPersist() {
+			dataRepositoryFactory.bind();
+			self.dataRepository.persistCategory(localCategory, message, callback);
+		};
+
+		if (localCategory.isImageAnUpload()) {
+			// The image is an upload, so upload it, get the URL
+			this.storageRepository.uploadImageInModel(
+				localCategory.getImage(),
+				localCategory.getImageUploadFolder(),
+				function (downloadURL) {
+					localCategory.setImage(downloadURL);
+					doPersist();
+				}
+			);
+		} else {
+			doPersist();
+		}
 	};
 
-	this.processProduct = function processProduct(product, callback) {
-alert('This is yet to be implemented (processProduct)');
+	this.processProduct = function processProduct(product, message, callback) {
+		var localProduct = product;
+		// Build the process that will persist the product (mainly so we don't have to duplicate fairly complex code).
+		var self = this;
+		var doPersist = function doPersist() {
+			dataRepositoryFactory.bind();
+			self.dataRepository.persistProduct(localProduct, message, callback);
+		};
+
+		if (localProduct.isImageAnUpload()) {
+			// The image is an upload, so upload it, get the URL
+			this.storageRepository.uploadImageInModel(
+				localProduct.getImage(),
+				localProduct.getImageUploadFolder(),
+				function (downloadURL) {
+					localProduct.setImage(downloadURL);
+					doPersist();
+				}
+			);
+		} else {
+			doPersist();
+		}
 	};
 
 };

@@ -230,8 +230,7 @@ var DataRepository = function(dataContainer, syncObject) {
 		}
 		var categorySource = dataContainer.data.categories[category.getId()];
 		categorySource.description = category.getDescription();
-		// @TODO: Re-instate this line.
-		// categorySource.image = category.getImage();
+		categorySource.image = category.getImage();
 		categorySource.name = category.getName();
 		categorySource.parentCategoryId = category.getParentCategoryId();
 		this.save(successMsg, callback);
@@ -255,8 +254,7 @@ var DataRepository = function(dataContainer, syncObject) {
 		productSource.categoryId = product.getCategoryId();
 		productSource.description = product.getDescription();
 		productSource.id = product.getId();
-		// @TODO: Re-instate this line.
-		// productSource.image = product.getImage();
+		productSource.image = product.getImage();
 		productSource.name = product.getName();
 		productSource.parentCategoryId = product.getParentCategoryId();
 		productSource.purchaseURlClicks = product.getPurchaseUrlClicks();
