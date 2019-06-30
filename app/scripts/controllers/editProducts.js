@@ -25,17 +25,21 @@ angular.module('endslaverynowApp').controller('EditProductsCtrl', [
 		);
 
 	    // @TODO: product is now an instance of a model
+		/**
+		 * @param productsRef
+		 * @param {Product} product
+		 */
 		$scope.deleteProduct = function(productsRef, product) {
-	      var prompt = "Are you sure you want to delete product '" + product.name + "'?"
-	      if (!confirm(prompt)) {
-	        return
+	      var prompt = "Are you sure you want to delete product '" + product.getName() + "'?";
+	      if (!window.confirm(prompt)) {
+	        return;
 	      }
 	      productsRef.$remove(product).catch(
 	        function(error) {
-	          console.log("Error deleting product: ", error)
+	          console.log("Error deleting product: ", error);
 	        }
-	      )
-	    }
+	      );
+	    };
 
 	}
-])
+]);

@@ -25,17 +25,20 @@ angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
 		);
 
 		// @TODO: category is now an instance of a model.
-		$scope.deleteCategory = function (categoriesRef, category) {
-			var categoryName = category.name
-			var prompt = "Are you sure you want to delete category '" + categoryName + "'?"
-			if (!confirm(prompt)) {
-				return
+		/**
+		 * @param categoriesRef
+		 * @param {Category} category
+		 */
+		$scope.deleteCategory = function(categoriesRef, category) {
+			var prompt = "Are you sure you want to delete category '" + category.getName() + "'?";
+			if (!window.confirm(prompt)) {
+				return;
 			}
 			categoriesRef.$remove(category).catch(
 				function (error) {
-					console.log("Error deleting category: ", error)
+					console.log("Error deleting category: ", error);
 				}
-			)
-		}
+			);
+		};
 	}
-])
+]);
