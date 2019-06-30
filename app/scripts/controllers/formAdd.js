@@ -186,16 +186,20 @@ angular.module('endslaverynowApp')
 			            break;
 	            }
             };
-            var persistService = new PersistService($scope.dataRepository, dataRepositoryFactory.storageRepository);
+            var persistService = new PersistService(
+	            dataRepositoryFactory,
+	            $scope.dataRepository,
+	            dataRepositoryFactory.getStorageRepository()
+            );
 	        switch ($scope.formType) {
 		        case $scope.availableTypes.Brands:
-			        persistService.processBrand(model, doPersist);
+			        persistService.processBrand(model, null, doPersist);
 			        break;
 		        case $scope.availableTypes.Categories:
-			        persistService.processCategory(model, doPersist);
+			        persistService.processCategory(model, null, doPersist);
 			        break;
 		        case $scope.availableTypes.Products:
-			        persistService.processProduct(model, doPersist);
+			        persistService.processProduct(model, null, doPersist);
 			        break;
 	        }
 	        // @TODO: Should be able to remove this line, and remove the method.

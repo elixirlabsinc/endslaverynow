@@ -42,11 +42,11 @@ var PersistService = function(dataRepositoryFactory, dataRepository, storageRepo
 	};
 
 	this.processCategory = function processCategory(category, callback) {
-
+alert('This is yet to be implemented (processCategory)');
 	};
 
 	this.processProduct = function processProduct(product, callback) {
-
+alert('This is yet to be implemented (processProduct)');
 	};
 
 };
