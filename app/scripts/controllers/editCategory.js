@@ -74,7 +74,7 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
         category.setParentCategoryId(null);
       }
       if ($scope.Image) {
-        category.setImage($scope.Image);
+        category.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.Image));
       }
 
       var persistService = new PersistService(

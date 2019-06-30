@@ -5,6 +5,21 @@ var StorageRepository = function (firebase) {
   this.storageFunc = firebase.storage();
   this.storageRef = this.storageFunc.ref();
 
+  this.extractLatestImage = function extractLatestImage(imageData) {
+    // imageData is an array of file uploads. We want to return an array containing just the last one.
+    // If it's not an array, just return it unchanged.
+    // @TODO: This is to work around a possible bug in the forms where if the user clicks to choose an image,
+    // @TODO: chooses one, then clicks again and chooses another, the image property of the controller contains
+    // @TODO: an array of two images, which then doesn't get saved properly. This makes sure the last image
+    // @TODO: to be chosen is saved.
+    if (Array.isArray(imageData)) {
+      // Take the last element of the array, create an array with that as the only element, and return it.
+      return [imageData.pop()];
+    } else {
+      return imageData;
+    }
+  };
+
   /**
    * @param {Array} imageData
    * @param {string} targetFolder

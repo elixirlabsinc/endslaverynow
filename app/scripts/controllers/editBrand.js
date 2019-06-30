@@ -83,7 +83,7 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
         brand.setCategoryIds([$scope.selectedCategoryId]); // We need to pass in an array of category ids.
       }
       if ($scope.Image) {
-        brand.setImage($scope.Image);
+        brand.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.Image));
       }
 
       var persistService = new PersistService(

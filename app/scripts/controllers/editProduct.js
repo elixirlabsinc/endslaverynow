@@ -90,7 +90,7 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
         product.setBrandId($scope.selectedBrandId);
       }
       if ($scope.Image) {
-        product.setImage($scope.Image);
+        product.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.Image));
       }
 
       var persistService = new PersistService(
