@@ -8,34 +8,34 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp')
-	.controller('BrandCtrl', [
-		'$transition$',
-		'$scope',
-		'dataRepositoryFactory',
-		function ($transition$, $scope, dataRepositoryFactory) {
-			$scope.brandId = $transition$.params().id;
-			$scope.loaded = false;
-			$scope.brandProducts = [];
-			$scope.relatedCategories = [];
+  .controller('BrandCtrl', [
+    '$transition$',
+    '$scope',
+    'dataRepositoryFactory',
+    function ($transition$, $scope, dataRepositoryFactory) {
+      $scope.brandId = $transition$.params().id;
+      $scope.loaded = false;
+      $scope.brandProducts = [];
+      $scope.relatedCategories = [];
 
-			dataRepositoryFactory.ready(
-				$scope,
-				function() {
-					var dataRepository = dataRepositoryFactory.getDataRepository();
-					// Get brand information
-					$scope.brandDetails = dataRepository.getBrandById($scope.brandId);
+      dataRepositoryFactory.ready(
+        $scope,
+        function () {
+          var dataRepository = dataRepositoryFactory.getDataRepository();
+          // Get brand information
+          $scope.brandDetails = dataRepository.getBrandById($scope.brandId);
 
-					if($scope.brandDetails === null) {
-						return;
-					}
+          if ($scope.brandDetails === null) {
+            return;
+          }
 
-					// Get products for this brand
-					$scope.brandProducts = dataRepository.getBrandProductsForBrand($scope.brandDetails);
+          // Get products for this brand
+          $scope.brandProducts = dataRepository.getBrandProductsForBrand($scope.brandDetails);
 
-					// Get categories related to this brand
-					$scope.relatedCategories = dataRepository.getRelatedCategoriesForBrand($scope.brandDetails);
+          // Get categories related to this brand
+          $scope.relatedCategories = dataRepository.getRelatedCategoriesForBrand($scope.brandDetails);
 
-					$scope.loaded = true;
-			});
+          $scope.loaded = true;
+        });
 
-		}]);
+    }]);

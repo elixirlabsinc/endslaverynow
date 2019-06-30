@@ -8,34 +8,34 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp')
-	.controller('CategoryCtrl', [
-		'$transition$',
-		'$scope',
-		'dataRepositoryFactory',
-		function($transition$, $scope, dataRepositoryFactory){
-			$scope.categoryId = $transition$.params().id;
-			$scope.loaded = false;
-			$scope.categoryBrands = [];
-			$scope.categoryProducts = [];
-			$scope.relatedCategories = [];
+  .controller('CategoryCtrl', [
+    '$transition$',
+    '$scope',
+    'dataRepositoryFactory',
+    function ($transition$, $scope, dataRepositoryFactory) {
+      $scope.categoryId = $transition$.params().id;
+      $scope.loaded = false;
+      $scope.categoryBrands = [];
+      $scope.categoryProducts = [];
+      $scope.relatedCategories = [];
 
-			dataRepositoryFactory.ready(
-				$scope,
-				function() {
-					var dataRepository = dataRepositoryFactory.getDataRepository();
-					// Get brand information
-					$scope.categoryDetails = dataRepository.getCategoryById($scope.categoryId);
+      dataRepositoryFactory.ready(
+        $scope,
+        function () {
+          var dataRepository = dataRepositoryFactory.getDataRepository();
+          // Get brand information
+          $scope.categoryDetails = dataRepository.getCategoryById($scope.categoryId);
 
-					if($scope.categoryDetails === null) {
-						return;
-					}
+          if ($scope.categoryDetails === null) {
+            return;
+          }
 
-					// Get lists of related objects.
-					$scope.relatedCategories = dataRepository.getRelatedCategoriesForCategory($scope.categoryDetails);
-					$scope.categoryBrands = dataRepository.getBrandCategoriesForCategory($scope.categoryDetails);
-					$scope.categoryProducts = dataRepository.getCategoryProductsForCategory($scope.categoryDetails);
+          // Get lists of related objects.
+          $scope.relatedCategories = dataRepository.getRelatedCategoriesForCategory($scope.categoryDetails);
+          $scope.categoryBrands = dataRepository.getBrandCategoriesForCategory($scope.categoryDetails);
+          $scope.categoryProducts = dataRepository.getCategoryProductsForCategory($scope.categoryDetails);
 
-					$scope.loaded = true;
-				});
+          $scope.loaded = true;
+        });
 
-		}]);
+    }]);

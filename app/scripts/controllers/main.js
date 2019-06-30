@@ -8,18 +8,18 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp')
-	.controller('MainCtrl', [
-		'$scope',
-		'dataRepositoryFactory',
-		function ($scope, dataRepositoryFactory) {
-			$scope.categories = [];
+  .controller('MainCtrl', [
+    '$scope',
+    'dataRepositoryFactory',
+    function ($scope, dataRepositoryFactory) {
+      $scope.categories = [];
 
-			dataRepositoryFactory.ready(
-				$scope,
-				function() {
-					$scope.categories = dataRepositoryFactory.getDataRepository().getTopLevelCategories();
+      dataRepositoryFactory.ready(
+        $scope,
+        function () {
+          $scope.categories = dataRepositoryFactory.getDataRepository().getTopLevelCategories();
 
-					$scope.loaded = true;
-				});
+          $scope.loaded = true;
+        });
 
-		}]);
+    }]);

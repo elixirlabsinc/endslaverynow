@@ -8,16 +8,16 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp')
-	.controller('CertificationsCtrl', [
-		'$scope',
-		'dataRepositoryFactory',
-		function($scope, dataRepositoryFactory) {
-			dataRepositoryFactory.ready(
-				$scope,
-				function() {
-					// Get certification information
-					$scope.certifications = dataRepositoryFactory.getDataRepository().getCertifications();
+  .controller('CertificationsCtrl', [
+    '$scope',
+    'dataRepositoryFactory',
+    function ($scope, dataRepositoryFactory) {
+      dataRepositoryFactory.ready(
+        $scope,
+        function () {
+          // Get certification information
+          $scope.certifications = dataRepositoryFactory.getDataRepository().getCertifications();
 
-					$scope.loaded = true;
-				});
-		}]);
+          $scope.loaded = true;
+        });
+    }]);
