@@ -55,6 +55,15 @@ var Category = (function () {
 			this.image = imageName;
 		},
 
+		isImageAnUpload: function isImageAnUpload() {
+			// @TODO: This needs do more checks, really.
+			return Array.isArray(this.image) && this.image.length === 1 ;
+		},
+
+		getImageUploadFolder: function getImageUploadFolder() {
+			return 'Category';
+		},
+
 		getParentCategoryId: function getParentCategoryId() {
 			return this.parentCategoryId;
 		},

@@ -209,8 +209,7 @@ var DataRepository = function(dataContainer, syncObject) {
 		brandSource.name = brand.getName();
 		brandSource.description = brand.getDescription();
 		brandSource.categories = brand.getCategoryIdAsCsl();
-		// @TODO: Re-instate this line.
-		// brandSource.image = brand.getImage();
+		brandSource.image = brand.getImage();
 		brandSource.ranking = brand.getRanking();
 		// brandSource.brandUrl = brand.getBrandURL(); // @TODO: There does not seem to be a URL property in the data.
 		this.save(successMsg, callback);

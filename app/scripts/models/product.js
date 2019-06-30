@@ -49,6 +49,15 @@ var Product = (function () {
 			this.image = image;
 		},
 
+		getImageUploadFolder: function getImageUploadFolder() {
+			return 'Product';
+		},
+
+		isImageAnUpload: function isImageAnUpload() {
+			// @TODO: This needs do more checks, really.
+			return Array.isArray(this.image) && this.image.length === 1 ;
+		},
+
 		getCategoryId: function getCategoryId() {
 			return this.categoryId;
 		},

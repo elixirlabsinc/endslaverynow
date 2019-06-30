@@ -85,17 +85,22 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 			}
 			if ($scope.Image) {
 				brand.setImage($scope.Image);
-				// @TODO: the uploadImages method needs to be moved to the DataRepository class.
-				uploadImages(syncObject.brands[$scope.brandId], 'brand', syncObject)
-			} else {
-				$scope.dataRepository.persistBrand(
-					brand,
-					'Edit has been completed!',
-					function () {
-						$state.go('admin.editBrands');
-					}
-				);
 			}
+
+			var persistService = new PersistService(dataRepositoryFactory, $scope.dataRepository, dataRepositoryFactory.getStorageRepository());
+			persistService.processBrand(
+				brand,
+				'Edit has been completed!',
+				function () {
+					$state.go('admin.editBrands');
+				}
+			);
+
+			// @TODO: the uploadImages method needs to be moved to the DataRepository class.
+			// @TODO: This has been done now, so should be able to remove these lines, and uploadImages().
+				// uploadImages(syncObject.brands[$scope.brandId], 'brand', syncObject)
+			// } else {
+			// }
 		};
 
 		syncObject.$loaded().then(function() {

@@ -5,6 +5,14 @@ var DataRepositoryFactory = function ($firebaseObject) {
 	this.syncObject = $firebaseObject(ref);
 
 	this.dataRepository = null;
+	this.storageRepository = new StorageRepository(firebase);
+
+	this.$scope = null;
+	this.bind = function bind() {
+		if (this.$scope) {
+			this.syncObject.$bindTo(this.$scope, 'data');
+		}
+	};
 
 	/**
 	 * This method binds the sync object to the "data" property of the scope object. Unfortunately, you can only
@@ -16,10 +24,11 @@ var DataRepositoryFactory = function ($firebaseObject) {
 	 * @param callback
 	 */
 	this.ready = function ready($scope, callback) {
-
-		this.syncObject.$bindTo($scope, 'data');
-
 		var self = this;
+
+		self.$scope = $scope;
+		self.bind();
+
 		this.syncObject.$loaded().then(function() {
 			self.dataRepository = new DataRepository($scope, self.syncObject);
 			// @TODO: We should probably check that "callback" is defined and is a function.
@@ -30,5 +39,9 @@ var DataRepositoryFactory = function ($firebaseObject) {
 	this.getDataRepository = function getDataRepository() {
 		// @TODO: We should fail this if the data repository hasn't been initialised.
 		return this.dataRepository;
+	};
+
+	this.getStorageRepository = function getStorageRepository() {
+		return this.storageRepository;
 	};
 };

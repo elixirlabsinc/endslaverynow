@@ -9,8 +9,9 @@
  */
 angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
 	'$scope',
+	'$firebaseObject', // @TODO: This can be removed once the image stuff is done
 	'dataRepositoryFactory',
-	function ($scope, dataRepositoryFactory) {
+	function ($scope, $firebaseObject, dataRepositoryFactory) {
 		$scope.loaded = false;
 
 		$scope.brands = [];

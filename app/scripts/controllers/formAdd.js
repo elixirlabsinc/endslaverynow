@@ -105,7 +105,8 @@ angular.module('endslaverynowApp')
 
 	    dataRepositoryFactory.ready(
         $scope,
-        function(dataRepository) {
+        function() {
+          var dataRepository = dataRepositoryFactory.getDataRepository();
           $scope.categories = alphabetizeCollection(dataRepository.getCategories().filter(Boolean));
           $scope.brands = alphabetizeCollection(dataRepository.getBrands());
           $scope.products = dataRepository.getProducts();
@@ -141,13 +142,16 @@ angular.module('endslaverynowApp')
               return;
             }
 
-          switch ($scope.formType) {
+            var model = null;
+            switch ($scope.formType) {
               case $scope.availableTypes.Brands:
 	              item.categories = $scope.selectedCategoryId.toString();
 	              item.ranking = $scope.selectedRankName;
+	              model = new Brand(item);
                   break;
 	          case $scope.availableTypes.Categories:
 		          item.parentCategoryId = $scope.selectedParentCategoryId || 0;
+		          model = new Category(item);
 		          break;
 	          case $scope.availableTypes.Products:
 		          item.brandId = $scope.selectedBrandId;
@@ -155,6 +159,7 @@ angular.module('endslaverynowApp')
 		          item.purchaseUrl = prependHttp(item.purchaseUrl);
 		          item.purchaseURlClicks = 0;
 		          item.parentCategoryId = 0;
+		          model = new Product(item);
 		          break;
           }
 
@@ -167,18 +172,33 @@ angular.module('endslaverynowApp')
 	            addForm.style.display = 'none';
 	            var successMessage = document.getElementById('submitted-form');
 	            successMessage.style.display = 'block';
-            }
+            };
+            var doPersist = function doPersist() {
+	            switch ($scope.formType) {
+		            case $scope.availableTypes.Brands:
+			            $scope.dataRepository.persistBrand(model, null, onCompletion);
+			            break;
+		            case $scope.availableTypes.Categories:
+			            $scope.dataRepository.persistCategory(model, null, onCompletion);
+			            break;
+		            case $scope.availableTypes.Products:
+			            $scope.dataRepository.persistProduct(model, null, onCompletion);
+			            break;
+	            }
+            };
+            var persistService = new PersistService($scope.dataRepository, dataRepositoryFactory.storageRepository);
 	        switch ($scope.formType) {
 		        case $scope.availableTypes.Brands:
-			        $scope.dataRepository.persistBrand(new Brand(item), null, onCompletion);
+			        persistService.processBrand(model, doPersist);
 			        break;
 		        case $scope.availableTypes.Categories:
-			        $scope.dataRepository.persistCategory(new Category(item), null, onCompletion);
+			        persistService.processCategory(model, doPersist);
 			        break;
 		        case $scope.availableTypes.Products:
-			        $scope.dataRepository.persistProduct(new Product(item), null, onCompletion);
+			        persistService.processProduct(model, doPersist);
 			        break;
 	        }
+	        // @TODO: Should be able to remove this line, and remove the method.
           // uploadImages(item, $scope.formType)
         }
       };

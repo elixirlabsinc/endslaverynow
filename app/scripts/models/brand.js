@@ -48,8 +48,17 @@ var Brand = (function () {
 			return this.image;
 		},
 
-		setImage: function setImage(imageName) {
-			this.image = imageName;
+		setImage: function setImage(imageData) {
+			this.image = imageData;
+		},
+
+		isImageAnUpload: function isImageAnUpload() {
+			// @TODO: This needs do more checks, really.
+			return Array.isArray(this.image) && this.image.length === 1 ;
+		},
+
+		getImageUploadFolder: function getImageUploadFolder() {
+			return 'Brand';
 		},
 
 		getCategoryIdAsArray: function getCategoryIdAsArray() {
