@@ -16,6 +16,8 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 	function($firebaseObject, $transition$, $scope, $state, dataRepositoryFactory) {
 		$scope.categoryId = $transition$.params().id;
 
+		$scope.dataRepository = null;
+
 		$scope.categories = [];
 
 		$scope.NameValue = null;
@@ -31,6 +33,9 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 				$scope.categories = $scope.dataRepository.getCategories();
 
 				// Set up the individual field values.
+				/**
+				 * @var {Category} category
+				 */
 				var category = $scope.dataRepository.getCategoryById($scope.categoryId);
 				$scope.name = category.getName();
 				$scope.description = category.getDescription();
@@ -74,16 +79,20 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 			}
 			if ($scope.Image) {
 				category.setImage($scope.Image);
-				uploadImages(syncObject.categories[$scope.categoryId], 'category', syncObject)
-			} else {
-				$scope.dataRepository.persistCategory(
-					category,
-					'Edit has been completed!',
-					function () {
-						$state.go('admin.editCategories');
-					}
-				);
 			}
+
+			var persistService = new PersistService(
+				dataRepositoryFactory,
+				$scope.dataRepository,
+				dataRepositoryFactory.getStorageRepository()
+			);
+			persistService.processCategory(
+				category,
+				'Edit has been completed!',
+				function () {
+					$state.go('admin.editCategories');
+				}
+			);
 		};
 
     syncObject.$loaded().then(function() {

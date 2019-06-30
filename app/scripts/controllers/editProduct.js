@@ -95,16 +95,20 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 			}
 			if ($scope.Image) {
 				product.setImage($scope.Image);
-				uploadImages(syncObject.products[$scope.productId], 'product', syncObject)
-			} else {
-				$scope.dataRepository.persistProduct(
-					product,
-					'Edit has been completed!',
-					function () {
-						$state.go('admin.editProducts');
-					}
-				);
 			}
+
+			var persistService = new PersistService(
+				dataRepositoryFactory,
+				$scope.dataRepository,
+				dataRepositoryFactory.getStorageRepository()
+			);
+			persistService.processProduct(
+				product,
+				'Edit has been completed!',
+				function () {
+					$state.go('admin.editProducts');
+				}
+			);
 		};
 
 		syncObject.$loaded().then(function() {

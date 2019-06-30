@@ -16,12 +16,12 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 	function($firebaseObject, $transition$, $scope, $state, dataRepositoryFactory) {
 		$scope.brandId = $transition$.params().id;
 
+		$scope.dataRepository = null;
+
 		// FIXME: I don't think brands and products are used, but check before removing.
 		$scope.brands = [];
 		$scope.categories = [];
 		$scope.products = [];
-
-		$scope.dataRepository = null;
 
 		$scope.NameValue = null;
 		$scope.DescriptionValue = null;
@@ -70,6 +70,9 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 
 		$scope.processForm = function() {
 			// Start with the original brand object, and overwrite any values with values the user has changed.
+			/**
+			 * @var {Brand} brand
+			 */
 			var brand = $scope.dataRepository.getBrandById($scope.brandId);
 			if ($scope.NameValue) {
 				brand.setName($scope.NameValue);
@@ -87,7 +90,11 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 				brand.setImage($scope.Image);
 			}
 
-			var persistService = new PersistService(dataRepositoryFactory, $scope.dataRepository, dataRepositoryFactory.getStorageRepository());
+			var persistService = new PersistService(
+				dataRepositoryFactory,
+				$scope.dataRepository,
+				dataRepositoryFactory.getStorageRepository()
+			);
 			persistService.processBrand(
 				brand,
 				'Edit has been completed!',
