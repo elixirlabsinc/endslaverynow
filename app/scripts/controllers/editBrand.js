@@ -102,12 +102,6 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 					$state.go('admin.editBrands');
 				}
 			);
-
-			// @TODO: the uploadImages method needs to be moved to the DataRepository class.
-			// @TODO: This has been done now, so should be able to remove these lines, and uploadImages().
-				// uploadImages(syncObject.brands[$scope.brandId], 'brand', syncObject)
-			// } else {
-			// }
 		};
 
 		syncObject.$loaded().then(function() {

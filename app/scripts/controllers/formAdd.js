@@ -166,7 +166,6 @@ angular.module('endslaverynowApp')
         if (!validInput(item, itemTypes[$scope.formType].requiredInputs)) {
           $scope.errorMessage = true;
         } else {
-            // @TODO: Need callback function to do what uploadImages does when it saves a new entity.
             var onCompletion = function onCompletion() {
 	            var addForm = document.getElementById('add-form');
 	            addForm.style.display = 'none';
@@ -202,8 +201,6 @@ angular.module('endslaverynowApp')
 			        persistService.processProduct(model, null, doPersist);
 			        break;
 	        }
-	        // @TODO: Should be able to remove this line, and remove the method.
-          // uploadImages(item, $scope.formType)
         }
       };
 
