@@ -8,12 +8,11 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditBrandCtrl', [
-	'$firebaseObject', // @TODO: This can be removed once the image stuff is done
 	'$transition$',
 	'$scope',
 	'$state',
 	'dataRepositoryFactory',
-	function($firebaseObject, $transition$, $scope, $state, dataRepositoryFactory) {
+	function($transition$, $scope, $state, dataRepositoryFactory) {
 		$scope.brandId = $transition$.params().id;
 
 		$scope.dataRepository = null;

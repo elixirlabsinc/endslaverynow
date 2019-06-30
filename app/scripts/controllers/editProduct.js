@@ -8,12 +8,11 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditProductCtrl', [
-	'$firebaseObject', // @TODO: This can be removed once the image stuff is done
 	'$stateParams',
 	'$scope',
 	'$state',
 	'dataRepositoryFactory',
-	function($firebaseObject, $stateParams, $scope, $state, dataRepositoryFactory) {
+	function($stateParams, $scope, $state, dataRepositoryFactory) {
 		$scope.productId = $stateParams.id;
 
 		$scope.dataRepository = null;
