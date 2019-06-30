@@ -9,8 +9,9 @@
  */
 angular.module('endslaverynowApp').controller('EditProductsCtrl', [
   '$scope',
+  '$window',
   'dataRepositoryFactory',
-  function ($scope, dataRepositoryFactory) {
+  function ($scope, $window, dataRepositoryFactory) {
     $scope.dataRepository = null;
 
     $scope.loaded = false;
@@ -29,8 +30,8 @@ angular.module('endslaverynowApp').controller('EditProductsCtrl', [
 
     $scope.getNameForBrandId = function getNameForBrandId(brandId) {
       if (brandId) {
-        // Of course, this assumes a brand is found!
-        return $scope.dataRepository.getBrandById(brandId).getName();
+        var referencedBrand = $scope.dataRepository.getBrandById(brandId);
+        return referencedBrand ? referencedBrand.getName() : '';
       } else {
         return '';
       }
@@ -38,26 +39,26 @@ angular.module('endslaverynowApp').controller('EditProductsCtrl', [
 
     $scope.getNameForCategoryId = function getNameForCategoryId(categoryId) {
       if (categoryId) {
-        // Of course, this assumes a category is found!
-        return $scope.dataRepository.getCategoryById(categoryId).getName();
+        var referencedCategory = $scope.dataRepository.getCategoryById(categoryId);
+        return referencedCategory ? referencedCategory.getName() : '';
       } else {
         return '';
       }
     };
 
     /**
-     * @param productsRef
      * @param {Product} product
      */
-    $scope.deleteProduct = function (productsRef, product) {
+    $scope.deleteProduct = function (product) {
       var prompt = "Are you sure you want to delete product '" + product.getName() + "'?";
       if (!window.confirm(prompt)) {
         return;
       }
-      // @TODO: This will need to use the new-style delete process.
-      productsRef.$remove(product).catch(
-        function (error) {
-          console.log("Error deleting product: ", error);
+      $scope.dataRepository.deleteProduct(
+        product,
+        function () {
+          // @TODO: We need to find a more efficient/nicer way of refreshing the list of brands.
+          $window.location.reload();
         }
       );
     };

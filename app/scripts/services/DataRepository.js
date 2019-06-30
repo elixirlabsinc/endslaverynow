@@ -8,10 +8,12 @@
  *
  * @param dataContainer
  * @param syncObject
+ * @param recordSets
  * @constructor
  */
-var DataRepository = function (dataContainer, syncObject) {
+var DataRepository = function (dataContainer, syncObject, recordSets) {
   this.syncObject = syncObject;
+  this.recordSets = recordSets;
   this.brands = [];
   this.categories = [];
   this.products = [];
@@ -285,5 +287,83 @@ var DataRepository = function (dataContainer, syncObject) {
       ++id;
     }
     return id;
+  };
+
+  /**
+   * @TODO: Presumably we should update any references to this brand (or prevent delete if anything references it)?
+   * @TODO: And what about uploaded images? Should they be deleted? What if something else is referencing it?
+   *
+   * @param {Brand} brandModel
+   * @param callback
+   */
+  this.deleteBrand = function deleteBrand(brandModel, callback) {
+    // Determine the index of the firebase array, using the brand model's id.
+    var indexToDelete = null;
+    this.recordSets.brands.forEach(function(brand, index) {
+      if (brand.id === brandModel.getId()) {
+        indexToDelete = index;
+      }
+    });
+    if (indexToDelete !== null) {
+      // We found it, so delete it. If the delete was successful, run the callback function.
+      this.recordSets.brands.$remove(indexToDelete).then(function () {
+        callback();
+      }).catch(function (error) {
+          console.log("Error deleting brand: ", error);
+        }
+      );
+    }
+  };
+
+  /**
+   * @TODO: Presumably we should update any references to this category (or prevent delete if anything references it)?
+   * @TODO: And what about uploaded images? Should they be deleted? What if something else is referencing it?
+   *
+   * @param {Category} categoryModel
+   * @param callback
+   */
+  this.deleteCategory = function deleteCategory(categoryModel, callback) {
+    // Determine the index of the firebase array, using the category model's id.
+    var indexToDelete = null;
+    this.recordSets.categories.forEach(function(category, index) {
+      if (category.id === categoryModel.getId()) {
+        indexToDelete = index;
+      }
+    });
+    if (indexToDelete !== null) {
+      // We found it, so delete it. If the delete was successful, run the callback function.
+      this.recordSets.categories.$remove(indexToDelete).then(function () {
+        callback();
+      }).catch(function (error) {
+          console.log("Error deleting category: ", error);
+        }
+      );
+    }
+  };
+
+  /**
+   * @TODO: Presumably we should update any references to this product (or prevent delete if anything references it)?
+   * @TODO: And what about uploaded images? Should they be deleted? What if something else is referencing it?
+   *
+   * @param {Product} productModel
+   * @param callback
+   */
+  this.deleteProduct = function deleteProduct(productModel, callback) {
+    // Determine the index of the firebase array, using the product model's id.
+    var indexToDelete = null;
+    this.recordSets.products.forEach(function(product, index) {
+      if (product.id === productModel.getId()) {
+        indexToDelete = index;
+      }
+    });
+    if (indexToDelete !== null) {
+      // We found it, so delete it. If the delete was successful, run the callback function.
+      this.recordSets.products.$remove(indexToDelete).then(function () {
+        callback();
+      }).catch(function (error) {
+          console.log("Error deleting product: ", error);
+        }
+      );
+    }
   };
 };

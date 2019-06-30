@@ -9,8 +9,11 @@
  */
 angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
   '$scope',
+  '$window',
   'dataRepositoryFactory',
-  function ($scope, dataRepositoryFactory) {
+  function ($scope, $window, dataRepositoryFactory) {
+    $scope.dataRepository = null;
+
     $scope.loaded = false;
 
     $scope.categories = [];
@@ -18,25 +21,26 @@ angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
     dataRepositoryFactory.ready(
       $scope,
       function () {
-        $scope.categories = dataRepositoryFactory.getDataRepository().getCategories();
+        $scope.dataRepository = dataRepositoryFactory.getDataRepository();
+        $scope.categories = $scope.dataRepository.getCategories();
 
         $scope.loaded = true;
       }
     );
 
     /**
-     * @param categoriesRef
      * @param {Category} category
      */
-    $scope.deleteCategory = function (categoriesRef, category) {
+    $scope.deleteCategory = function (category) {
       var prompt = "Are you sure you want to delete category '" + category.getName() + "'?";
       if (!window.confirm(prompt)) {
         return;
       }
-      // @TODO: This will need to use the new-style delete process.
-      categoriesRef.$remove(category).catch(
-        function (error) {
-          console.log("Error deleting category: ", error);
+      $scope.dataRepository.deleteCategory(
+        category,
+        function () {
+          // @TODO: We need to find a more efficient/nicer way of refreshing the list of brands.
+          $window.location.reload();
         }
       );
     };

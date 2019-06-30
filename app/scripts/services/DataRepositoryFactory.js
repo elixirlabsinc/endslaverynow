@@ -1,8 +1,13 @@
 'use strict';
 
-var DataRepositoryFactory = function ($firebaseObject) {
-  var ref = firebase.database().ref();
-  this.syncObject = $firebaseObject(ref);
+var DataRepositoryFactory = function ($firebaseObject, $firebaseArray) {
+  var db = firebase.database();
+  this.syncObject = $firebaseObject(db.ref());
+  this.recordSets = {
+    brands: $firebaseArray(db.ref('brands')),
+    categories: $firebaseArray(db.ref('categories')),
+    products: $firebaseArray(db.ref('products'))
+  };
 
   this.dataRepository = null;
   this.storageRepository = new StorageRepository(firebase);
@@ -41,7 +46,7 @@ var DataRepositoryFactory = function ($firebaseObject) {
         }
       );
 
-      self.dataRepository = new DataRepository($scope, self.syncObject);
+      self.dataRepository = new DataRepository($scope, self.syncObject, self.recordSets);
       // @TODO: We should probably check that "callback" is defined and is a function.
       callback();
     });

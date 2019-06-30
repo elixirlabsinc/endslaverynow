@@ -9,34 +9,37 @@
  */
 angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
   '$scope',
+  '$window',
   'dataRepositoryFactory',
-  function ($scope, dataRepositoryFactory) {
+  function ($scope, $window, dataRepositoryFactory) {
     $scope.loaded = false;
+    $scope.dataRepository = null;
 
     $scope.brands = [];
 
     dataRepositoryFactory.ready(
       $scope,
       function () {
-        $scope.brands = dataRepositoryFactory.getDataRepository().getBrands();
+        $scope.dataRepository = dataRepositoryFactory.getDataRepository();
+        $scope.brands = $scope.dataRepository.getBrands();
 
         $scope.loaded = true;
       }
     );
 
     /**
-     * @param brandsRef
      * @param {Brand} brand
      */
-    $scope.deleteBrand = function (brandsRef, brand) {
+    $scope.deleteBrand = function (brand) {
       var prompt = "Are you sure you want to delete brand '" + brand.getName() + "'?";
       if (!window.confirm(prompt)) {
         return;
       }
-      // @TODO: This will need to use the new-style delete process.
-      brandsRef.$remove(brand).catch(
-        function (error) {
-          console.log("Error deleting brand: ", error);
+      $scope.dataRepository.deleteBrand(
+        brand,
+        function () {
+          // @TODO: We need to find a more efficient/nicer way of refreshing the list of brands.
+          $window.location.reload();
         }
       );
     };
