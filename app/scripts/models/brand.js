@@ -28,24 +28,24 @@ var Brand = (function () {
       this.id = newId;
     },
 
-    hasName: function hasName() {
-      return this.name !== null;
-    },
-
     getName: function getName() {
       return this.name;
+    },
+
+    hasName: function hasName() {
+      return this.name !== null;
     },
 
     setName: function setName(name) {
       this.name = name;
     },
 
-    hasImage: function hasImage() {
-      return this.image !== null;
-    },
-
     getImage: function getImage() {
       return this.image;
+    },
+
+    hasImage: function hasImage() {
+      return this.image !== null;
     },
 
     setImage: function setImage(imageData) {
@@ -79,36 +79,36 @@ var Brand = (function () {
       this.categoryIds = categoryIds;
     },
 
-    hasRanking: function hasRanking() {
-      return this.ranking !== null;
-    },
-
     getRanking: function getRanking() {
       return this.ranking;
+    },
+
+    hasRanking: function hasRanking() {
+      return this.ranking !== null;
     },
 
     setRanking: function setRanking(ranking) {
       this.ranking = ranking;
     },
 
-    hasDescription: function hasDescription() {
-      return this.description !== null;
-    },
-
     getDescription: function getDescription() {
       return this.description;
+    },
+
+    hasDescription: function hasDescription() {
+      return this.description !== null;
     },
 
     setDescription: function setDescription(description) {
       this.description = description;
     },
 
-    hasBrandURL: function hasBrandURL() {
-      return this.brandUrl !== null;
-    },
-
     getBrandURL: function getBrandURL() {
       return this.brandUrl;
+    },
+
+    hasBrandURL: function hasBrandURL() {
+      return this.brandUrl !== null;
     }
   };
 

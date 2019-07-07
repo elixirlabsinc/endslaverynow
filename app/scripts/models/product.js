@@ -37,12 +37,12 @@ var Product = (function () {
       this.name = name;
     },
 
-    hasImage: function hasImage() {
-      return this.image !== null;
-    },
-
     getImage: function getImage() {
       return this.image;
+    },
+
+    hasImage: function hasImage() {
+      return this.image !== null;
     },
 
     setImage: function setImage(image) {
@@ -74,12 +74,12 @@ var Product = (function () {
       this.brandId = brandId;
     },
 
-    hasPurchaseUrl: function hasPurchaseUrl() {
-      return this.purchaseUrl !== null;
-    },
-
     getPurchaseUrl: function getPurchaseUrl() {
       return this.purchaseUrl;
+    },
+
+    hasPurchaseUrl: function hasPurchaseUrl() {
+      return this.purchaseUrl !== null;
     },
 
     setPurchaseUrl: function setPurchaseUrl(purchaseUrl) {

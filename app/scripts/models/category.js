@@ -23,12 +23,12 @@ var Category = (function () {
       this.id = newId;
     },
 
-    hasName: function hasName() {
-      return this.name !== null;
-    },
-
     getName: function getName() {
       return this.name;
+    },
+
+    hasName: function hasName() {
+      return this.name !== null;
     },
 
     setName: function setName(name) {
@@ -43,12 +43,12 @@ var Category = (function () {
       this.description = description;
     },
 
-    hasImage: function hasImage() {
-      return this.image !== null;
-    },
-
     getImage: function getImage() {
       return this.image;
+    },
+
+    hasImage: function hasImage() {
+      return this.image !== null;
     },
 
     setImage: function setImage(imageName) {
@@ -68,12 +68,12 @@ var Category = (function () {
       return this.parentCategoryId;
     },
 
-    setParentCategoryId: function setParentCategoryId(parentCategoryId) {
-      this.parentCategoryId = parentCategoryId;
-    },
-
     hasParentCategory: function hasParentCategory() {
       return this.getParentCategoryId() > 0;
+    },
+
+    setParentCategoryId: function setParentCategoryId(parentCategoryId) {
+      this.parentCategoryId = parentCategoryId;
     }
   };
 
