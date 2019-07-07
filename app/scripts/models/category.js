@@ -60,10 +60,6 @@ var Category = (function () {
       return Array.isArray(this.image) && this.image.length === 1;
     },
 
-    getImageUploadFolder: function getImageUploadFolder() {
-      return 'Category';
-    },
-
     getParentCategoryId: function getParentCategoryId() {
       return this.parentCategoryId;
     },

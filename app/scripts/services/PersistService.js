@@ -29,7 +29,7 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
       // The image is an upload, so upload it, get the URL
       this.storageRepository.uploadImageInModel(
         localBrand.getImage(),
-        localBrand.getImageUploadFolder(),
+        this.storageRepository.getImageUploadFolderNames().brand,
         function (downloadURL) {
           localBrand.setImage(downloadURL);
           doPersist();
@@ -53,7 +53,7 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
       // The image is an upload, so upload it, get the URL
       this.storageRepository.uploadImageInModel(
         localCategory.getImage(),
-        localCategory.getImageUploadFolder(),
+        this.storageRepository.getImageUploadFolderNames().category,
         function (downloadURL) {
           localCategory.setImage(downloadURL);
           doPersist();
@@ -77,7 +77,7 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
       // The image is an upload, so upload it, get the URL
       this.storageRepository.uploadImageInModel(
         localProduct.getImage(),
-        localProduct.getImageUploadFolder(),
+        this.storageRepository.getImageUploadFolderNames().product,
         function (downloadURL) {
           localProduct.setImage(downloadURL);
           doPersist();

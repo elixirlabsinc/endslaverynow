@@ -5,6 +5,12 @@ var StorageRepository = function (firebase) {
   this.storageFunc = firebase.storage();
   this.storageRef = this.storageFunc.ref();
 
+  const uploadFolderNames = {
+    brand: 'Brand',
+    category: 'Category',
+    product: 'Product'
+  };
+
   this.extractLatestImage = function extractLatestImage(imageData) {
     // imageData is an array of file uploads. We want to return an array containing just the last one.
     // If it's not an array, just return it unchanged.
@@ -18,6 +24,10 @@ var StorageRepository = function (firebase) {
     } else {
       return imageData;
     }
+  };
+
+  this.getImageUploadFolderNames = function getImageUploadFolderNames() {
+    return uploadFolderNames;
   };
 
   /**

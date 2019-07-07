@@ -49,10 +49,6 @@ var Product = (function () {
       this.image = image;
     },
 
-    getImageUploadFolder: function getImageUploadFolder() {
-      return 'Product';
-    },
-
     imageRequiresUploading: function imageRequiresUploading() {
       // @TODO: This needs do more checks, really.
       return Array.isArray(this.image) && this.image.length === 1;

@@ -57,10 +57,6 @@ var Brand = (function () {
       return Array.isArray(this.image) && this.image.length === 1;
     },
 
-    getImageUploadFolder: function getImageUploadFolder() {
-      return 'Brand';
-    },
-
     getCategoryIdAsArray: function getCategoryIdAsArray() {
       return this.categoryIds;
     },
