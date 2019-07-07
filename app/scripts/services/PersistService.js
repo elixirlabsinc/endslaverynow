@@ -25,7 +25,7 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
       self.dataRepository.persistBrand(localBrand, message, callback);
     };
 
-    if (localBrand.isImageAnUpload()) {
+    if (localBrand.imageRequiresUploading()) {
       // The image is an upload, so upload it, get the URL
       this.storageRepository.uploadImageInModel(
         localBrand.getImage(),
@@ -49,7 +49,7 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
       self.dataRepository.persistCategory(localCategory, message, callback);
     };
 
-    if (localCategory.isImageAnUpload()) {
+    if (localCategory.imageRequiresUploading()) {
       // The image is an upload, so upload it, get the URL
       this.storageRepository.uploadImageInModel(
         localCategory.getImage(),
@@ -73,7 +73,7 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
       self.dataRepository.persistProduct(localProduct, message, callback);
     };
 
-    if (localProduct.isImageAnUpload()) {
+    if (localProduct.imageRequiresUploading()) {
       // The image is an upload, so upload it, get the URL
       this.storageRepository.uploadImageInModel(
         localProduct.getImage(),

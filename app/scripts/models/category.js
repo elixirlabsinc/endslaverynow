@@ -55,7 +55,7 @@ var Category = (function () {
       this.image = imageName;
     },
 
-    isImageAnUpload: function isImageAnUpload() {
+    imageRequiresUploading: function imageRequiresUploading() {
       // @TODO: This needs do more checks, really.
       return Array.isArray(this.image) && this.image.length === 1;
     },
