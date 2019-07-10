@@ -10,22 +10,22 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="prod in products" >
+        <tr ng-repeat="product in products" >
             <td>
-                <img ng-if="!prod.image" src="images/noimage.png" height="50px">
-                <img ng-if="prod.image" ng-src="{{ prod.image }}" height="50px">
+                <img ng-if="!product.hasImage()" src="images/noimage.png" height="50px">
+                <img ng-if="product.hasImage()" ng-src="{{ product.getImage() }}" height="50px">
             </td>
 
-            <td>{{prod.name}}</td>
+            <td>{{product.getName()}}</td>
 
-            <td>{{prod.brandId}}</td>
-            <td>{{prod.categoryId}}</td>
-            <td>{{prod.description}}</td>
+            <td>{{getNameForBrandId(product.getBrandId())}}</td>
+            <td>{{getNameForCategoryId(product.getCategoryId())}}</td>
+            <td>{{product.getDescription()}}</td>
             <td>
                 <button type="button" class="btn btn-success">
-                    <a href="#!/admin/editProduct/{{ prod.id }}">Edit</a>
+                    <a href="#!/admin/editProduct/{{ product.getId() }}">Edit</a>
                 </button>
-                <button type="button" class="btn btn-danger" ng-click="deleteProduct(products, prod)">
+                <button type="button" class="btn btn-danger" ng-click="deleteProduct(product)">
                   Delete
                 </button>
             </td>

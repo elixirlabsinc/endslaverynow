@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -8,25 +8,18 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp')
-	.controller('MainCtrl', [
-		'$scope',
-		'$firebaseObject',
-		function ($scope, $firebaseObject) {
-			$scope.categories = []
+  .controller('MainCtrl', [
+    '$scope',
+    'dataRepositoryFactory',
+    function ($scope, dataRepositoryFactory) {
+      $scope.categories = [];
 
-			/* firebase */
-			var ref = firebase.database().ref()
-			var syncObject = $firebaseObject(ref)
+      dataRepositoryFactory.ready(
+        $scope,
+        function () {
+          $scope.categories = dataRepositoryFactory.getDataRepository().getTopLevelCategories();
 
-			syncObject.$loaded().then(function() {
-				for(var category in syncObject.categories) {
-					var tempCat = syncObject.categories[category]
-					if (!(tempCat.parentCategoryId > 0)) {
-						$scope.categories.push(tempCat)
-					}
-				}
+          $scope.loaded = true;
+        });
 
-				$scope.loaded = true
-			})
-
-		}])
+    }]);

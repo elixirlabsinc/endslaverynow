@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -8,40 +8,40 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp')
-	.controller('ProductCtrl', [
-		'$firebaseObject',
-		'$transition$',
-		'$scope',
-		function($firebaseObject, $transition$, $scope){
-			$scope.productId = $transition$.params().id
-			$scope.productClicked = false
+  .controller('ProductCtrl', [
+    '$transition$',
+    '$scope',
+    'dataRepositoryFactory',
+    function ($transition$, $scope, dataRepositoryFactory) {
+      $scope.productId = $transition$.params().id;
+      $scope.productClicked = false;
+      $scope.dataRepository = null;
 
-			var ref = firebase.database().ref()
-			var syncObject = $firebaseObject(ref)
+      dataRepositoryFactory.ready(
+        $scope,
+        function () {
+          $scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
-			syncObject.$loaded().then(function() {
-				// Get product information
-				$scope.productDetails = syncObject.products[$scope.productId]
+          // Get product information
+          $scope.productDetails = $scope.dataRepository.getProductById($scope.productId);
 
-				if($scope.productDetails === null) {
-					return
-				}
+          if ($scope.productDetails === null) {
+            return;
+          }
 
-				// TODO: CHECK FOR BRAND ID IN PRODUCTD DETAILS BEFORE ASSIGNING BRAND DETAILS
-				$scope.brandDetails = syncObject.brands[$scope.productDetails.brandId]
-				$scope.categoryDetails = syncObject.categories[$scope.productDetails.categoryId]
+          $scope.brandDetails = $scope.dataRepository.getBrandById($scope.productDetails.getBrandId());
+          $scope.categoryDetails = $scope.dataRepository.getCategoryById($scope.productDetails.getCategoryId());
 
-				$scope.loaded = true
-			})
+          $scope.loaded = true;
+        });
 
-			syncObject.$bindTo($scope, 'data')
+      $scope.updateClickCount = function () {
+        // Spam Click check - not too sophisticated atm
+        if (!$scope.productClicked && $scope.dataRepository !== null) {
+          $scope.productClicked = true;
+          $scope.productDetails.incrementPurchaseUrlClicks();
+          $scope.dataRepository.persistProduct($scope.productDetails);
+        }
+      };
 
-			$scope.updateClickCount = function() {
-				// Spam Click check - not too sophisticated atm
-				if(!$scope.productClicked) {
-					$scope.productClicked = true
-					var updatedClickCount = parseInt($scope.productDetails.purchaseURlClicks) + 1
-					$scope.data.products[$scope.productId].purchaseURlClicks = updatedClickCount
-				}
-			}
-		}])
+    }]);

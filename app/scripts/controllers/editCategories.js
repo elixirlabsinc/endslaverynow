@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -8,30 +8,41 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
-	'$firebaseArray',
-	'$scope',
-	function($firebaseArray, $scope) {
-		$scope.loaded = false
+  '$scope',
+  '$window',
+  'dataRepositoryFactory',
+  function ($scope, $window, dataRepositoryFactory) {
+    $scope.dataRepository = null;
 
-		/* firebase */
-    var ref = firebase.database().ref('categories')
-    $scope.categories = $firebaseArray(ref)
+    $scope.loaded = false;
 
-    $scope.deleteCategory = function(categoriesRef, category) {
-      var categoryName = category.name
-      var prompt = "Are you sure you want to delete category '" + categoryName + "'?"
-      if (!confirm(prompt)) {
-        return
+    $scope.categories = [];
+
+    dataRepositoryFactory.ready(
+      $scope,
+      function () {
+        $scope.dataRepository = dataRepositoryFactory.getDataRepository();
+        $scope.categories = $scope.dataRepository.getCategories();
+
+        $scope.loaded = true;
       }
-      categoriesRef.$remove(category).catch(
-        function(error) {
-          console.log("Error deleting category: ", error)
-        }
-      )
-    }
+    );
 
-		$scope.categories.$loaded().then(function() {
-			$scope.loaded = true
-		})
-	}
-])
+    /**
+     * @param {Category} category
+     */
+    $scope.deleteCategory = function (category) {
+      var prompt = "Are you sure you want to delete category '" + category.getName() + "'?";
+      if (!window.confirm(prompt)) {
+        return;
+      }
+      $scope.dataRepository.deleteCategory(
+        category,
+        function () {
+          // @TODO: We need to find a more efficient/nicer way of refreshing the list of brands.
+          $window.location.reload();
+        }
+      );
+    };
+  }
+]);

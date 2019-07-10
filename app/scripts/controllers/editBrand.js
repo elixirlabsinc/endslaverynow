@@ -1,4 +1,5 @@
-'use strict'
+'use strict';
+
 /**
  * @ngdoc function
  * @name endslaverynowApp.controller:EditBrandCtrl
@@ -7,69 +8,96 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditBrandCtrl', [
-	'$firebaseObject',
-	'$transition$',
-	'$scope',
-	'$state',
-	function($firebaseObject, $transition$, $scope, $state) {
-		$scope.brandId = $transition$.params().id
+  '$transition$',
+  '$scope',
+  '$state',
+  'dataRepositoryFactory',
+  function ($transition$, $scope, $state, dataRepositoryFactory) {
+    $scope.brandId = $transition$.params().id;
 
-		var ref = firebase.database().ref()
-		var syncObject = $firebaseObject(ref)
+    $scope.dataRepository = null;
 
-		$scope.products = []
+    // FIXME: I don't think brands and products are used, but check before removing.
+    $scope.brands = [];
+    $scope.categories = [];
+    $scope.products = [];
 
-		$scope.processForm = function() {
-			if ($scope.NameValue) {
-				syncObject.brands[$scope.brandId].name = $scope.NameValue
-			}
-			if ($scope.DescriptionValue) {
-				syncObject.brands[$scope.brandId].description = $scope.DescriptionValue
-			}
-			if ($scope.selectedRankName){
-				syncObject.brands[$scope.brandId].ranking = $scope.selectedRankName
-			}
-			if ($scope.selectedCategoryId) {
-				syncObject.brands[$scope.brandId].categories = $scope.selectedCategoryId
-			}
-			if ($scope.Image) {
-				syncObject.brands[$scope.brandId].image = $scope.Image
-				uploadImages(syncObject.brands[$scope.brandId], 'brand', syncObject)
-			} else {
-				saveSyncObject(syncObject, 'Edit has been completed!')
-			}
-			$state.go('admin.editBrands')
-		}
+    $scope.NameValue = null;
+    $scope.DescriptionValue = null;
+    $scope.selectedRankName = null;
+    $scope.selectedCategoryId = null;
+    $scope.selectedCategoryName = null;
+    $scope.Image = null;
 
-		syncObject.$loaded().then(function() {
-			$scope.brands = syncObject.brands
-			$scope.categories = syncObject.categories
-			$scope.products = syncObject.products
-			$scope.loaded = true
-			$scope.name = syncObject.brands[$scope.brandId].name
-			$scope.description = syncObject.brands[$scope.brandId].description
-			$scope.ranking = syncObject.brands[$scope.brandId].ranking
-			$scope.image = syncObject.brands[$scope.brandId].image
-			$scope.rankingOptions = { good: 'Good', better: 'Better', best: 'Best' }
-			$scope.CategoryId = syncObject.brands[$scope.brandId].categories
-			$scope.cat = syncObject.categories[$scope.CategoryId]
+    dataRepositoryFactory.ready(
+      $scope,
+      function () {
+        $scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
-			$scope.setRanking = function (rank) {
-				$scope.selectedRankName = rank
-			}
-			$scope.setCategory = function (category) {
-				$scope.selectedCategoryId = category.id
-				$scope.selectedCategoryName = category.name
-			}
+        $scope.brands = $scope.dataRepository.getBrands();
+        $scope.categories = $scope.dataRepository.getCategories();
+        $scope.products = $scope.dataRepository.getProducts();
 
-			syncObject.$save().then(
-				function() {
-					console.log('Done') // true
-				},
-				function(error) {
-					console.log('Error:', error)
-				}
-			)
-		})
-	}
-])
+        // Set up the individual field values.
+        /**
+         * @var {Brand} brand
+         */
+        var brand = $scope.dataRepository.getBrandById($scope.brandId);
+        $scope.name = brand.getName();
+        $scope.description = brand.getDescription();
+        $scope.ranking = brand.getRanking();
+        $scope.image = brand.getImage();
+        $scope.rankingOptions = (new Ranking()).getRankingOptions(); // Ideally needs to be a static method.
+        // @TODO: If $scope.CategoryId is not used anywhere else, it should just be a local variable.
+        $scope.CategoryId = brand.getFirstCategoryId();
+        $scope.cat = $scope.CategoryId === null ? null : $scope.dataRepository.getCategoryById($scope.CategoryId);
+
+        $scope.setRanking = function (rankName) {
+          $scope.selectedRankName = rankName;
+        };
+        $scope.setCategory = function (category) {
+          $scope.selectedCategoryId = category.getId();
+          $scope.selectedCategoryName = category.getName();
+        };
+
+        $scope.loaded = true;
+      }
+    );
+
+    $scope.processForm = function () {
+      // Start with the original brand object, and overwrite any values with values the user has changed.
+      /**
+       * @var {Brand} brand
+       */
+      var brand = $scope.dataRepository.getBrandById($scope.brandId);
+      if ($scope.NameValue) {
+        brand.setName($scope.NameValue);
+      }
+      if ($scope.DescriptionValue) {
+        brand.setDescription($scope.DescriptionValue);
+      }
+      if ($scope.selectedRankName) {
+        brand.setRanking($scope.selectedRankName);
+      }
+      if ($scope.selectedCategoryId) {
+        brand.setCategoryIds([$scope.selectedCategoryId]); // We need to pass in an array of category ids.
+      }
+      if ($scope.Image) {
+        brand.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.Image));
+      }
+
+      var persistService = new PersistService(
+        dataRepositoryFactory,
+        $scope.dataRepository,
+        dataRepositoryFactory.getStorageRepository()
+      );
+      persistService.processBrand(
+        brand,
+        'Edit has been completed!',
+        function () {
+          $state.go('admin.editBrands');
+        }
+      );
+    };
+  }
+]);

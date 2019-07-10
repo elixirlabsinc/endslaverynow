@@ -3,20 +3,20 @@
 
   <br>
 
-  <div class="select-item-type" ng-click="selectItemType('categories')">
+  <div class="select-item-type" ng-click="selectItemType(availableTypes.Categories)">
     Category
   </div>
 
-  <div class="select-item-type" ng-click="selectItemType('brands')">
+  <div class="select-item-type" ng-click="selectItemType(availableTypes.Brands)">
     Brand
   </div>
 
-  <div class="select-item-type" ng-click="selectItemType('products')">
+  <div class="select-item-type" ng-click="selectItemType(availableTypes.Products)">
     Product
   </div>
 </div>
 
-<div ng-if = "formType !== ''">
+<div ng-if="formType !== ''">
   <br>
   <div class="add-form" id="add-form">
 
@@ -46,7 +46,7 @@
       ></textarea>
     </div>
 
-    <div class="form-group" ng-if="formType === 'products'">
+    <div class="form-group" ng-if="formType === availableTypes.Products">
       <input
       type="text"
       class="form-control"
@@ -58,7 +58,7 @@
     >
     </div>
 
-    <div class="dropdown form-group" ng-if="formType !== 'categories'">
+    <div class="dropdown form-group" ng-if="formType !== availableTypes.Categories">
       <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{selectedCategoryName || 'Select Category'}}
       </button>
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div class="dropdown form-group" ng-if="formType === 'categories'">
+    <div class="dropdown form-group" ng-if="formType === availableTypes.Categories">
       <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{selectedParentCategoryName || 'Select Parent Category'}}
       </button>
@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <div class="dropdown form-group" ng-if="formType === 'products'">
+    <div class="dropdown form-group" ng-if="formType === availableTypes.Products">
       <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{selectedBrandName || 'Select Brand'}}
       </button>
@@ -87,7 +87,7 @@
       </div>
     </div>
 
-    <div class="dropdown form-group" ng-if="formType === 'brands'">
+    <div class="dropdown form-group" ng-if="formType === availableTypes.Brands">
       <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{selectedRankName || 'Select Ranking'}}
       </button>

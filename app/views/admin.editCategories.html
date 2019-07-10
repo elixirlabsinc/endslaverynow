@@ -10,17 +10,17 @@
     <tbody>
         <tr ng-repeat="category in categories">
             <td>
-                <img ng-if="!category.image" src="images/noimage.png" height="50px">
-                <img ng-if="category.image" ng-src="{{ category.image }}" height="50px">
+                <img ng-if="!category.hasImage()" src="images/noimage.png" height="50px">
+                <img ng-if="category.hasImage()" ng-src="{{ category.getImage() }}" height="50px">
             </td>
 
-            <td>{{category.name}}</td>
-            <td>{{category.description}}</td>
+            <td>{{category.getName()}}</td>
+            <td>{{category.getDescription()}}</td>
             <td>
               <button type="button" class="btn btn-success">
-                <a href="#!/admin/editCategory/{{ category.id }}">Edit</a>
+                <a href="#!/admin/editCategory/{{ category.getId() }}">Edit</a>
               </button>
-              <button type="button" class="btn btn-danger" ng-click="deleteCategory(categories, category)">
+              <button type="button" class="btn btn-danger" ng-click="deleteCategory(category)">
                 Delete
               </button>
             </td>

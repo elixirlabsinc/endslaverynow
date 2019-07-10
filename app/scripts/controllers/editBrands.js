@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -8,32 +8,40 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
-	'$firebaseArray',
-	'$scope',
-	function ($firebaseArray, $scope) {
-		$scope.loaded = false
-		$scope.brands = []
+  '$scope',
+  '$window',
+  'dataRepositoryFactory',
+  function ($scope, $window, dataRepositoryFactory) {
+    $scope.loaded = false;
+    $scope.dataRepository = null;
 
-		/* firebase */
-    var ref = firebase.database().ref('brands')
-    $scope.brands = $firebaseArray(ref)
+    $scope.brands = [];
 
-    $scope.deleteBrand = function(brandsRef, brand) {
-      var brandName = brand.name
-      var prompt = "Are you sure you want to delete brand '" + brandName + "'?"
+    dataRepositoryFactory.ready(
+      $scope,
+      function () {
+        $scope.dataRepository = dataRepositoryFactory.getDataRepository();
+        $scope.brands = $scope.dataRepository.getBrands();
 
-      if (!confirm(prompt)) {
-        return
+        $scope.loaded = true;
       }
-      brandsRef.$remove(brand).catch(
-        function(error) {
-          console.log("Error deleting brand: ", error)
-        }
-      )
-    }
+    );
 
-		$scope.brands.$loaded().then(function () {
-			$scope.loaded = true
-		})
-	}
-])
+    /**
+     * @param {Brand} brand
+     */
+    $scope.deleteBrand = function (brand) {
+      var prompt = "Are you sure you want to delete brand '" + brand.getName() + "'?";
+      if (!window.confirm(prompt)) {
+        return;
+      }
+      $scope.dataRepository.deleteBrand(
+        brand,
+        function () {
+          // @TODO: We need to find a more efficient/nicer way of refreshing the list of brands.
+          $window.location.reload();
+        }
+      );
+    };
+  }
+]);

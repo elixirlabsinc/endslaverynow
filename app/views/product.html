@@ -3,30 +3,30 @@
             No Product Details Found
         </div>
     </div>
-    
+
     <div ng-if="brandDetails">
         <div class="col-md-12 thumbnail">
             <br>
             <div class="col-md-4">
-                    <img ng-if="!productDetails.image" src="images/noimage.png" height="400px" class="img-rounded img-responsive">
-                    <img ng-if="productDetails.image" ng-src="{{ productDetails.image }}" height="400px" class="img-rounded img-responsive">
+                    <img ng-if="!productDetails.hasImage()" src="images/noimage.png" height="400px" class="img-rounded img-responsive">
+                    <img ng-if="productDetails.hasImage()" ng-src="{{ productDetails.getImage() }}" height="400px" class="img-rounded img-responsive">
                 </div>
-    
+
             <div class="col-md-8">
-                <h2>{{ productDetails.name }}</h2>
-                <p ng-if="brandDetails.name">Brand: <a href="#!/brand/{{ productDetails.brandId }}">{{ brandDetails.name }}</a></p>
-                <p ng-if="categoryDetails.name">Category: <a href="#!/category/{{ productDetails.categoryId }}">{{ categoryDetails.name }}</a></p>
-                <p ng-if="productDetails.description">{{ productDetails.description }}</p>
-    
+                <h2>{{ productDetails.getName() }}</h2>
+                <p ng-if="brandDetails.hasName()">Brand: <a href="#!/brand/{{ productDetails.getBrandId() }}">{{ brandDetails.getName() }}</a></p>
+                <p ng-if="categoryDetails.hasName()">Category: <a href="#!/category/{{ productDetails.getCategoryId() }}">{{ categoryDetails.getName() }}</a></p>
+                <p ng-if="productDetails.hasDescription()">{{ productDetails.getDescription() }}</p>
+
                 <a
+                    ng-if="productDetails.hasPurchaseUrl()"
                     ng-click="updateClickCount()"
-                    href="{{ productDetails.purchaseUrl }}"
+                    href="{{ productDetails.getPurchaseUrl() }}"
                     class="btn purchaseButton"
-                    ng-if="productDetails.purchaseUrl"
                     target="_blank"
                     height="200px"
                 >
-                    Purchase {{productDetails.name }}
+                    Purchase {{productDetails.getName() }}
                 </a>
             </div>
             <br>&nbsp;<br>

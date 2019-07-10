@@ -1,4 +1,5 @@
-'use strict'
+'use strict';
+
 /**
  * @ngdoc function
  * @name endslaverynowApp.controller:EditProductCtrl
@@ -7,74 +8,103 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditProductCtrl', [
-	'$firebaseObject',
-	'$stateParams',
-	'$scope',
+  '$stateParams',
+  '$scope',
   '$state',
-	function($firebaseObject, $stateParams, $scope, $state) {
-		$scope.productId = $stateParams.id;
+  'dataRepositoryFactory',
+  function ($stateParams, $scope, $state, dataRepositoryFactory) {
+    $scope.productId = $stateParams.id;
 
-		var ref = firebase.database().ref()
-		var syncObject = $firebaseObject(ref)
+    $scope.dataRepository = null;
 
-		$scope.processForm = function() {
-			if ($scope.NameValue) {
-				syncObject.products[$scope.productId].name = $scope.NameValue
-			}
-			if ($scope.DescriptionValue) {
-				syncObject.products[$scope.productId].description = $scope.DescriptionValue
-			}
-			if ($scope.PurchaseURLValue) {
-				syncObject.products[$scope.productId].purchaseUrl = $scope.PurchaseURLValue
-			}
-			if ($scope.selectedCategoryId) {
-				syncObject.products[$scope.productId].categoryId = $scope.selectedCategoryId
-			}
-			if ($scope.selectedBrandId) {
-				syncObject.products[$scope.productId].brandId = $scope.selectedBrandId
-			}
-			if ($scope.Image) {
-				syncObject.products[$scope.productId].image = $scope.Image
-				uploadImages(syncObject.products[$scope.productId], 'product', syncObject)
-			} else {
-				saveSyncObject(syncObject, 'Edit has been completed!')
-			}
-			$state.go('admin.editProducts')
-		}
+    $scope.NameValue = null;
+    $scope.DescriptionValue = null;
+    $scope.PurchaseURLValue = null;
+    $scope.selectedCategoryId = null;
+    $scope.selectedBrandId = null;
+    $scope.Image = null;
 
-		syncObject.$loaded().then(function() {
-			$scope.brands = syncObject.brands
-			$scope.categories = syncObject.categories
-			$scope.products = syncObject.products
-			$scope.loaded = true
-			$scope.name = syncObject.products[$scope.productId].name
-			$scope.description = syncObject.products[$scope.productId].description
-			$scope.ranking = syncObject.products[$scope.productId].ranking
-			$scope.image = syncObject.products[$scope.productId].image
+    dataRepositoryFactory.ready(
+      $scope,
+      function () {
+        $scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
-			$scope.CategoryId = syncObject.products[$scope.productId].categoryId
-			$scope.cat = syncObject.categories[$scope.CategoryId]
-			$scope.BrandId = syncObject.products[$scope.productId].brandId
-			$scope.brand = syncObject.brands[$scope.BrandId]
-			$scope.purchaseURL = syncObject.products[$scope.productId].purchaseUrl
+        $scope.brands = $scope.dataRepository.getBrands();
+        $scope.categories = $scope.dataRepository.getCategories();
+        $scope.products = $scope.dataRepository.getProducts();
 
-			$scope.setCategory = function (category) {
-				$scope.selectedCategoryId = category.id
-				$scope.selectedCategoryName = category.name
-			}
-			$scope.setBrand = function(brand) {
-				$scope.selectedBrandId = brand.id
-				$scope.selectedBrandName = brand.name
-			};
+        // Set up the individual field values.
+        /**
+         * @var {Product} product
+         */
+        var product = $scope.dataRepository.getProductById($scope.productId);
+        $scope.name = product.getName();
+        $scope.description = product.getDescription();
+        $scope.ranking = product.getRanking();
+        $scope.image = product.getImage();
+        $scope.CategoryId = product.getCategoryId();
+        $scope.BrandId = product.getBrandId();
+        $scope.purchaseURL = product.getPurchaseUrl();
 
-			syncObject.$save().then(
-				function() {
-					console.log('Done') // true
-				},
-				function(error) {
-					console.log('Error:', error)
-				}
-			)
-		})
-	}
-])
+        $scope.brand = $scope.dataRepository.getBrandById($scope.BrandId);
+        $scope.cat = $scope.dataRepository.getCategoryById($scope.CategoryId);
+
+        $scope.loaded = true;
+
+        /**
+         * @param category {Category}
+         */
+        $scope.setCategory = function (category) {
+          $scope.selectedCategoryId = category.getId();
+          $scope.selectedCategoryName = category.getName();
+        };
+        /**
+         * @param brand {Brand}
+         */
+        $scope.setBrand = function (brand) {
+          $scope.selectedBrandId = brand.getId();
+          $scope.selectedBrandName = brand.getName();
+        };
+      }
+    );
+
+    $scope.processForm = function () {
+      // Start with the original product object, and overwrite any values with values the user has changed.
+      /**
+       * @var {Product} product
+       */
+      var product = $scope.dataRepository.getProductById($scope.productId);
+      if ($scope.NameValue) {
+        product.setName($scope.NameValue);
+      }
+      if ($scope.DescriptionValue) {
+        product.setDescription($scope.DescriptionValue);
+      }
+      if ($scope.PurchaseURLValue) {
+        product.setPurchaseUrl($scope.PurchaseURLValue);
+      }
+      if ($scope.selectedCategoryId) {
+        product.setCategoryId($scope.selectedCategoryId);
+      }
+      if ($scope.selectedBrandId) {
+        product.setBrandId($scope.selectedBrandId);
+      }
+      if ($scope.Image) {
+        product.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.Image));
+      }
+
+      var persistService = new PersistService(
+        dataRepositoryFactory,
+        $scope.dataRepository,
+        dataRepositoryFactory.getStorageRepository()
+      );
+      persistService.processProduct(
+        product,
+        'Edit has been completed!',
+        function () {
+          $state.go('admin.editProducts');
+        }
+      );
+    };
+  }
+]);

@@ -17,80 +17,6 @@
     <!-- endbuild -->
 
     <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
-    <!-- <script src="public/firebase.js"></script> -->
-    <script type="text/javascript">
-      var uploadImages = function(data, uploadType, syncObject) {
-        var file = data.image[0];
-
-        var storage = firebase.storage();
-        var storageRef = storage.ref();
-
-        // set file metadata
-        var metadata = {
-            contentType: 'image/jpeg'
-        };
-
-        // use Firebase push call to upload file to Firebase
-        var uploadTask = storageRef.child(uploadType + '/images/' + file.name).put(file, metadata);
-
-        // monitor Firebase upload progress and catch errors
-        var uploadedImageUrl = uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-          function(snapshot) {
-          }, function(error) {
-              // catch an error when it happens, note: there are more error codes
-              switch(error.code) {
-                  case 'storage/bucket_not_found':
-                      console.log('The Bucket for this storage could not be found');
-                      break;
-                  case 'storage/unauthorized':
-                      console.log('User doesn\'t have access');
-                      break;
-                  case 'storage/cancelled':
-                      console.log('User cancelled the upload process');
-                      break;
-                  case 'storage/unknown':
-                      console.log('Unknown error');
-                      break;
-              }
-            return;
-          }, function() {
-              // on success, display the uploaded image on the page
-              var downloadURL = uploadTask.snapshot.downloadURL;
-              data.image = downloadURL;
-
-              if (syncObject == undefined) {
-                // for creating new item
-                writeNewPost(data, uploadType)
-
-                var addForm = document.getElementById('add-form');
-                addForm.style.display = 'none';
-                var successMessage = document.getElementById('submitted-form');
-                successMessage.style.display = 'block';
-              } else {
-                // for editing an item
-                saveSyncObject(syncObject, 'Edit has been completed!')
-              }
-          });
-
-      }
-
-      function writeNewPost(data, uploadType) {
-        var updates = {};
-        updates['/' + uploadType + '/' + data.id] = data;
-        return firebase.database().ref().update(updates);
-      }
-
-      function saveSyncObject(syncObject, successMsg) {
-        syncObject.$save().then(
-          function() {
-            window.alert(successMsg)
-          },
-          function(error) {
-            window.alert('Error:', error)
-          }
-        )
-      }
-    </script>
 
   </head>
   <body ng-app="endslaverynowApp">
@@ -141,9 +67,9 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="col-md-5">
-                A project by 
+                A project by
                 <a href="http://www.endslaverynow.org/" target="_blank"><img src="images/logo.png" height="30px"></a>
-                  in partnership with 
+                  in partnership with
                 <a href="http://www.freedomcenter.org/" target="_blank"><img src="images/nurfc.png" height="30px"></a>
               </div>
               <div class="col-md-3 col-md-offset-4">
@@ -202,6 +128,15 @@
         <script src="scripts/controllers/users.js"></script>
         <script src="scripts/controllers/editProducts.js"></script>
         <script src="scripts/controllers/editProduct.js"></script>
+        <script src="scripts/services/DataRepositoryFactory.js"></script>
+        <script src="scripts/services/StorageRepository.js"></script>
+        <script src="scripts/services/DataRepository.js"></script>
+        <script src="scripts/services/PersistService.js"></script>
+        <script src="scripts/models/brand.js"></script>
+        <script src="scripts/models/certification.js"></script>
+        <script src="scripts/models/category.js"></script>
+        <script src="scripts/models/product.js"></script>
+        <script src="scripts/models/ranking.js"></script>
         <script src="scripts/envConfig.js"></script>
         <!-- endbuild -->
 

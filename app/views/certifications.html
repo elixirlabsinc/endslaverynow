@@ -9,7 +9,7 @@
             Error: No Certifications Found
         </div>
     </div>
-    
+
     <div ng-if="loaded">
         <div class="" ng-if="loaded && certifications.length > 0">
             <div class="row">
@@ -17,10 +17,10 @@
                     <div ng-if="cert != null">
                         <div class="col-sm-6 col-md-6">
                             <div class="thumbnail">
-                                <h3>{{ cert.name }}</h3>
-                                <p>{{ cert.description }}</p>
-                                <img ng-if="!cert.image" src="images/noimage.png" height="200px">
-                                <img ng-if="cert.image" ng-src="{{ cert.image }}" height="200px">
+                                <h3>{{ cert.getName() }}</h3>
+                                <p>{{ cert.getDescription() }}</p>
+                                <img ng-if="!cert.hasImage()" src="images/noimage.png" height="200px">
+                                <img ng-if="cert.hasImage()" ng-src="{{ cert.getImage() }}" height="200px">
                             </div>
                         </div>
                     </div>

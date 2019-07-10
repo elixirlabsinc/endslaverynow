@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc function
@@ -8,29 +8,60 @@
  * Controller of the endslaverynowApp
  */
 angular.module('endslaverynowApp').controller('EditProductsCtrl', [
-	'$firebaseArray',
-	'$scope',
-	function($firebaseArray, $scope) {
-		$scope.loaded = false
+  '$scope',
+  '$window',
+  'dataRepositoryFactory',
+  function ($scope, $window, dataRepositoryFactory) {
+    $scope.dataRepository = null;
 
-		/* firebase */
-    var ref = firebase.database().ref('products')
-    $scope.products = $firebaseArray(ref)
+    $scope.loaded = false;
 
-    $scope.deleteProduct = function(productsRef, product) {
-      var prompt = "Are you sure you want to delete product '" + product.name + "'?"
-      if (!confirm(prompt)) {
-        return
+    $scope.products = [];
+
+    dataRepositoryFactory.ready(
+      $scope,
+      function () {
+        $scope.dataRepository = dataRepositoryFactory.getDataRepository();
+        $scope.products = $scope.dataRepository.getProducts();
+
+        $scope.loaded = true;
       }
-      productsRef.$remove(product).catch(
-        function(error) {
-          console.log("Error deleting product: ", error)
-        }
-      )
-    }
+    );
 
-    $scope.products.$loaded().then(function() {
-      $scope.loaded = true
-		})
-	}
-])
+    $scope.getNameForBrandId = function getNameForBrandId(brandId) {
+      if (brandId) {
+        var referencedBrand = $scope.dataRepository.getBrandById(brandId);
+        return referencedBrand ? referencedBrand.getName() : '';
+      } else {
+        return '';
+      }
+    };
+
+    $scope.getNameForCategoryId = function getNameForCategoryId(categoryId) {
+      if (categoryId) {
+        var referencedCategory = $scope.dataRepository.getCategoryById(categoryId);
+        return referencedCategory ? referencedCategory.getName() : '';
+      } else {
+        return '';
+      }
+    };
+
+    /**
+     * @param {Product} product
+     */
+    $scope.deleteProduct = function (product) {
+      var prompt = "Are you sure you want to delete product '" + product.getName() + "'?";
+      if (!window.confirm(prompt)) {
+        return;
+      }
+      $scope.dataRepository.deleteProduct(
+        product,
+        function () {
+          // @TODO: We need to find a more efficient/nicer way of refreshing the list of brands.
+          $window.location.reload();
+        }
+      );
+    };
+
+  }
+]);
