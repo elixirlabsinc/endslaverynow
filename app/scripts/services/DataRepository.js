@@ -7,13 +7,10 @@
  * can bind to the raw data.
  *
  * @param dataContainer
- * @param syncObject
  * @param recordSets
  * @constructor
  */
-var DataRepository = function (dataContainer, syncObject, recordSets) {
-  this.syncObject = syncObject;
-console.log('this.syncObject:', this.syncObject);
+var DataRepository = function (dataContainer, recordSets) {
   this.recordSets = recordSets;
   this.brands = [];
   this.categories = [];
@@ -26,24 +23,24 @@ console.log('this.syncObject:', this.syncObject);
     this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
     var self = this;
 
-    if (this.syncObject.hasOwnProperty('brands')) {
-      this.syncObject.brands.forEach(
+    if (this.recordSets.hasOwnProperty('brands')) {
+      this.recordSets.brands.forEach(
         function (brand) {
           self.brands.push(new Brand(brand));
         }
       );
     }
 
-    if (this.syncObject.hasOwnProperty('categories')) {
-      this.syncObject.categories.forEach(
+    if (this.recordSets.hasOwnProperty('categories')) {
+      this.recordSets.categories.forEach(
         function (category) {
           self.categories.push(new Category(category));
         }
       );
     }
 
-    if (this.syncObject.hasOwnProperty('products')) {
-      this.syncObject.products.forEach(
+    if (this.recordSets.hasOwnProperty('products')) {
+      this.recordSets.products.forEach(
         function (product) {
           self.products.push(new Product(product));
         }
