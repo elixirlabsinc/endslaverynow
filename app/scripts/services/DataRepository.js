@@ -3,19 +3,21 @@
 /**
  * This class handles the interface between the raw source data and the application. It exposes the raw data in
  * the form of models (and arrays of models). The "persist" methods write the data back to the data property in
- * the container that's passed in. The container is actually a scope object (controller) as it's the only way we
- * can bind to the raw data.
- * @TODO: Remove the line above about the container and binding.
+ * the container that's passed in.
  *
- * @param dataContainer
  * @param recordSets
  * @constructor
  */
-var DataRepository = function (dataContainer, recordSets) {
+var DataRepository = function (recordSets) {
   this.recordSets = recordSets;
   this.brands = [];
   this.categories = [];
   this.products = [];
+  const collectionNames = {
+    brands: 'brands',
+    categories: 'categories',
+    products: 'products'
+  };
 
   this.init = function init() {
     this.brands = [];
@@ -24,7 +26,7 @@ var DataRepository = function (dataContainer, recordSets) {
     this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
     var self = this;
 
-    if (this.recordSets.hasOwnProperty('brands')) {
+    if (this.recordSets.hasOwnProperty(collectionNames.brands)) {
       this.recordSets.brands.forEach(
         function (brand) {
           self.brands.push(new Brand(brand));
@@ -32,7 +34,7 @@ var DataRepository = function (dataContainer, recordSets) {
       );
     }
 
-    if (this.recordSets.hasOwnProperty('categories')) {
+    if (this.recordSets.hasOwnProperty(collectionNames.categories)) {
       this.recordSets.categories.forEach(
         function (category) {
           self.categories.push(new Category(category));
@@ -40,7 +42,7 @@ var DataRepository = function (dataContainer, recordSets) {
       );
     }
 
-    if (this.recordSets.hasOwnProperty('products')) {
+    if (this.recordSets.hasOwnProperty(collectionNames.products)) {
       this.recordSets.products.forEach(
         function (product) {
           self.products.push(new Product(product));
@@ -256,7 +258,7 @@ var DataRepository = function (dataContainer, recordSets) {
       // Overwrite the record with the values from the model.
       this.populateRecordFromBrandModel(brandSource, brand);
       // Save the record back to the store.
-      this.update('brands', brandIndex, successMsg, callback);
+      this.update(collectionNames.brands, brandIndex, successMsg, callback);
 
     } else {
 
@@ -268,7 +270,7 @@ var DataRepository = function (dataContainer, recordSets) {
       // Populate the record with the values from the model.
       this.populateRecordFromBrandModel(newBrand, brand);
       // Create the record in the store.
-      this.insert('brands', newBrand, successMsg, callback);
+      this.insert(collectionNames.brands, newBrand, successMsg, callback);
 
     }
   };
@@ -291,7 +293,7 @@ var DataRepository = function (dataContainer, recordSets) {
       // Overwrite the record with the values from the model.
       this.populateRecordFromCategoryModel(categorySource, category);
       // Save the record back to the store.
-      this.update('categories', categoryIndex, successMsg, callback);
+      this.update(collectionNames.categories, categoryIndex, successMsg, callback);
 
     } else {
 
@@ -303,7 +305,7 @@ var DataRepository = function (dataContainer, recordSets) {
       // Populate the record with the values from the model.
       this.populateRecordFromCategoryModel(newCategory, category);
       // Create the record in the store.
-      this.insert('categories', newCategory, successMsg, callback);
+      this.insert(collectionNames.categories, newCategory, successMsg, callback);
 
     }
   };
@@ -326,7 +328,7 @@ var DataRepository = function (dataContainer, recordSets) {
       // Overwrite the record with the values from the model.
       this.populateRecordFromProductModel(productSource, product);
       // Save the record back to the store.
-      this.update('products', productIndex, successMsg, callback);
+      this.update(collectionNames.products, productIndex, successMsg, callback);
 
     } else {
 
@@ -338,7 +340,7 @@ var DataRepository = function (dataContainer, recordSets) {
       // Populate the record with the values from the model.
       this.populateRecordFromProductModel(newProduct, product);
       // Create the record in the store.
-      this.insert('products', newProduct, successMsg, callback);
+      this.insert(collectionNames.products, newProduct, successMsg, callback);
 
     }
   };

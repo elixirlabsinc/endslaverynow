@@ -18,7 +18,6 @@ angular.module('endslaverynowApp')
       $scope.dataRepository = null;
 
       dataRepositoryFactory.ready(
-        $scope,
         function () {
           $scope.dataRepository = dataRepositoryFactory.getDataRepository();
 

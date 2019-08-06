@@ -104,7 +104,6 @@ angular.module('endslaverynowApp')
       };
 
       dataRepositoryFactory.ready(
-        $scope,
         function () {
           var dataRepository = dataRepositoryFactory.getDataRepository();
           $scope.categories = alphabetizeCollection(dataRepository.getCategories().filter(Boolean));

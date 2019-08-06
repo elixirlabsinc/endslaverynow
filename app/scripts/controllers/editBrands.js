@@ -18,7 +18,6 @@ angular.module('endslaverynowApp').controller('EditBrandsCtrl', [
     $scope.brands = [];
 
     dataRepositoryFactory.ready(
-      $scope,
       function () {
         $scope.dataRepository = dataRepositoryFactory.getDataRepository();
         $scope.brands = $scope.dataRepository.getBrands();

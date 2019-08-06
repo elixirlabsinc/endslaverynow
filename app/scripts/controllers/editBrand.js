@@ -30,7 +30,6 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
     $scope.Image = null;
 
     dataRepositoryFactory.ready(
-      $scope,
       function () {
         $scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
