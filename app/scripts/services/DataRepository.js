@@ -5,6 +5,7 @@
  * the form of models (and arrays of models). The "persist" methods write the data back to the data property in
  * the container that's passed in. The container is actually a scope object (controller) as it's the only way we
  * can bind to the raw data.
+ * @TODO: Remove the line above about the container and binding.
  *
  * @param dataContainer
  * @param recordSets

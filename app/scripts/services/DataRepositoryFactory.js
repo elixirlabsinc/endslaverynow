@@ -13,16 +13,9 @@ var DataRepositoryFactory = function ($firebaseObject, $firebaseArray) {
   this.storageRepository = new StorageRepository(firebase);
 
   this.$scope = null;
-  this.bind = function bind() {
-    if (this.$scope) {
-      this.syncObject.$bindTo(this.$scope, 'data');
-    }
-  };
 
   /**
-   * This method binds the sync object to the "data" property of the scope object. Unfortunately, you can only
-   * bind to a controller ($scope), otherwise we could just use the repository class or whatever.
-   * It then waits until the firebase object has been initialised, and then constructs a new data repository
+   * This method waits until the firebase object has been initialised, and then constructs a new data repository
    * with it, passing in the scope, and then passes that in to the callback function provided by the calling code.
    *
    * @param $scope
@@ -32,7 +25,6 @@ var DataRepositoryFactory = function ($firebaseObject, $firebaseArray) {
     var self = this;
 
     self.$scope = $scope;
-    self.bind();
 
     this.syncObject.$loaded().then(function () {
       self.dataRepository = new DataRepository($scope, self.recordSets);

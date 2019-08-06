@@ -21,7 +21,6 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
     // Build the process that will persist the brand (mainly so we don't have to duplicate fairly complex code).
     var self = this;
     var doPersist = function doPersist() {
-      dataRepositoryFactory.bind();
       self.dataRepository.persistBrand(localBrand, message, callback);
     };
 
@@ -45,7 +44,6 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
     // Build the process that will persist the category (mainly so we don't have to duplicate fairly complex code).
     var self = this;
     var doPersist = function doPersist() {
-      dataRepositoryFactory.bind();
       self.dataRepository.persistCategory(localCategory, message, callback);
     };
 
@@ -69,7 +67,6 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
     // Build the process that will persist the product (mainly so we don't have to duplicate fairly complex code).
     var self = this;
     var doPersist = function doPersist() {
-      dataRepositoryFactory.bind();
       self.dataRepository.persistProduct(localProduct, message, callback);
     };
 
