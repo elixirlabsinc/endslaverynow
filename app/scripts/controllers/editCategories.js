@@ -9,9 +9,9 @@
  */
 angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
   '$scope',
-  '$window',
+  '$state',
   'dataRepositoryFactory',
-  function ($scope, $window, dataRepositoryFactory) {
+  function ($scope, $state, dataRepositoryFactory) {
     $scope.dataRepository = null;
 
     $scope.loaded = false;
@@ -38,8 +38,8 @@ angular.module('endslaverynowApp').controller('EditCategoriesCtrl', [
       $scope.dataRepository.deleteCategory(
         category,
         function () {
-          // @TODO: We need to find a more efficient/nicer way of refreshing the list of brands.
-          $window.location.reload();
+          window.alert('Category has been deleted');
+          $state.reload();
         }
       );
     };
