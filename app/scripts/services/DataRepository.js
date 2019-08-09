@@ -377,38 +377,38 @@ var DataRepository = function (recordSets) {
 
   this.determineIndexFromBrandModel = function determineIndexFromBrandModel(brandModel) {
     // Determine the index of the firebase array, using the brand model's id.
-    var indexToDelete = null;
+    var brandIndex = null;
     this.recordSets.brands.forEach(function(brand, index) {
       if (brand.id === brandModel.getId()) {
-        indexToDelete = index;
+        brandIndex = index;
       }
     });
 
-    return indexToDelete;
+    return brandIndex;
   };
 
   this.determineIndexFromCategoryModel = function determineIndexFromCategoryModel(categoryModel) {
     // Determine the index of the firebase array, using the category model's id.
-    var indexToDelete = null;
+    var categoryIndex = null;
     this.recordSets.categories.forEach(function(category, index) {
       if (category.id === categoryModel.getId()) {
-        indexToDelete = index;
+        categoryIndex = index;
       }
     });
 
-    return indexToDelete;
+    return categoryIndex;
   };
 
   this.determineIndexFromProductModel = function determineIndexFromProductModel(productModel) {
     // Determine the index of the firebase array, using the product model's id.
-    var indexToDelete = null;
+    var productIndex = null;
     this.recordSets.products.forEach(function(product, index) {
       if (product.id === productModel.getId()) {
-        indexToDelete = index;
+        productIndex = index;
       }
     });
 
-    return indexToDelete;
+    return productIndex;
   };
 
   /**
