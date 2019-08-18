@@ -3,20 +3,21 @@
 /**
  * This class handles the interface between the raw source data and the application. It exposes the raw data in
  * the form of models (and arrays of models). The "persist" methods write the data back to the data property in
- * the container that's passed in. The container is actually a scope object (controller) as it's the only way we
- * can bind to the raw data.
+ * the container that's passed in.
  *
- * @param dataContainer
- * @param syncObject
  * @param recordSets
  * @constructor
  */
-var DataRepository = function (dataContainer, syncObject, recordSets) {
-  this.syncObject = syncObject;
+var DataRepository = function (recordSets) {
   this.recordSets = recordSets;
   this.brands = [];
   this.categories = [];
   this.products = [];
+  const collectionNames = {
+    brands: 'brands',
+    categories: 'categories',
+    products: 'products'
+  };
 
   this.init = function init() {
     this.brands = [];
@@ -25,24 +26,24 @@ var DataRepository = function (dataContainer, syncObject, recordSets) {
     this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
     var self = this;
 
-    if (this.syncObject.hasOwnProperty('brands')) {
-      this.syncObject.brands.forEach(
+    if (this.recordSets.hasOwnProperty(collectionNames.brands)) {
+      this.recordSets.brands.forEach(
         function (brand) {
           self.brands.push(new Brand(brand));
         }
       );
     }
 
-    if (this.syncObject.hasOwnProperty('categories')) {
-      this.syncObject.categories.forEach(
+    if (this.recordSets.hasOwnProperty(collectionNames.categories)) {
+      this.recordSets.categories.forEach(
         function (category) {
           self.categories.push(new Category(category));
         }
       );
     }
 
-    if (this.syncObject.hasOwnProperty('products')) {
-      this.syncObject.products.forEach(
+    if (this.recordSets.hasOwnProperty(collectionNames.products)) {
+      this.recordSets.products.forEach(
         function (product) {
           self.products.push(new Product(product));
         }
@@ -178,8 +179,8 @@ var DataRepository = function (dataContainer, syncObject, recordSets) {
     return null;
   };
 
-  this.save = function save(successMsg, callback) {
-    this.syncObject.$save().then(
+  this.insert = function insert(collectionName, record, successMsg, callback) {
+    this.recordSets[collectionName].$add(record).then(
       function () {
         if (successMsg) {
           window.alert(successMsg);
@@ -194,6 +195,51 @@ var DataRepository = function (dataContainer, syncObject, recordSets) {
     );
   };
 
+  this.update = function update(collectionName, recordIndex, successMsg, callback) {
+    this.recordSets[collectionName].$save(recordIndex).then(
+      function () {
+        if (successMsg) {
+          window.alert(successMsg);
+        }
+        if (callback) {
+          callback();
+        }
+      },
+      function (error) {
+        window.alert('Error: ' + error.toString());
+      }
+    );
+  };
+
+  this.populateRecordFromBrandModel = function populateRecordFromBrandModel(brandRecord, brand) {
+    brandRecord.name = brand.getName();
+    brandRecord.description = brand.getDescription();
+    brandRecord.categories = brand.getCategoryIdAsCsl();
+    brandRecord.image = brand.getImage();
+    brandRecord.ranking = brand.getRanking();
+    // brandRecord.brandUrl = brand.getBrandURL(); // @TODO: There does not seem to be a URL property in the data.
+  };
+
+  this.populateRecordFromCategoryModel = function populateRecordFromCategoryModel(categoryRecord, category) {
+    categoryRecord.description = category.getDescription();
+    categoryRecord.image = category.getImage();
+    categoryRecord.name = category.getName();
+    categoryRecord.parentCategoryId = category.getParentCategoryId();
+  };
+
+  this.populateRecordFromProductModel = function populateRecordFromProductModel(productRecord, product) {
+    productRecord.brandId = product.getBrandId();
+    productRecord.categoryId = product.getCategoryId();
+    productRecord.description = product.getDescription();
+    productRecord.id = product.getId();
+    productRecord.image = product.getImage();
+    productRecord.name = product.getName();
+    productRecord.parentCategoryId = product.getParentCategoryId();
+    productRecord.purchaseURlClicks = product.getPurchaseUrlClicks();
+    productRecord.purchaseUrl = product.getPurchaseUrl();
+    // productRecord.$$hashKey = product.$$hashKey(); @TODO: Do we save this? When does it change?
+  };
+
   /**
    * Save the given brand back to the data store.
    *
@@ -202,19 +248,31 @@ var DataRepository = function (dataContainer, syncObject, recordSets) {
    * @param callback {Function|null}
    */
   this.persistBrand = function persistBrand(brand, successMsg, callback) {
-    if (!brand.hasId()) {
-      // This is an insert.
+    if (brand.hasId()) {
+
+      // This is an update.
+      // Determine the index of the record in the array from the model's id.
+      var brandIndex = this.determineIndexFromBrandModel(brand);
+      // Create a reference to the object in the array.
+      var brandSource = this.recordSets.brands[brandIndex];
+      // Overwrite the record with the values from the model.
+      this.populateRecordFromBrandModel(brandSource, brand);
+      // Save the record back to the store.
+      this.update(collectionNames.brands, brandIndex, successMsg, callback);
+
+    } else {
+
+      // This is an insert. Generate a new id and start a new object.
       brand.setId(this.generateNextBrandId());
-      dataContainer.data.brands[brand.getId()] = {id: brand.getId()};
+      var newBrand = {
+        id: brand.getId()
+      };
+      // Populate the record with the values from the model.
+      this.populateRecordFromBrandModel(newBrand, brand);
+      // Create the record in the store.
+      this.insert(collectionNames.brands, newBrand, successMsg, callback);
+
     }
-    var brandSource = dataContainer.data.brands[brand.getId()];
-    brandSource.name = brand.getName();
-    brandSource.description = brand.getDescription();
-    brandSource.categories = brand.getCategoryIdAsCsl();
-    brandSource.image = brand.getImage();
-    brandSource.ranking = brand.getRanking();
-    // brandSource.brandUrl = brand.getBrandURL(); // @TODO: There does not seem to be a URL property in the data.
-    this.save(successMsg, callback);
   };
 
   /**
@@ -225,17 +283,31 @@ var DataRepository = function (dataContainer, syncObject, recordSets) {
    * @param callback {Function|null}
    */
   this.persistCategory = function persistCategory(category, successMsg, callback) {
-    if (!category.hasId()) {
-      // This is an insert.
+    if (category.hasId()) {
+
+      // This is an update.
+      // Determine the index of the record in the array from the model's id.
+      var categoryIndex = this.determineIndexFromCategoryModel(category);
+      // Create a reference to the object in the array.
+      var categorySource = this.recordSets.categories[categoryIndex];
+      // Overwrite the record with the values from the model.
+      this.populateRecordFromCategoryModel(categorySource, category);
+      // Save the record back to the store.
+      this.update(collectionNames.categories, categoryIndex, successMsg, callback);
+
+    } else {
+
+      // This is an insert. Generate a new id and start a new object.
       category.setId(this.generateNextCategoryId());
-      dataContainer.data.categories[category.getId()] = {id: category.getId()};
+      var newCategory = {
+        id: category.getId()
+      };
+      // Populate the record with the values from the model.
+      this.populateRecordFromCategoryModel(newCategory, category);
+      // Create the record in the store.
+      this.insert(collectionNames.categories, newCategory, successMsg, callback);
+
     }
-    var categorySource = dataContainer.data.categories[category.getId()];
-    categorySource.description = category.getDescription();
-    categorySource.image = category.getImage();
-    categorySource.name = category.getName();
-    categorySource.parentCategoryId = category.getParentCategoryId();
-    this.save(successMsg, callback);
   };
 
   /**
@@ -246,47 +318,97 @@ var DataRepository = function (dataContainer, syncObject, recordSets) {
    * @param callback
    */
   this.persistProduct = function persistProduct(product, successMsg, callback) {
-    if (!product.hasId()) {
-      // This is an insert.
+    if (product.hasId()) {
+
+      // This is an update.
+      // Determine the index of the record in the array from the model's id.
+      var productIndex = this.determineIndexFromProductModel(product);
+      // Create a reference to the object in the array.
+      var productSource = this.recordSets.products[productIndex];
+      // Overwrite the record with the values from the model.
+      this.populateRecordFromProductModel(productSource, product);
+      // Save the record back to the store.
+      this.update(collectionNames.products, productIndex, successMsg, callback);
+
+    } else {
+
+      // This is an insert. Generate a new id and start a new object.
       product.setId(this.generateNextProductId());
-      dataContainer.data.products[product.getId()] = {id: product.getId()};
+      var newProduct = {
+        id: product.getId()
+      };
+      // Populate the record with the values from the model.
+      this.populateRecordFromProductModel(newProduct, product);
+      // Create the record in the store.
+      this.insert(collectionNames.products, newProduct, successMsg, callback);
+
     }
-    var productSource = dataContainer.data.products[product.getId()];
-    productSource.brandId = product.getBrandId();
-    productSource.categoryId = product.getCategoryId();
-    productSource.description = product.getDescription();
-    productSource.id = product.getId();
-    productSource.image = product.getImage();
-    productSource.name = product.getName();
-    productSource.parentCategoryId = product.getParentCategoryId();
-    productSource.purchaseURlClicks = product.getPurchaseUrlClicks();
-    productSource.purchaseUrl = product.getPurchaseUrl();
-    // productSource.$$hashKey = product.$$hashKey(); @TODO: Do we save this? When does it change?
-    this.save(successMsg, callback);
   };
 
   this.generateNextBrandId = function generateNextBrandId() {
-    var id = Math.max(1, dataContainer.data.brands.length);
-    while (dataContainer.data.brands[id] !== undefined) {
-      ++id;
-    }
+    var id = 0;
+    this.recordSets.brands.forEach(function (brand) {
+      id = Math.max(id, brand.id);
+    });
+    ++id;
+
     return id;
   };
 
   this.generateNextCategoryId = function generateNextCategoryId() {
-    var id = Math.max(1, dataContainer.data.categories.length);
-    while (dataContainer.data.categories[id] !== undefined) {
-      ++id;
-    }
+    var id = 0;
+    this.recordSets.categories.forEach(function (category) {
+      id = Math.max(id, category.id);
+    });
+    ++id;
+
     return id;
   };
 
   this.generateNextProductId = function generateNextProductId() {
-    var id = Math.max(1, dataContainer.data.products.length);
-    while (dataContainer.data.products[id] !== undefined) {
-      ++id;
-    }
+    var id = 0;
+    this.recordSets.products.forEach(function (product) {
+      id = Math.max(id, product.id);
+    });
+    ++id;
+
     return id;
+  };
+
+  this.determineIndexFromBrandModel = function determineIndexFromBrandModel(brandModel) {
+    // Determine the index of the firebase array, using the brand model's id.
+    var brandIndex = null;
+    this.recordSets.brands.forEach(function(brand, index) {
+      if (brand.id === brandModel.getId()) {
+        brandIndex = index;
+      }
+    });
+
+    return brandIndex;
+  };
+
+  this.determineIndexFromCategoryModel = function determineIndexFromCategoryModel(categoryModel) {
+    // Determine the index of the firebase array, using the category model's id.
+    var categoryIndex = null;
+    this.recordSets.categories.forEach(function(category, index) {
+      if (category.id === categoryModel.getId()) {
+        categoryIndex = index;
+      }
+    });
+
+    return categoryIndex;
+  };
+
+  this.determineIndexFromProductModel = function determineIndexFromProductModel(productModel) {
+    // Determine the index of the firebase array, using the product model's id.
+    var productIndex = null;
+    this.recordSets.products.forEach(function(product, index) {
+      if (product.id === productModel.getId()) {
+        productIndex = index;
+      }
+    });
+
+    return productIndex;
   };
 
   /**
@@ -298,12 +420,7 @@ var DataRepository = function (dataContainer, syncObject, recordSets) {
    */
   this.deleteBrand = function deleteBrand(brandModel, callback) {
     // Determine the index of the firebase array, using the brand model's id.
-    var indexToDelete = null;
-    this.recordSets.brands.forEach(function(brand, index) {
-      if (brand.id === brandModel.getId()) {
-        indexToDelete = index;
-      }
-    });
+    var indexToDelete = this.determineIndexFromBrandModel(brandModel);
     if (indexToDelete !== null) {
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.brands.$remove(indexToDelete).then(function () {
@@ -324,12 +441,7 @@ var DataRepository = function (dataContainer, syncObject, recordSets) {
    */
   this.deleteCategory = function deleteCategory(categoryModel, callback) {
     // Determine the index of the firebase array, using the category model's id.
-    var indexToDelete = null;
-    this.recordSets.categories.forEach(function(category, index) {
-      if (category.id === categoryModel.getId()) {
-        indexToDelete = index;
-      }
-    });
+    var indexToDelete = this.determineIndexFromCategoryModel(categoryModel);
     if (indexToDelete !== null) {
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.categories.$remove(indexToDelete).then(function () {
@@ -350,12 +462,7 @@ var DataRepository = function (dataContainer, syncObject, recordSets) {
    */
   this.deleteProduct = function deleteProduct(productModel, callback) {
     // Determine the index of the firebase array, using the product model's id.
-    var indexToDelete = null;
-    this.recordSets.products.forEach(function(product, index) {
-      if (product.id === productModel.getId()) {
-        indexToDelete = index;
-      }
-    });
+    var indexToDelete = this.determineIndexFromProductModel(productModel);
     if (indexToDelete !== null) {
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.products.$remove(indexToDelete).then(function () {

@@ -11,10 +11,10 @@ angular.module('endslaverynowApp')
   .controller('FormAddCtrl', [
     '$stateParams',
     '$scope',
-    '$window',
+    '$state',
     'Upload',
     'dataRepositoryFactory',
-    function ($stateParams, $scope, $window, Upload, dataRepositoryFactory) {
+    function ($stateParams, $scope, $state, Upload, dataRepositoryFactory) {
       $scope.brandId = $stateParams.id;
       $scope.loaded = false;
 
@@ -104,7 +104,6 @@ angular.module('endslaverynowApp')
       };
 
       dataRepositoryFactory.ready(
-        $scope,
         function () {
           var dataRepository = dataRepositoryFactory.getDataRepository();
           $scope.categories = alphabetizeCollection(dataRepository.getCategories().filter(Boolean));
@@ -238,6 +237,7 @@ angular.module('endslaverynowApp')
       };
 
       $scope.reloadPage = function () {
-        $window.location.reload();
+        // This reloads the page (controller) and the data (not that any is visible) without reloading the entire app.
+        $state.reload();
       };
     }]);

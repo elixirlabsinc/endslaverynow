@@ -13,7 +13,6 @@ angular.module('endslaverynowApp')
     'dataRepositoryFactory',
     function ($scope, dataRepositoryFactory) {
       dataRepositoryFactory.ready(
-        $scope,
         function () {
           // Get certification information
           $scope.certifications = dataRepositoryFactory.getDataRepository().getCertifications();

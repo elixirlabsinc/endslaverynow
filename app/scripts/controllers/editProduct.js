@@ -25,7 +25,6 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
     $scope.Image = null;
 
     dataRepositoryFactory.ready(
-      $scope,
       function () {
         $scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
