@@ -12,7 +12,7 @@ var AuditLog = (function () {
     this.dateTime = new Date();
     this.recordType = data.hasOwnProperty('recordType') ? data.recordType : null;
     this.recordId = data.hasOwnProperty('recordId') ? data.recordId : null;
-    this.delta = data.hasOwnProperty('delta') ? data.delta : null;
+    this.changedValues = data.hasOwnProperty('changedValues') ? data.changedValues : null;
     this.loggerVersion = 1;
 
     // Validate the entries.

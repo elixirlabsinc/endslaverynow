@@ -205,8 +205,8 @@ var DataRepository = function (recordSets, auditLogger) {
    * @param {string} successMsg
    * @param callback
    * @param {int} recordId
-   * @param {array} previousState
-   * @param {array} currentState
+   * @param {object} previousState
+   * @param {object} currentState
    */
   this.update = function update(collectionName, recordIndex, successMsg, callback, recordId, previousState, currentState) {
     var self = this;
@@ -271,6 +271,8 @@ var DataRepository = function (recordSets, auditLogger) {
       var brandIndex = this.determineIndexFromBrandModel(brand);
       // Create a reference to the object in the array.
       var brandSource = this.recordSets.brands[brandIndex];
+      // @TODO: I wonder if the original version of the record should be in the model, before the model constructor
+      // @TODO: does any data migrations (adding columns, etc).
       var originalBrand = {};
       angular.copy(brandSource, originalBrand);
       // Overwrite the record with the values from the model.
@@ -308,6 +310,8 @@ var DataRepository = function (recordSets, auditLogger) {
       var categoryIndex = this.determineIndexFromCategoryModel(category);
       // Create a reference to the object in the array.
       var categorySource = this.recordSets.categories[categoryIndex];
+      // @TODO: I wonder if the original version of the record should be in the model, before the model constructor
+      // @TODO: does any data migrations (adding columns, etc).
       var originalCategory = {};
       angular.copy(categorySource, originalCategory);
       // Overwrite the record with the values from the model.
@@ -345,6 +349,8 @@ var DataRepository = function (recordSets, auditLogger) {
       var productIndex = this.determineIndexFromProductModel(product);
       // Create a reference to the object in the array.
       var productSource = this.recordSets.products[productIndex];
+      // @TODO: I wonder if the original version of the record should be in the model, before the model constructor
+      // @TODO: does any data migrations (adding columns, etc).
       var originalProduct = {};
       angular.copy(productSource, originalProduct);
       // Overwrite the record with the values from the model.

@@ -34,8 +34,7 @@ var DataRepositoryFactory = function ($firebaseObject, $firebaseArray) {
     return this.dataRepository;
   };
 
-  this.getDataRepository = function getDataRepository() {
-    // @TODO: We should fail this if the data repository hasn't been initialised.
-    return this.dataRepository;
+  this.getStorageRepository = function getStorageRepository() {
+    return this.storageRepository;
   };
 };
