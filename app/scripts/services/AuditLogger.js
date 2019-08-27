@@ -1,6 +1,7 @@
 'use strict';
 
-var AuditLogger = function () {
+var AuditLogger = function (recordSets) {
+  this.recordSets = recordSets;
 
   /**
    * @param {string} operationType
@@ -10,7 +11,6 @@ var AuditLogger = function () {
    * @param {object|null} currentState
    */
   this.log = function log(operationType, recordType, recordId, previousState, currentState) {
-console.log('Creating an audit log...');
     var changedValues = [];
     // Build the "changed values" in different ways, depending on the operation type.
     switch (operationType) {
@@ -40,10 +40,18 @@ console.log('Creating an audit log...');
       changedValues: changedValues
     };
     var auditLog = new AuditLog(logData);
-console.log('auditLog record:', auditLog);
-console.log('Just the changed values:', auditLog.changedValues);
 
-    // @TODO: Actually send the log data to the store.
+    // Actually send the log data to the store. This is always an "add", of course.
+    // We don't report any success/failure messages to the user because they shouldn't be aware of these logs.
+    // @TODO: 'auditLog' should be a constant.
+    this.recordSets['auditLog'].$add(auditLog.toStorageRecord()).then(
+      function () {
+        console.log('Audit log saved successfully');
+      },
+      function (error) {
+        console.log('Audit log save produced an error:', error);
+      }
+    );
   };
 
   /**
@@ -56,13 +64,10 @@ console.log('Just the changed values:', auditLog.changedValues);
    */
   this.buildChangedValuesForInsert = function buildChangedValuesForInsert(currentState)
   {
-console.log('buildChangedValuesForInsert...');
     var result = [];
     for (var recordProperty in currentState) {
       if (currentState.hasOwnProperty(recordProperty)) {
-console.log('Next property:', recordProperty);
         if (currentState[recordProperty] !== null) {
-console.log('It is not null - recording it');
           // @TODO: We need to also pass in the field datatype (image, etc).
           result.push(new AuditLogChangedValue(recordProperty, null, currentState[recordProperty]));
         }
@@ -123,13 +128,10 @@ console.log('It is not null - recording it');
    */
   this.buildChangedValuesForDelete = function buildChangedValuesForDelete(previousState)
   {
-console.log('buildChangedValuesForDelete...');
     var result = [];
     for (var recordProperty in previousState) {
       if (previousState.hasOwnProperty(recordProperty)) {
-console.log('Next property:', recordProperty);
         if (previousState[recordProperty] !== null) {
-console.log('It is not null - recording it');
           // @TODO: We need to also pass in the field datatype (image, etc).
           result.push(new AuditLogChangedValue(recordProperty, previousState[recordProperty], null));
         }

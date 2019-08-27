@@ -6,7 +6,8 @@ var DataRepositoryFactory = function ($firebaseObject, $firebaseArray) {
   this.recordSets = {
     brands: $firebaseArray(db.ref('brands')),
     categories: $firebaseArray(db.ref('categories')),
-    products: $firebaseArray(db.ref('products'))
+    products: $firebaseArray(db.ref('products')),
+    auditLog: $firebaseArray(db.ref('auditLog'))
   };
 
   this.dataRepository = null;
