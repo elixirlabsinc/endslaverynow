@@ -69,7 +69,7 @@ console.log('Next property:', recordProperty);
         if (currentState[recordProperty] !== null) {
 console.log('It is not null - recording it');
           // @TODO: We need to also pass in the field datatype (image, etc).
-          result.push(new AuditLogChangedValue(recordProperty, currentState[recordProperty], null));
+          result.push(new AuditLogChangedValue(recordProperty, null, currentState[recordProperty]));
         }
       }
     }
@@ -98,7 +98,7 @@ console.log('It is not null - recording it');
         currentValue = currentState[recordProperty];
         if (currentValue !== previousValue) {
           // @TODO: We need to also pass in the field datatype (image, etc).
-          result.push(new AuditLogChangedValue(recordProperty, currentValue, previousValue));
+          result.push(new AuditLogChangedValue(recordProperty, previousValue, currentValue));
         }
       }
     }
@@ -110,7 +110,7 @@ console.log('It is not null - recording it');
         currentValue = null;
         if (currentValue !== previousValue) {
           // @TODO: We need to also pass in the field datatype (image, etc).
-          result.push(new AuditLogChangedValue(recordProperty, currentValue, previousValue));
+          result.push(new AuditLogChangedValue(recordProperty, previousValue, currentValue));
         }
       }
     }
@@ -136,7 +136,7 @@ console.log('Next property:', recordProperty);
         if (previousState[recordProperty] !== null) {
 console.log('It is not null - recording it');
           // @TODO: We need to also pass in the field datatype (image, etc).
-          result.push(new AuditLogChangedValue(recordProperty, null, previousState[recordProperty]));
+          result.push(new AuditLogChangedValue(recordProperty, previousState[recordProperty], null));
         }
       }
     }

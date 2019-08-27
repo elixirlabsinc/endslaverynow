@@ -2,10 +2,10 @@
 
 var AuditLogChangedValue = (function () {
 
-  var AuditLogChangedValue = function AuditLogChangedValue(recordProperty, currentValue, previousValue) {
+  var AuditLogChangedValue = function AuditLogChangedValue(recordProperty, previousValue, currentValue) {
     this.recordProperty = recordProperty;
-    this.currentValue = currentValue;
     this.previousValue = previousValue;
+    this.currentValue = currentValue;
   };
 
   AuditLogChangedValue.prototype = {
