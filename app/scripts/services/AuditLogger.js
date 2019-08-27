@@ -1,6 +1,7 @@
 'use strict';
 
 var AuditLogger = function (recordSets) {
+  const collectionName = 'auditLog';
   this.recordSets = recordSets;
 
   /**
@@ -43,8 +44,7 @@ var AuditLogger = function (recordSets) {
 
     // Actually send the log data to the store. This is always an "add", of course.
     // We don't report any success/failure messages to the user because they shouldn't be aware of these logs.
-    // @TODO: 'auditLog' should be a constant.
-    this.recordSets['auditLog'].$add(auditLog.toStorageRecord()).then(
+    this.recordSets[collectionName].$add(auditLog.toStorageRecord()).then(
       function () {
         console.log('Audit log saved successfully');
       },
