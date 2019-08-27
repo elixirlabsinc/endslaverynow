@@ -11,22 +11,17 @@ var AuditLogger = function () {
    */
   this.log = function log(operationType, recordType, recordId, previousState, currentState) {
 console.log('Creating an audit log...');
-console.log('Previous state:', previousState);
-console.log('Current state:', currentState);
     var changedValues = [];
     // Build the "changed values" in different ways, depending on the operation type.
     switch (operationType) {
       case 'insert':
         changedValues = this.buildChangedValuesForInsert(currentState);
-console.log('Changed values for insert:', changedValues);
         break;
       case 'update':
         changedValues = this.buildChangedValuesForUpdate(previousState, currentState);
-console.log('Changed values for update:', changedValues);
         break;
       case 'delete':
         changedValues = this.buildChangedValuesForDelete(previousState);
-console.log('Changed values for delete:', changedValues);
         break;
     }
 
