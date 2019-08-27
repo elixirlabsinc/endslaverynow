@@ -192,7 +192,7 @@ var DataRepository = function (recordSets, auditLogger) {
         if (callback) {
           callback();
         }
-        // @TODO: Save the audit log (for insert) here.
+        // Save the audit log (for insert).
         self.auditLogger.log('insert', collectionName, recordId, null, currentState);
       },
       function (error) {
@@ -220,7 +220,7 @@ var DataRepository = function (recordSets, auditLogger) {
         if (callback) {
           callback();
         }
-        // @TODO: Save the audit log (for update) here.
+        // Save the audit log (for update).
         self.auditLogger.log('update', collectionName, recordId, previousState, currentState);
       },
       function (error) {
@@ -458,7 +458,7 @@ var DataRepository = function (recordSets, auditLogger) {
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.brands.$remove(indexToDelete).then(function () {
         callback();
-        // @TODO: Save the audit log (for delete for brand) here.
+        // Save the audit log (for delete for brand).
         self.auditLogger.log('delete', collectionNames.brands, brandModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting brand: ", error);
@@ -484,7 +484,7 @@ var DataRepository = function (recordSets, auditLogger) {
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.categories.$remove(indexToDelete).then(function () {
         callback();
-        // @TODO: Save the audit log (for delete for category) here.
+        // Save the audit log (for delete for category).
         self.auditLogger.log('delete', collectionNames.categories, categoryModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting category: ", error);
@@ -510,7 +510,7 @@ var DataRepository = function (recordSets, auditLogger) {
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.products.$remove(indexToDelete).then(function () {
         callback();
-        // @TODO: Save the audit log (for delete for product) here.
+        // Save the audit log (for delete for product).
         self.auditLogger.log('delete', collectionNames.products, productModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting product: ", error);
