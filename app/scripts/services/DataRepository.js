@@ -182,7 +182,8 @@ var DataRepository = function (recordSets, auditLogger) {
     return null;
   };
 
-  this.insert = function insert(collectionName, record, successMsg, callback) {
+  this.insert = function insert(collectionName, record, successMsg, callback, recordId, currentState) {
+    var self = this;
     this.recordSets[collectionName].$add(record).then(
       function () {
         if (successMsg) {
@@ -192,6 +193,7 @@ var DataRepository = function (recordSets, auditLogger) {
           callback();
         }
         // @TODO: Save the audit log (for insert) here.
+        self.auditLogger.log('insert', collectionName, recordId, null, currentState);
       },
       function (error) {
         window.alert('Error: ' + error.toString());
@@ -290,7 +292,7 @@ var DataRepository = function (recordSets, auditLogger) {
       // Populate the record with the values from the model.
       this.populateRecordFromBrandModel(newBrand, brand);
       // Create the record in the store.
-      this.insert(collectionNames.brands, newBrand, successMsg, callback);
+      this.insert(collectionNames.brands, newBrand, successMsg, callback, brand.getId(), newBrand);
 
     }
   };
@@ -329,7 +331,7 @@ var DataRepository = function (recordSets, auditLogger) {
       // Populate the record with the values from the model.
       this.populateRecordFromCategoryModel(newCategory, category);
       // Create the record in the store.
-      this.insert(collectionNames.categories, newCategory, successMsg, callback);
+      this.insert(collectionNames.categories, newCategory, successMsg, callback, category.getId(), newCategory);
 
     }
   };
@@ -368,7 +370,7 @@ var DataRepository = function (recordSets, auditLogger) {
       // Populate the record with the values from the model.
       this.populateRecordFromProductModel(newProduct, product);
       // Create the record in the store.
-      this.insert(collectionNames.products, newProduct, successMsg, callback);
+      this.insert(collectionNames.products, newProduct, successMsg, callback, product.getId(), newProduct);
 
     }
   };
@@ -447,13 +449,17 @@ var DataRepository = function (recordSets, auditLogger) {
    * @param callback
    */
   this.deleteBrand = function deleteBrand(brandModel, callback) {
+    var self = this;
     // Determine the index of the firebase array, using the brand model's id.
     var indexToDelete = this.determineIndexFromBrandModel(brandModel);
     if (indexToDelete !== null) {
+      var previousState = {};
+      this.populateRecordFromBrandModel(previousState, brandModel);
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.brands.$remove(indexToDelete).then(function () {
         callback();
         // @TODO: Save the audit log (for delete for brand) here.
+        self.auditLogger.log('delete', collectionNames.brands, brandModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting brand: ", error);
         }
@@ -469,13 +475,17 @@ var DataRepository = function (recordSets, auditLogger) {
    * @param callback
    */
   this.deleteCategory = function deleteCategory(categoryModel, callback) {
+    var self = this;
     // Determine the index of the firebase array, using the category model's id.
     var indexToDelete = this.determineIndexFromCategoryModel(categoryModel);
     if (indexToDelete !== null) {
+      var previousState = {};
+      this.populateRecordFromCategoryModel(previousState, categoryModel);
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.categories.$remove(indexToDelete).then(function () {
         callback();
         // @TODO: Save the audit log (for delete for category) here.
+        self.auditLogger.log('delete', collectionNames.categories, categoryModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting category: ", error);
         }
@@ -491,13 +501,17 @@ var DataRepository = function (recordSets, auditLogger) {
    * @param callback
    */
   this.deleteProduct = function deleteProduct(productModel, callback) {
+    var self = this;
     // Determine the index of the firebase array, using the product model's id.
     var indexToDelete = this.determineIndexFromProductModel(productModel);
     if (indexToDelete !== null) {
+      var previousState = {};
+      this.populateRecordFromProductModel(previousState, productModel);
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.products.$remove(indexToDelete).then(function () {
         callback();
         // @TODO: Save the audit log (for delete for product) here.
+        self.auditLogger.log('delete', collectionNames.products, productModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting product: ", error);
         }

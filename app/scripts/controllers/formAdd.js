@@ -171,6 +171,9 @@ angular.module('endslaverynowApp')
             var successMessage = document.getElementById('submitted-form');
             successMessage.style.display = 'block';
           };
+          // @TODO: I don't think we need "doPersist()" - the methods in persistService save the relevant
+          // @TODO: record, so we don't need to also do it here. We just need to do, for example:
+          // @TODO: persistService.processBrand(model, null, onCompletion);
           var doPersist = function doPersist() {
             switch ($scope.formType) {
               case $scope.availableTypes.Brands:

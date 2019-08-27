@@ -6,41 +6,28 @@ var AuditLogger = function () {
    * @param {string} operationType
    * @param {string} recordType
    * @param {int} recordId
-   * @param {object} previousState
-   * @param {object} currentState
+   * @param {object|null} previousState
+   * @param {object|null} currentState
    */
   this.log = function log(operationType, recordType, recordId, previousState, currentState) {
 console.log('Creating an audit log...');
 console.log('Previous state:', previousState);
 console.log('Current state:', currentState);
     var changedValues = [];
-    // @TODO: I think we should do things differently depending on the operation type. Eg for an insert, go through
-    // @TODO: the properties of the new record and assume just the previous value was "null".
-    var previousValue = null;
-    var currentValue = null;
-    // Go through the current state of the record and see if any of its values are different to the equivalent ones
-    // in the previous state.
-    for (var recordProperty in currentState) {
-      if (currentState.hasOwnProperty(recordProperty)) {
-        previousValue = previousState.hasOwnProperty(recordProperty) ? previousState[recordProperty] : null;
-        currentValue = currentState[recordProperty];
-        if (currentValue !== previousValue) {
-          // @TODO: We need to also pass in the field datatype (image, etc).
-          changedValues.push(new AuditLogChangedValue(recordProperty, currentValue, previousValue));
-        }
-      }
-    }
-    // Go through any properties in "previousState" that don't exist in "currentState" and treat them has having
-    // gone to null.
-    for (recordProperty in previousState) {
-      if (previousState.hasOwnProperty(recordProperty) && !currentState.hasOwnProperty(recordProperty)) {
-        previousValue = previousState[recordProperty];
-        currentValue = null;
-        if (currentValue !== previousValue) {
-          // @TODO: We need to also pass in the field datatype (image, etc).
-          changedValues.push(new AuditLogChangedValue(recordProperty, currentValue, previousValue));
-        }
-      }
+    // Build the "changed values" in different ways, depending on the operation type.
+    switch (operationType) {
+      case 'insert':
+        changedValues = this.buildChangedValuesForInsert(currentState);
+console.log('Changed values for insert:', changedValues);
+        break;
+      case 'update':
+        changedValues = this.buildChangedValuesForUpdate(previousState, currentState);
+console.log('Changed values for update:', changedValues);
+        break;
+      case 'delete':
+        changedValues = this.buildChangedValuesForDelete(previousState);
+console.log('Changed values for delete:', changedValues);
+        break;
     }
 
     // If the delta is empty, don't log this record.
@@ -62,5 +49,98 @@ console.log('auditLog record:', auditLog);
 console.log('Just the changed values:', auditLog.changedValues);
 
     // @TODO: Actually send the log data to the store.
+  };
+
+  /**
+   * This situation is simple - there is no "before" record, so we just record every non-null value in the
+   * current state.
+   *
+   * @param {object} currentState
+   *
+   * @returns {AuditLogChangedValue[]}
+   */
+  this.buildChangedValuesForInsert = function buildChangedValuesForInsert(currentState)
+  {
+console.log('buildChangedValuesForInsert...');
+    var result = [];
+    for (var recordProperty in currentState) {
+      if (currentState.hasOwnProperty(recordProperty)) {
+console.log('Next property:', recordProperty);
+        if (currentState[recordProperty] !== null) {
+console.log('It is not null - recording it');
+          // @TODO: We need to also pass in the field datatype (image, etc).
+          result.push(new AuditLogChangedValue(recordProperty, currentState[recordProperty], null));
+        }
+      }
+    }
+
+    return result;
+  };
+
+  /**
+   * This is the most complicated situation - there are "before" and "after" properties/values.
+   *
+   * @param {object} previousState
+   * @param {object} currentState
+   *
+   * @returns {AuditLogChangedValue[]}
+   */
+  this.buildChangedValuesForUpdate = function buildChangedValuesForUpdate(previousState, currentState)
+  {
+    var result = [];
+    var previousValue = null;
+    var currentValue = null;
+    // Go through the current state of the record and see if any of its values are different to the equivalent ones
+    // in the previous state.
+    for (var recordProperty in currentState) {
+      if (currentState.hasOwnProperty(recordProperty)) {
+        previousValue = previousState.hasOwnProperty(recordProperty) ? previousState[recordProperty] : null;
+        currentValue = currentState[recordProperty];
+        if (currentValue !== previousValue) {
+          // @TODO: We need to also pass in the field datatype (image, etc).
+          result.push(new AuditLogChangedValue(recordProperty, currentValue, previousValue));
+        }
+      }
+    }
+    // Go through any properties in "previousState" that don't exist in "currentState" and treat them has having
+    // gone to null.
+    for (recordProperty in previousState) {
+      if (previousState.hasOwnProperty(recordProperty) && !currentState.hasOwnProperty(recordProperty)) {
+        previousValue = previousState[recordProperty];
+        currentValue = null;
+        if (currentValue !== previousValue) {
+          // @TODO: We need to also pass in the field datatype (image, etc).
+          result.push(new AuditLogChangedValue(recordProperty, currentValue, previousValue));
+        }
+      }
+    }
+
+    return result;
+  };
+
+  /**
+   * This situation is simple - there is no "after" record, so we just record every non-null value in the
+   * previous state.
+   *
+   * @param {object} previousState
+   *
+   * @returns {AuditLogChangedValue[]}
+   */
+  this.buildChangedValuesForDelete = function buildChangedValuesForDelete(previousState)
+  {
+console.log('buildChangedValuesForDelete...');
+    var result = [];
+    for (var recordProperty in previousState) {
+      if (previousState.hasOwnProperty(recordProperty)) {
+console.log('Next property:', recordProperty);
+        if (previousState[recordProperty] !== null) {
+console.log('It is not null - recording it');
+          // @TODO: We need to also pass in the field datatype (image, etc).
+          result.push(new AuditLogChangedValue(recordProperty, null, previousState[recordProperty]));
+        }
+      }
+    }
+
+    return result;
   };
 };
