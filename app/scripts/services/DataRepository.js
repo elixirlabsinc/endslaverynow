@@ -22,6 +22,8 @@ var DataRepository = function (recordSets, auditLogger) {
     products: 'products'
   };
 
+  this.auditLogHelper = new AuditLogHelper();
+
   this.init = function init() {
     this.brands = [];
     this.categories = [];
@@ -193,7 +195,7 @@ var DataRepository = function (recordSets, auditLogger) {
           callback();
         }
         // Save the audit log (for insert).
-        self.auditLogger.log('insert', collectionName, recordId, null, currentState);
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().insert, collectionName, recordId, null, currentState);
       },
       function (error) {
         window.alert('Error: ' + error.toString());
@@ -221,7 +223,7 @@ var DataRepository = function (recordSets, auditLogger) {
           callback();
         }
         // Save the audit log (for update).
-        self.auditLogger.log('update', collectionName, recordId, previousState, currentState);
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().update, collectionName, recordId, previousState, currentState);
       },
       function (error) {
         window.alert('Error: ' + error.toString());
@@ -459,7 +461,7 @@ var DataRepository = function (recordSets, auditLogger) {
       this.recordSets.brands.$remove(indexToDelete).then(function () {
         callback();
         // Save the audit log (for delete for brand).
-        self.auditLogger.log('delete', collectionNames.brands, brandModel.getId(), previousState, null);
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().delete, collectionNames.brands, brandModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting brand: ", error);
         }
@@ -485,7 +487,7 @@ var DataRepository = function (recordSets, auditLogger) {
       this.recordSets.categories.$remove(indexToDelete).then(function () {
         callback();
         // Save the audit log (for delete for category).
-        self.auditLogger.log('delete', collectionNames.categories, categoryModel.getId(), previousState, null);
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().delete, collectionNames.categories, categoryModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting category: ", error);
         }
@@ -511,7 +513,7 @@ var DataRepository = function (recordSets, auditLogger) {
       this.recordSets.products.$remove(indexToDelete).then(function () {
         callback();
         // Save the audit log (for delete for product).
-        self.auditLogger.log('delete', collectionNames.products, productModel.getId(), previousState, null);
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().delete, collectionNames.products, productModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting product: ", error);
         }

@@ -4,6 +4,8 @@ var AuditLogger = function (recordSets) {
   const collectionName = 'auditLog';
   this.recordSets = recordSets;
 
+  this.auditLogHelper = new AuditLogHelper();
+
   /**
    * @param {string} operationType
    * @param {string} recordType
@@ -15,13 +17,13 @@ var AuditLogger = function (recordSets) {
     var changedValues = [];
     // Build the "changed values" in different ways, depending on the operation type.
     switch (operationType) {
-      case 'insert':
+      case this.auditLogHelper.getAllowedOperationTypes().insert:
         changedValues = this.buildChangedValuesForInsert(currentState);
         break;
-      case 'update':
+      case this.auditLogHelper.getAllowedOperationTypes().update:
         changedValues = this.buildChangedValuesForUpdate(previousState, currentState);
         break;
-      case 'delete':
+      case this.auditLogHelper.getAllowedOperationTypes().delete:
         changedValues = this.buildChangedValuesForDelete(previousState);
         break;
     }

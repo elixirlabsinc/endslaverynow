@@ -2,9 +2,6 @@
 
 var AuditLog = (function () {
 
-  const allowedUserTypes = ['admin', 'anonymous'];
-  const allowedOperationTypes = ['insert', 'update', 'delete'];
-
   var AuditLog = function AuditLog(data) {
     this.loggerVersion = 1;
     this.userType = data.hasOwnProperty('userType') ? data.userType : null;
@@ -15,11 +12,13 @@ var AuditLog = (function () {
     this.recordId = data.hasOwnProperty('recordId') ? data.recordId : null;
     this.changedValues = data.hasOwnProperty('changedValues') ? data.changedValues : null;
 
+    var auditLogHelper = new AuditLogHelper();
+
     // Validate the entries.
-    if (allowedUserTypes.indexOf(this.userType) === -1) {
+    if (!auditLogHelper.isValidUserType(this.userType)) {
       // @TODO: Throw some kind of error.
     }
-    if (allowedOperationTypes.indexOf(this.operationType) === -1) {
+    if (!auditLogHelper.isValidOperationType(this.operationType)) {
       // @TODO: Throw some kind of error.
     }
     if (this.delta === null) {
