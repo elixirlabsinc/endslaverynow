@@ -70,7 +70,6 @@ var AuditLogger = function (recordSets) {
     for (var recordProperty in currentState) {
       if (currentState.hasOwnProperty(recordProperty)) {
         if (currentState[recordProperty] !== null) {
-          // @TODO: We need to also pass in the field datatype (image, etc).
           result.push(new AuditLogChangedValue(recordProperty, null, currentState[recordProperty]));
         }
       }
@@ -99,7 +98,6 @@ var AuditLogger = function (recordSets) {
         previousValue = previousState.hasOwnProperty(recordProperty) ? previousState[recordProperty] : null;
         currentValue = currentState[recordProperty];
         if (currentValue !== previousValue) {
-          // @TODO: We need to also pass in the field datatype (image, etc).
           result.push(new AuditLogChangedValue(recordProperty, previousValue, currentValue));
         }
       }
@@ -111,7 +109,6 @@ var AuditLogger = function (recordSets) {
         previousValue = previousState[recordProperty];
         currentValue = null;
         if (currentValue !== previousValue) {
-          // @TODO: We need to also pass in the field datatype (image, etc).
           result.push(new AuditLogChangedValue(recordProperty, previousValue, currentValue));
         }
       }
@@ -134,7 +131,6 @@ var AuditLogger = function (recordSets) {
     for (var recordProperty in previousState) {
       if (previousState.hasOwnProperty(recordProperty)) {
         if (previousState[recordProperty] !== null) {
-          // @TODO: We need to also pass in the field datatype (image, etc).
           result.push(new AuditLogChangedValue(recordProperty, previousState[recordProperty], null));
         }
       }
