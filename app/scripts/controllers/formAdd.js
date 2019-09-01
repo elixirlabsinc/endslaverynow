@@ -165,39 +165,26 @@ angular.module('endslaverynowApp')
         if (!validInput(item, itemTypes[$scope.formType].requiredInputs)) {
           $scope.errorMessage = true;
         } else {
+          var persistService = new PersistService(
+            dataRepositoryFactory,
+            $scope.dataRepository,
+            dataRepositoryFactory.getStorageRepository()
+          );
           var onCompletion = function onCompletion() {
             var addForm = document.getElementById('add-form');
             addForm.style.display = 'none';
             var successMessage = document.getElementById('submitted-form');
             successMessage.style.display = 'block';
           };
-          var doPersist = function doPersist() {
-            switch ($scope.formType) {
-              case $scope.availableTypes.Brands:
-                $scope.dataRepository.persistBrand(model, null, onCompletion);
-                break;
-              case $scope.availableTypes.Categories:
-                $scope.dataRepository.persistCategory(model, null, onCompletion);
-                break;
-              case $scope.availableTypes.Products:
-                $scope.dataRepository.persistProduct(model, null, onCompletion);
-                break;
-            }
-          };
-          var persistService = new PersistService(
-            dataRepositoryFactory,
-            $scope.dataRepository,
-            dataRepositoryFactory.getStorageRepository()
-          );
           switch ($scope.formType) {
             case $scope.availableTypes.Brands:
-              persistService.processBrand(model, null, doPersist);
+              persistService.processBrand(model, null, onCompletion);
               break;
             case $scope.availableTypes.Categories:
-              persistService.processCategory(model, null, doPersist);
+              persistService.processCategory(model, null, onCompletion);
               break;
             case $scope.availableTypes.Products:
-              persistService.processProduct(model, null, doPersist);
+              persistService.processProduct(model, null, onCompletion);
               break;
           }
         }
