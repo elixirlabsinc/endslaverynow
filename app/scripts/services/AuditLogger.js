@@ -48,10 +48,10 @@ var AuditLogger = function (recordSets) {
     // We don't report any success/failure messages to the user because they shouldn't be aware of these logs.
     this.recordSets[collectionName].$add(auditLog.toStorageRecord()).then(
       function () {
-        console.log('Audit log saved successfully');
+        console.log('Info: Audit log saved successfully');
       },
       function (error) {
-        console.log('Audit log save produced an error:', error);
+        console.log('Info: Audit log save produced an error:', error);
       }
     );
   };
