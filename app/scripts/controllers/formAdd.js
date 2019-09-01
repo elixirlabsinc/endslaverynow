@@ -174,6 +174,8 @@ angular.module('endslaverynowApp')
           // @TODO: I don't think we need "doPersist()" - the methods in persistService save the relevant
           // @TODO: record, so we don't need to also do it here. We just need to do, for example:
           // @TODO: persistService.processBrand(model, null, onCompletion);
+          // @TODO: This is fixed in issue #33. When it is merged into master, we need to merge master in
+          // @TODO: to this branch and fix the merge conflicts (discard changes in this branch!).
           var doPersist = function doPersist() {
             switch ($scope.formType) {
               case $scope.availableTypes.Brands:
