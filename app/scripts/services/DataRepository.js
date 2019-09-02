@@ -19,8 +19,11 @@ var DataRepository = function (recordSets, auditLogger) {
   const collectionNames = {
     brands: 'brands',
     categories: 'categories',
-    products: 'products'
+    products: 'products',
+    auditLog: 'auditLog'
   };
+
+  this.auditLogs = null; // "null" indicates we haven't populated it yet - it becomes an array after that.
 
   this.auditLogHelper = new AuditLogHelper();
 
@@ -73,6 +76,26 @@ var DataRepository = function (recordSets, auditLogger) {
   // Note: at the moment, this.certifications will always be an empty array.
   this.getCertifications = function getCertifications() {
     return this.certifications;
+  };
+
+  // Note: Audit logs are different to the other record sets because they are loaded "on demand", so this
+  // method must handle parsing the raw data first as necessary.
+  this.getAuditLogs = function getAuditLogs() {
+    if (this.auditLogs === null) {
+      // We haven't loaded the audit logs, so do it now.
+      this.auditLogs = [];
+      var self = this;
+      if (this.recordSets.hasOwnProperty(collectionNames.auditLog)) {
+        this.recordSets.auditLog.forEach(
+          function (auditLog) {
+            var auditLogHelper = new AuditLogHelper();
+            self.auditLogs.push(new AuditLog(auditLogHelper.fromStorage(auditLog)));
+          }
+        );
+      }
+    }
+
+    return this.auditLogs;
   };
 
   this.getTopLevelCategories = function getTopLevelCategories() {
