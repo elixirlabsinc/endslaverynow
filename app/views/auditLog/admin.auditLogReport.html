@@ -3,5 +3,34 @@
 <p ng-if="auditLogs === null">Please wait while we load the data...</p>
 
 <div ng-if="auditLogs !== null">
-    <p>Num log records: {{ auditLogs.length }}</p>
+    <h3>Filters</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Users</th>
+            <th>Operation Types</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <select ng-model="criteria.user" title="Select user">
+                    <option value="">Select...</option>
+                    <option ng-if="filters.users.anon" value="-anonymous-">Anonymous</option>
+                    <option ng-repeat="username in filters.users.admins" value="{{ username }}">{{ username }}</option>
+                </select>
+            </td>
+            <td>
+                <select ng-model="criteria.operationType" title="Select operation type">
+                    <option value="">Select...</option>
+                    <option ng-repeat="operationType in filters.operationTypes" value="{{ operationType }}">{{ operationType }}</option>
+                </select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Matching</h3>
+    <p>Tmp user: {{ criteria.user }}</p>
+    <p>Tmp operation: {{ criteria.operationType }}</p>
 </div>
