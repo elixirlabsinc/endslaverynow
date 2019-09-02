@@ -174,6 +174,17 @@ angular
 				controller: 'RankingsCtrl',
 				controllerAs: 'rankings'
 			})
+			.state('admin.auditLogReport', {
+				url: '/auditLogReport',
+				templateUrl: 'views/auditLog/admin.auditLogReport.html',
+				controller: 'AuditLogReportCtrl',
+				controllerAs: 'auditLogReport',
+				resolve: {
+					'currentAuth': ['Auth', function(Auth) {
+						return Auth.$requireSignIn;
+					}]
+				}
+			});
 
 			$urlRouterProvider.otherwise('/')
 	})
