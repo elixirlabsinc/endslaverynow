@@ -1,1 +1,7 @@
 <h2>Audit Log Reporter</h2>
+
+<p ng-if="auditLogs === null">Please wait while we load the data...</p>
+
+<div ng-if="auditLogs !== null">
+    <p>Num log records: {{ auditLogs.length }}</p>
+</div>
