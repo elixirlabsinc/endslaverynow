@@ -9,6 +9,11 @@
         <tr>
             <th>Users</th>
             <th>Operation Types</th>
+            <th>Event Dates/times [Need calendar, etc]</th>
+            <th>Record Type</th>
+            <th>Record Ids</th>
+            <th>Fields</th>
+            <th>Value</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +31,36 @@
                     <option ng-repeat="operationType in filters.operationTypes" value="{{ operationType }}">{{ operationType }}</option>
                 </select>
             </td>
+            <td>
+                From: <input type="text" value="" ng-model="criteria.dates.from" placeholder="{{ getEarliestFilterDate() }}"/>
+                <br/>
+                To: <input type="text" value="" ng-model="criteria.dates.to" placeholder="{{ getLatestFilterDate() }}"/>
+            </td>
+            <td>
+                <select ng-model="criteria.record.type" title="Select record type">
+                    <option value="">Select...</option>
+                    <option ng-repeat="(recordType, children) in filters.records" value="{{ recordType }}">{{ recordType }}</option>
+                </select>
+            </td>
+            <td>
+                <select ng-model="criteria.record.id" title="Select record id">
+                    <option value="">Select...</option>
+                    <option ng-repeat="recordId in filters.records[criteria.record.type].ids" value="{{ recordId }}">{{ recordId }}</option>
+                </select>
+            </td>
+            <td>
+                <select ng-model="criteria.record.column" title="Select field">
+                    <option value="">Select...</option>
+                    <option ng-repeat="recordColumn in filters.records[criteria.record.type].columns" value="{{ recordColumn }}">{{ recordColumn }}</option>
+                </select>
+            </td>
+            <td>
+                <input type="text" value="" ng-model="criteria.field.value"/>
+                <br/>
+                <label >From<input type="radio" name="transition" ng-model="criteria.field.transition" value="from"/></label>
+                <label >To<input type="radio" name="transition" ng-model="criteria.field.transition" value="to"/></label>
+                <label >Either<input type="radio" name="transition" ng-model="criteria.field.transition" value="either"/></label>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -33,4 +68,11 @@
     <h3>Matching</h3>
     <p>Tmp user: {{ criteria.user }}</p>
     <p>Tmp operation: {{ criteria.operationType }}</p>
+    <p>Tmp Date from: {{ criteria.dates.from }}</p>
+    <p>Tmp Date to: {{ criteria.dates.to }}</p>
+    <p>Tmp record type: {{ criteria.record.type }}</p>
+    <p>Tmp record id: {{ criteria.record.id }}</p>
+    <p>Tmp record column: {{ criteria.record.column }}</p>
+    <p>Tmp field value: {{ criteria.field.value }}</p>
+    <p>Tmp transition: {{ criteria.field.transition }}</p>
 </div>
