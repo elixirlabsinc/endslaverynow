@@ -6,7 +6,10 @@ angular.module('endslaverynowApp')
     'dataRepositoryFactory',
     function($scope, dataRepositoryFactory) {
       $scope.auditLogFilterer = new AuditLogFilterer();
+      $scope.resultColumnHelper = new ResultColumnHelper();
 
+      $scope.resultColumns = [];
+      $scope.results = [];
       $scope.auditLogs = null;
       $scope.criteria = {
         user: null,
@@ -46,10 +49,37 @@ angular.module('endslaverynowApp')
         return $scope.filters.dates.max.toISOString();
       };
 
+      $scope.clearRecordSubFilters = function clearRecordSubFilters() {
+        $scope.criteria.record.id = null;
+        $scope.criteria.record.column = null;
+      };
+
       $scope.refreshResults = function refreshResults() {
+        $scope.sanitiseCriteria($scope.criteria);
+        $scope.resultColumns = [];
         // @TODO: This needs to use a "debounce", ideally.
-        var results = $scope.auditLogFilterer.applyFilter($scope.auditLogs, $scope.criteria);
-        // @TODO: We will display the results next.
+        $scope.results = $scope.auditLogFilterer.applyFilter($scope.auditLogs, $scope.criteria);
+
+        // Build up the list of columns we're going to need - they can vary a lot between invocations.
+        // If the user has filtered on 1 specific value for certain columns, there's no point showing that column
+        // as all the values in it will be the same (as each other and the criteria).
+        $scope.resultColumns.push($scope.resultColumnHelper.makeDatetime());
+        if ($scope.criteria.user === null) {
+          $scope.resultColumns.push($scope.resultColumnHelper.makeUser());
+        }
+        if ($scope.criteria.operationType === null) {
+          $scope.resultColumns.push($scope.resultColumnHelper.makeOperation());
+        }
+        if ($scope.criteria.record.type === null) {
+          $scope.resultColumns.push($scope.resultColumnHelper.makeRecordType());
+        }
+        if ($scope.criteria.record.id === null) {
+          $scope.resultColumns.push($scope.resultColumnHelper.makeRecordId());
+        }
+        // @TODO: I'm not absolutely sure how I'm going to do this - the most efficient way would be for the filter
+        // @TODO: method above (applyFilter) to build up a list of all the tables/columns it has encountered.
+        // @TODO: Might be better for the helper to handle these as well.
+        $scope.resultColumns.push(new ResultColumn('column', 'products<br/>name', 'products', 'name'));
       };
 
       /**

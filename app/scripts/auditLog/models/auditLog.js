@@ -52,5 +52,4 @@ var AuditLog = (function () {
   };
 
   return AuditLog;
-
 }());

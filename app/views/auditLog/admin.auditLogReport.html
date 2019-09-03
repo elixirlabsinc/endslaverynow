@@ -37,7 +37,7 @@
                 To: <input type="text" value="" ng-model="criteria.dates.to" placeholder="{{ getLatestFilterDate() }} ng-change="refreshResults()""/>
             </td>
             <td>
-                <select ng-model="criteria.record.type" title="Select record type" ng-change="refreshResults()">
+                <select ng-model="criteria.record.type" title="Select record type" ng-change="clearRecordSubFilters(); refreshResults()">
                     <option value="">Select...</option>
                     <option ng-repeat="(recordType, children) in filters.records" value="{{ recordType }}">{{ recordType }}</option>
                 </select>
@@ -66,6 +66,34 @@
     </table>
 
     <h3>Matching</h3>
+
+    <table>
+        <thead>
+        <tr>
+            <td ng-repeat="resultColumn in resultColumns" ng-bind-html="resultColumn.getHeading()"></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat-start="result in results">
+            <td
+                    ng-repeat="resultColumn in resultColumns"
+                    rowspan="{{ resultColumn.getRowSpan(true) }}"
+                    ng-bind-html="resultColumn.getDisplayValue(result, true)"
+            >
+                [1]
+            </td>
+        </tr>
+        <tr ng-repeat-end>
+            <td
+                    ng-repeat="resultColumn in resultColumns"
+                    ng-if="resultColumn.isCellDisplayed(false)"
+                    ng-bind-html="resultColumn.getDisplayValue(result, false)"
+            >
+                [2]
+            </td>
+        </tr>
+        </tbody>
+    </table>
     <p>Tmp user: {{ criteria.user }}</p>
     <p>Tmp operation: {{ criteria.operationType }}</p>
     <p>Tmp Date from: {{ criteria.dates.from }}</p>
