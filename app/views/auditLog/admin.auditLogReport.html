@@ -19,47 +19,47 @@
         <tbody>
         <tr>
             <td>
-                <select ng-model="criteria.user" title="Select user">
+                <select ng-model="criteria.user" title="Select user" ng-change="refreshResults()">
                     <option value="">Select...</option>
                     <option ng-if="filters.users.anon" value="anonymous">Anonymous</option>
                     <option ng-repeat="username in filters.users.admins" value="admin${{ username }}">{{ username }}</option>
                 </select>
             </td>
             <td>
-                <select ng-model="criteria.operationType" title="Select operation type">
+                <select ng-model="criteria.operationType" title="Select operation type" ng-change="refreshResults()">
                     <option value="">Select...</option>
                     <option ng-repeat="operationType in filters.operationTypes" value="{{ operationType }}">{{ operationType }}</option>
                 </select>
             </td>
             <td>
-                From: <input type="text" value="" ng-model="criteria.dates.from" placeholder="{{ getEarliestFilterDate() }}"/>
+                From: <input type="text" value="" ng-model="criteria.dates.from" placeholder="{{ getEarliestFilterDate() }}" ng-change="refreshResults()"/>
                 <br/>
-                To: <input type="text" value="" ng-model="criteria.dates.to" placeholder="{{ getLatestFilterDate() }}"/>
+                To: <input type="text" value="" ng-model="criteria.dates.to" placeholder="{{ getLatestFilterDate() }} ng-change="refreshResults()""/>
             </td>
             <td>
-                <select ng-model="criteria.record.type" title="Select record type">
+                <select ng-model="criteria.record.type" title="Select record type" ng-change="refreshResults()">
                     <option value="">Select...</option>
                     <option ng-repeat="(recordType, children) in filters.records" value="{{ recordType }}">{{ recordType }}</option>
                 </select>
             </td>
             <td>
-                <select ng-model="criteria.record.id" title="Select record id">
+                <select ng-model="criteria.record.id" title="Select record id" ng-change="refreshResults()">
                     <option value="">Select...</option>
                     <option ng-repeat="recordId in filters.records[criteria.record.type].ids" value="{{ recordId }}">{{ recordId }}</option>
                 </select>
             </td>
             <td>
-                <select ng-model="criteria.record.column" title="Select field">
+                <select ng-model="criteria.record.column" title="Select field" ng-change="refreshResults()">
                     <option value="">Select...</option>
                     <option ng-repeat="recordColumn in filters.records[criteria.record.type].columns" value="{{ recordColumn }}">{{ recordColumn }}</option>
                 </select>
             </td>
             <td>
-                <input type="text" value="" ng-model="criteria.field.value"/>
+                <input type="text" value="" ng-model="criteria.field.value" ng-change="refreshResults()"/>
                 <br/>
-                <label >From<input type="radio" name="transition" ng-model="criteria.field.transition" value="from"/></label>
-                <label >To<input type="radio" name="transition" ng-model="criteria.field.transition" value="to"/></label>
-                <label >Either<input type="radio" name="transition" ng-model="criteria.field.transition" value="either"/></label>
+                <label >From<input type="radio" name="transition" ng-model="criteria.field.transition" value="from" ng-change="refreshResults()"/></label>
+                <label >To<input type="radio" name="transition" ng-model="criteria.field.transition" value="to" ng-change="refreshResults()"/></label>
+                <label >Either<input type="radio" name="transition" ng-model="criteria.field.transition" value="either" ng-change="refreshResults()"/></label>
             </td>
         </tr>
         </tbody>

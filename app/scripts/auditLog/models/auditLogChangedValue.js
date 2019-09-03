@@ -16,6 +16,16 @@ var AuditLogChangedValue = (function () {
     this.recordProperty = recordProperty;
     this.previousValue = previousValue;
     this.currentValue = currentValue;
+
+    this.valueMatchesProperty = function valueMatchesProperty(propertyValue, matchValue) {
+      if (typeof propertyValue === 'string') {
+        return propertyValue.toLowerCase().indexOf(matchValue.toLowerCase()) !== -1;
+      } else if (typeof propertyValue === 'number') {
+        return propertyValue.toString() === matchValue;
+      }
+
+      return false;
+    };
   };
 
   AuditLogChangedValue.prototype = {
@@ -31,6 +41,14 @@ var AuditLogChangedValue = (function () {
         previous: this.previousValue,
         current: this.currentValue
       };
+    },
+
+    previousValueMatches: function previousValueMatches(matchValue) {
+      return this.valueMatchesProperty(this.previousValue, matchValue);
+    },
+
+    currentValueMatches: function currentValueMatches(matchValue) {
+      return this.valueMatchesProperty(this.currentValue, matchValue);
     }
   };
 
