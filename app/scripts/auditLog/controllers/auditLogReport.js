@@ -62,7 +62,7 @@ angular.module('endslaverynowApp')
         if ($scope.noFilter) {
           return; // No filters. Don't attempt to filter. The screen will show a suitable message.
         }
-        // @TODO: This needs to use a "debounce", ideally.
+        // @TODO: This needs to use a "debounce", ideally. Or at least the option of using one.
         $scope.results = $scope.auditLogFilterer.applyFilter($scope.auditLogs, $scope.criteria);
         if ($scope.results.length === 0) {
           return; // Filtering returned zero results. No point determining result columns. Screen will show appropriate message.
@@ -84,10 +84,7 @@ angular.module('endslaverynowApp')
         if ($scope.criteria.record.id === null) {
           $scope.resultColumns.push($scope.resultColumnHelper.makeRecordId());
         }
-        // @TODO: I'm not absolutely sure how I'm going to do this - the most efficient way would be for the filter
-        // @TODO: method above (applyFilter) to build up a list of all the tables/columns it has encountered.
-        // @TODO: Might be better for the helper to handle these as well.
-        $scope.resultColumns.push(new ResultColumn('column', 'products<br/>name', 'products', 'name'));
+        $scope.auditLogFilterer.addChangedColumns($scope.results, $scope.resultColumns);
       };
 
       /**

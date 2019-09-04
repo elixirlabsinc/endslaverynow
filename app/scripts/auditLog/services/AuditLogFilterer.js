@@ -207,4 +207,51 @@ var AuditLogFilterer = function() {
 
     return result;
   };
+
+  /**
+   * Go through the results array, and add every column with a changed value to the result columns. We must
+   * go through the whole result set first, so we can group the new columns by record type.
+   * @TODO: I'm not absolutely sure if this is the most efficient way of doing this. Making the filter
+   * @TODO: method above (applyFilter) build up a list of all the tables/columns it has encountered would be
+   * @TODO: more efficient. However, returning the result columns would be difficult. I'm going to leave it
+   * @TODO: like this for now as it works. We can deal with efficiency later.
+   * @param {AuditLog[]} auditLogFilterResults
+   * @param {ResultColumn[]} existingResultColumns
+   */
+  this.addChangedColumns = function addChangedColumns(auditLogFilterResults, existingResultColumns) {
+    // Identify all the tables and columns that are present.
+    var tablesAndColumns = {};
+    auditLogFilterResults.forEach(
+      /**
+       * @param {AuditLog} auditLog
+       */
+      function (auditLog) {
+        // Make sure the table has an entry.
+        if (!tablesAndColumns.hasOwnProperty(auditLog.recordType)) {
+          tablesAndColumns[auditLog.recordType] = {};
+        }
+        auditLog.changedValues.forEach(
+          /**
+           * @param {AuditLogChangedValue} changedValue
+           */
+          function (changedValue) {
+            if (!tablesAndColumns[auditLog.recordType].hasOwnProperty(changedValue.recordProperty)) {
+              tablesAndColumns[auditLog.recordType][changedValue.recordProperty] = true;
+            }
+          }
+        );
+      }
+    );
+    // Now loop through the tables & columns, and add an result column for each.
+    var resultColumnHelper = new ResultColumnHelper();
+    for (var tableName in tablesAndColumns) {
+      if (tablesAndColumns.hasOwnProperty(tableName)) {
+        for (var columnName in tablesAndColumns[tableName]) {
+          if (tablesAndColumns[tableName].hasOwnProperty(columnName)) {
+            existingResultColumns.push(resultColumnHelper.makeColumn(tableName, columnName));
+          }
+        }
+      }
+    }
+  };
 };
