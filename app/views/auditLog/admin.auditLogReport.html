@@ -67,7 +67,11 @@
 
     <h3>Matching</h3>
 
-    <table>
+    <p ng-if="noFilter">Please enter some search criteria</p>
+
+    <p ng-if="!noFilter && results.length === 0">No log entries match your criteria</p>
+
+    <table ng-if="results.length > 0">
         <thead>
         <tr>
             <td ng-repeat="resultColumn in resultColumns" ng-bind-html="resultColumn.getHeading()"></td>

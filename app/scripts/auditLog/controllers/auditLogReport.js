@@ -28,6 +28,7 @@ angular.module('endslaverynowApp')
           transition: 'either'
         }
       };
+      $scope.noFilter = true;
 
       // This controller is different to the others in that we don't parse the audit log data unless the user
       // navigates to this page (there will be quite a lot of it, and none of it is read by the rest of the
@@ -56,9 +57,16 @@ angular.module('endslaverynowApp')
 
       $scope.refreshResults = function refreshResults() {
         $scope.sanitiseCriteria($scope.criteria);
+        $scope.noFilter = !$scope.anyCriteria();
         $scope.resultColumns = [];
+        if ($scope.noFilter) {
+          return; // No filters. Don't attempt to filter. The screen will show a suitable message.
+        }
         // @TODO: This needs to use a "debounce", ideally.
         $scope.results = $scope.auditLogFilterer.applyFilter($scope.auditLogs, $scope.criteria);
+        if ($scope.results.length === 0) {
+          return; // Filtering returned zero results. No point determining result columns. Screen will show appropriate message.
+        }
 
         // Build up the list of columns we're going to need - they can vary a lot between invocations.
         // If the user has filtered on 1 specific value for certain columns, there's no point showing that column
@@ -98,6 +106,22 @@ angular.module('endslaverynowApp')
             }
           }
         }
+      };
+
+      /**
+       * Method to return true if all the values in the search criteria object say there is no filter.
+       * @return {boolean}
+       */
+      $scope.anyCriteria = function anyCriteria() {
+        return $scope.criteria.user !== null ||
+          $scope.criteria.operationType !== null ||
+          $scope.criteria.dates.from !== null ||
+          $scope.criteria.dates.to !== null ||
+          $scope.criteria.record.type !== null ||
+          $scope.criteria.record.id !== null ||
+          $scope.criteria.record.column !== null ||
+          $scope.criteria.field.value !== null ||
+          $scope.criteria.field.transition !== 'either';
       };
     }
   ])
