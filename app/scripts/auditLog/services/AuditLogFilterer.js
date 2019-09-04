@@ -134,8 +134,17 @@ var AuditLogFilterer = function() {
           }
         }
 
-        // Dates - "from" and "to".
-        // @TODO: Finish this once I know what format they'll arrive in.
+        // Dates - "from" and "to". The dates are instances of moment (or are null).
+        if (criteria.dates.from !== null) {
+          if (auditLog.dateTime < criteria.dates.from) {
+            return false; // Change was before "from" date.
+          }
+        }
+        if (criteria.dates.to !== null) {
+          if (auditLog.dateTime > criteria.dates.to) {
+            return false; // Change was before "to" date.
+          }
+        }
 
         // Record - type, id, field
         if (criteria.record.type !== null) {

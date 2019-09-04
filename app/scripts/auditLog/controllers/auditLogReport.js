@@ -43,11 +43,11 @@ angular.module('endslaverynowApp')
       );
 
       $scope.getEarliestFilterDate = function getEarliestFilterDate() {
-        return $scope.filters.dates.min.toISOString();
+        return (new moment($scope.filters.dates.min)).format('DD-MMM-YYYY HH:mm');
       };
 
       $scope.getLatestFilterDate = function getLatestFilterDate() {
-        return $scope.filters.dates.max.toISOString();
+        return (new moment($scope.filters.dates.max)).format('DD-MMM-YYYY HH:mm');
       };
 
       $scope.clearRecordSubFilters = function clearRecordSubFilters() {
@@ -56,15 +56,31 @@ angular.module('endslaverynowApp')
       };
 
       $scope.refreshResults = function refreshResults() {
+        // Note we have to call $apply() when we're finished because Angular doesn't know when the from/to
+        // dates are changed. We detect the change via the datetime picker's events, and manually call refresh.
         $scope.sanitiseCriteria($scope.criteria);
         $scope.noFilter = !$scope.anyCriteria();
+        $scope.results = [];
         $scope.resultColumns = [];
+        if ($scope.criteria.dates.from !== null && !($scope.criteria.dates.from instanceof moment)) {
+          $scope.criteria.dates.from = new moment($scope.criteria.dates.from, 'DD-MMM-YYYY HH:mm:ss');
+        }
+        if ($scope.criteria.dates.to !== null && !($scope.criteria.dates.to instanceof moment)) {
+          $scope.criteria.dates.to = new moment($scope.criteria.dates.to, 'DD-MMM-YYYY HH:mm:ss');
+        }
+        if ($scope.criteria.dates.from !== null && $scope.criteria.dates.to !== null) {
+          if ($scope.criteria.dates.from.isAfter($scope.criteria.dates.to)) {
+            $scope.noFilter = true;
+          }
+        }
         if ($scope.noFilter) {
+          $scope.$apply();
           return; // No filters. Don't attempt to filter. The screen will show a suitable message.
         }
         // @TODO: This needs to use a "debounce", ideally. Or at least the option of using one.
         $scope.results = $scope.auditLogFilterer.applyFilter($scope.auditLogs, $scope.criteria);
         if ($scope.results.length === 0) {
+          $scope.$apply();
           return; // Filtering returned zero results. No point determining result columns. Screen will show appropriate message.
         }
 
@@ -85,6 +101,7 @@ angular.module('endslaverynowApp')
           $scope.resultColumns.push($scope.resultColumnHelper.makeRecordId());
         }
         $scope.auditLogFilterer.addChangedColumns($scope.results, $scope.resultColumns);
+        $scope.$apply();
       };
 
       /**

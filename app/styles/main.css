@@ -177,3 +177,17 @@ a:hover {
 .audit-log-results.old-values {
   color: grey;
 }
+
+.date-time-container {
+  width: 14em;
+}
+.date-time {
+  position: relative
+}
+.date-time input {
+  width: 9em;
+}
+.date-time .prompt {
+  display: inline-block;
+  width: 2.5em;
+}
