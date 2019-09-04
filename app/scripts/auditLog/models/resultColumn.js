@@ -49,12 +49,10 @@ var ResultColumn = (function () {
         // We only show one entry per result, and it comes from the audit log header.
         switch (this.columnType) {
           case 'datetime':
-            // @TODO: Using moment would make this much easier.
-            var day = this.padDateTime(auditLog.dateTime.getDate());
-            var month = this.monthNames[auditLog.dateTime.getMonth()];
-            var year = this.padDateTime(auditLog.dateTime.getFullYear());
-            return day + '-' + month + '-' + year + '<br/>' +
-              this.padDateTime(auditLog.dateTime.getHours()) + ':' + this.padDateTime(auditLog.dateTime.getMinutes()) + ':' + this.padDateTime(auditLog.dateTime.getSeconds());
+            // @TODO: Need to make sure users understand what timezone the date/time represents.
+            var changeDate = new moment(auditLog.dateTime);
+            // Output the date in the form "31 Dec 2019" and the time in 24hr format with seconds.
+            return changeDate.format('DD-MMM-YYYY') + '<br/>' + changeDate.format('HH:mm:ss');
           case 'user':
             return auditLog.userType === 'anonymous' ? '(anonymous)' : auditLog.userRef;
           case 'operation':
