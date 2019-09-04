@@ -89,7 +89,10 @@ var ResultColumn = (function () {
 
       // @TODO: We could do special things here, eg for images, etc.
       // @TODO: We could also show the old value in grey (using a class, of course).
-      return isForNew ? matchingChangedValues[0].currentValue : matchingChangedValues[0].previousValue;
+      var result = isForNew ? matchingChangedValues[0].currentValue : matchingChangedValues[0].previousValue;
+      result = (result === null ? '[NULL]' : result);
+
+      return result;
     }
   };
 

@@ -93,6 +93,9 @@ var DataRepository = function (recordSets, auditLogger) {
           }
         );
       }
+      // We want the latest first, and we can assume that the logs were adding in chronological order, so we
+      // simply need to reverse the order of the elements.
+      this.auditLogs.reverse(); // Note this changes the array.
     }
 
     return this.auditLogs;
