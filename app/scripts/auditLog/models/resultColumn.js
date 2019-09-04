@@ -87,9 +87,15 @@ var ResultColumn = (function () {
         return null;
       }
 
-      // @TODO: We could do special things here, eg for images, etc.
-      // @TODO: We could also show the old value in grey (using a class, of course).
       var result = isForNew ? matchingChangedValues[0].currentValue : matchingChangedValues[0].previousValue;
+      // Do special things here, eg for images, etc. Note that we assume the data type from the property name,
+      // which we should improve (but it would be a lot of work).
+      // @TODO: We could also show the old value in grey (using a class, of course).
+      if (matchingChangedValues[0].recordProperty === 'image') {
+        if (result !== null) {
+          result = '<img src="' + result + '"/>';
+        }
+      }
       result = (result === null ? '[NULL]' : result);
 
       return result;
