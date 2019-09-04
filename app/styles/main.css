@@ -173,3 +173,7 @@ a:hover {
     padding-bottom: 20%;
     font-size: 2em;
   }
+
+.audit-log-results.old-values {
+  color: grey;
+}
