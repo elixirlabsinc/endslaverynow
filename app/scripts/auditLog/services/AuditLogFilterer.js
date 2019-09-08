@@ -119,9 +119,11 @@ var AuditLogFilterer = function() {
               return false; // User is not anonymous.
             }
           } else {
-            // They are filtering on an admin user. For various reasons, "admin$$" has been prepended to the
-            // criteria value, so we need to strip it off before testing against the audit log.
-            if (auditLog.userType !== self.userTypes.admin || self.toAdminUser(criteria.user) !== auditLog.userRef) {
+            // They are filtering on an admin user, or "any" admin user. For various reasons, "admin$$" has been
+            // prepended to the criteria value when it's a specific admin, so we need to strip it off before
+            // testing against the audit log.
+            if (auditLog.userType !== self.userTypes.admin ||
+              (criteria.user !== 'any-admin' && self.toAdminUser(criteria.user) !== auditLog.userRef)) {
               return false; // User is either not an admin, or is the wrong admin.
             }
           }

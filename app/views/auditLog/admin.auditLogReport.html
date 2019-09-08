@@ -22,6 +22,7 @@
                 <select ng-model="criteria.user" title="Select user" ng-change="refreshResults()">
                     <option value="">Select...</option>
                     <option ng-if="filters.users.anon" value="anonymous">Anonymous</option>
+                    <option ng-if="filters.users.admins.length > 0" value="any-admin">Any admin</option>
                     <option ng-repeat="username in filters.users.admins" value="admin${{ username }}">{{ username }}</option>
                 </select>
             </td>

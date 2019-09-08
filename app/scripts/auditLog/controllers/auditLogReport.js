@@ -89,7 +89,7 @@ angular.module('endslaverynowApp')
         // If the user has filtered on 1 specific value for certain columns, there's no point showing that column
         // as all the values in it will be the same (as each other and the criteria).
         $scope.resultColumns.push($scope.resultColumnHelper.makeDatetime());
-        if ($scope.criteria.user === null) {
+        if ($scope.criteria.user === null || $scope.criteria.user === 'any-admin') {
           $scope.resultColumns.push($scope.resultColumnHelper.makeUser());
         }
         if ($scope.criteria.operationType === null) {
