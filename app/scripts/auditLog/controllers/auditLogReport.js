@@ -75,11 +75,15 @@ angular.module('endslaverynowApp')
       };
 
       $scope.getEarliestFilterDate = function getEarliestFilterDate() {
-        return (new moment($scope.filters.dates.min)).format('DD-MMM-YYYY HH:mm');
+        return $scope.filters ?
+          (new moment($scope.filters.dates.min)).set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0}) :
+          false;
       };
 
       $scope.getLatestFilterDate = function getLatestFilterDate() {
-        return (new moment($scope.filters.dates.max)).format('DD-MMM-YYYY HH:mm');
+        return $scope.filters ?
+          (new moment($scope.filters.dates.max)).set({'hour': 23, 'minute': 59, 'second': 59, 'millisecond': 999}) :
+          false;
       };
 
       $scope.clearRecordSubFilters = function clearRecordSubFilters() {

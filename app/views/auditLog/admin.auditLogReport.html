@@ -35,7 +35,7 @@
                             <div class="form-group date-time-container">
                                 <div class="date-time input-group date">
                                     <span class="prompt">From:</span>
-                                    <input type="text" value="" placeholder="{{ getEarliestFilterDate() }}" class="date-time" readonly="readonly" id="date-from"/>
+                                    <input type="text" value="" class="date-time" readonly="readonly" id="date-from"/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -44,7 +44,7 @@
                             <div class="form-group date-time-container">
                                 <div class="date-time input-group date">
                                     <span class="prompt">To:</span>
-                                    <input type="text" value="" placeholder="{{ getLatestFilterDate() }}" class="date-time" readonly="readonly" id="date-to"/>
+                                    <input type="text" value="" class="date-time" readonly="readonly" id="date-to"/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -102,24 +102,30 @@
     </table>
 
     <script ng-if="showFilters">
-      $("input.date-time")
-        .datetimepicker({
-          format: 'DD-MMM-YYYY HH:mm',
-          showClear: true,
-          showClose: true,
-          ignoreReadonly: true
-        })
-        .on(
-          'dp.change',
-          function (e) {
-            // @TODO: We need to get this sorted - Angular doesn't seem to update the model when the user chooses a date.
-            // @TODO: Nor does it fire the ng-change event thing.
-            var scope = angular.element(document.getElementById('results-table')).scope();
-            scope.criteria.dates.from = document.getElementById('date-from').value;
-            scope.criteria.dates.to = document.getElementById('date-to').value;
-            scope.refreshResults(true);
-          }
-        );
+      var scope = angular.element(document.getElementById('results-table')).scope();
+      $(document).ready(
+        function() {
+          $("input.date-time")
+            .datetimepicker({
+              format: 'DD-MMM-YYYY HH:mm',
+              showClear: true,
+              showClose: true,
+              ignoreReadonly: true,
+              minDate: scope.getEarliestFilterDate ? scope.getEarliestFilterDate() : false,
+              maxDate: scope.getLatestFilterDate ? scope.getLatestFilterDate() : false
+            })
+            .on(
+              'dp.change',
+              function (e) {
+                // @TODO: We need to get this sorted - Angular doesn't seem to update the model when the user chooses a date.
+                // @TODO: Nor does it fire the ng-change event thing.
+                scope.criteria.dates.from = document.getElementById('date-from').value;
+                scope.criteria.dates.to = document.getElementById('date-to').value;
+                scope.refreshResults(true);
+              }
+            );
+        }
+      );
     </script>
 
     <h3>Matching</h3>
