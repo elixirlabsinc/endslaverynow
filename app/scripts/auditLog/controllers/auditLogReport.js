@@ -55,9 +55,12 @@ angular.module('endslaverynowApp')
         $scope.criteria.record.column = null;
       };
 
-      $scope.refreshResults = function refreshResults() {
-        // Note we have to call $apply() when we're finished because Angular doesn't know when the from/to
-        // dates are changed. We detect the change via the datetime picker's events, and manually call refresh.
+      $scope.refreshResults = function refreshResults(requireApply) {
+        // Angular doesn't know when the from/to dates are changed, so we have to call refresh programmatically,
+        // which means we have to wrap it in an apply (otherwise the screen doesn't update).
+        if (requireApply === true) {
+          $scope.$apply(refreshResults(false));
+        }
         $scope.sanitiseCriteria($scope.criteria);
         $scope.noFilter = !$scope.anyCriteria();
         $scope.results = [];
@@ -74,13 +77,11 @@ angular.module('endslaverynowApp')
           }
         }
         if ($scope.noFilter) {
-          $scope.$apply();
           return; // No filters. Don't attempt to filter. The screen will show a suitable message.
         }
         // @TODO: This needs to use a "debounce", ideally. Or at least the option of using one.
         $scope.results = $scope.auditLogFilterer.applyFilter($scope.auditLogs, $scope.criteria);
         if ($scope.results.length === 0) {
-          $scope.$apply();
           return; // Filtering returned zero results. No point determining result columns. Screen will show appropriate message.
         }
 
@@ -101,7 +102,6 @@ angular.module('endslaverynowApp')
           $scope.resultColumns.push($scope.resultColumnHelper.makeRecordId());
         }
         $scope.auditLogFilterer.addChangedColumns($scope.results, $scope.resultColumns);
-        $scope.$apply();
       };
 
       /**

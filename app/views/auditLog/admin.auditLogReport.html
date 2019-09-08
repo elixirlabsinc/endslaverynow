@@ -96,7 +96,7 @@
             var scope = angular.element(document.getElementById('results-table')).scope();
             scope.criteria.dates.from = document.getElementById('date-from').value;
             scope.criteria.dates.to = document.getElementById('date-to').value;
-            scope.refreshResults();
+            scope.refreshResults(true);
           }
         );
     </script>
