@@ -8,6 +8,7 @@ angular.module('endslaverynowApp')
       $scope.auditLogFilterer = new AuditLogFilterer();
       $scope.resultColumnHelper = new ResultColumnHelper();
 
+      $scope.showFilters = true;
       $scope.resultColumns = [];
       $scope.results = [];
       $scope.auditLogs = null;
@@ -41,6 +42,10 @@ angular.module('endslaverynowApp')
           $scope.filters = $scope.auditLogFilterer.generateFilters($scope.auditLogs);
         }
       );
+
+      $scope.toggleShowFilter = function toggleShowFilter() {
+        $scope.showFilters = !$scope.showFilters;
+      };
 
       $scope.getEarliestFilterDate = function getEarliestFilterDate() {
         return (new moment($scope.filters.dates.min)).format('DD-MMM-YYYY HH:mm');

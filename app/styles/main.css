@@ -191,3 +191,7 @@ a:hover {
   display: inline-block;
   width: 2.5em;
 }
+
+.filter-heading span {
+  font-size: small;
+}
