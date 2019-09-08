@@ -3,10 +3,12 @@
 angular.module('endslaverynowApp')
   .controller('AuditLogReportCtrl', [
     '$scope',
+    '$location',
     'dataRepositoryFactory',
-    function($scope, dataRepositoryFactory) {
+    function($scope, $location, dataRepositoryFactory) {
       $scope.auditLogFilterer = new AuditLogFilterer();
       $scope.resultColumnHelper = new ResultColumnHelper();
+      $scope.$location = $location;
 
       $scope.showFilters = true;
       $scope.resultColumns = [];
@@ -40,8 +42,33 @@ angular.module('endslaverynowApp')
 
           $scope.auditLogs = $scope.dataRepository.getAuditLogs();
           $scope.filters = $scope.auditLogFilterer.generateFilters($scope.auditLogs);
+
+          // Apply any filters passed in on the URL.
+          $scope.defaultFilters();
         }
       );
+
+      $scope.defaultFilters = function defaultFilters() {
+        // Look at the URL, and if any filters passed in look sensible, and the audit logs are compatible
+        // with that filter, apply the filter to the criteria on screen.
+        var urlFilters = $scope.$location.search();
+        var inHistory = false;
+        if (urlFilters.hasOwnProperty('recordType') && urlFilters.hasOwnProperty('recordId')) {
+          if ($scope.filters.records.hasOwnProperty(urlFilters.recordType)) {
+            var recordId = parseInt(urlFilters.recordId); // Values in the filters are ints
+            if ($scope.filters.records[urlFilters.recordType].ids.indexOf(recordId) !== -1) {
+              $scope.criteria.record.type = urlFilters.recordType;
+              $scope.criteria.record.id = recordId.toString(); // The value in the screen filters are strings.
+              inHistory = true;
+              $scope.refreshResults(); // Re-assess search criteria and update results.
+            }
+          }
+        }
+        if (!inHistory) {
+          // The audit logs were introduced since the last change to that record (or something has gone wrong!).
+          window.alert('Sorry, there is no history for that record');
+        }
+      };
 
       $scope.toggleShowFilter = function toggleShowFilter() {
         $scope.showFilters = !$scope.showFilters;

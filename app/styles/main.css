@@ -195,3 +195,7 @@ a:hover {
 .filter-heading span {
   font-size: small;
 }
+
+td.action {
+  width: 10.2em;
+}
