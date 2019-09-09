@@ -6,6 +6,10 @@ angular.module('endslaverynowApp')
     '$location',
     'dataRepositoryFactory',
     function($scope, $location, dataRepositoryFactory) {
+      // Note: the datetime picker we're using is this one: https://eonasdan.github.io/bootstrap-datetimepicker/
+      // Can't remember why I chose it. There's no reason why we can't use a different one in the future. Just
+      // make sure all the interactions with it are updated correctly, obviously.
+
       $scope.auditLogFilterer = new AuditLogFilterer();
       $scope.resultColumnHelper = new ResultColumnHelper();
       $scope.$location = $location;
