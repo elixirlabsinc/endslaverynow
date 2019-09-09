@@ -174,17 +174,11 @@ a:hover {
     font-size: 2em;
   }
 
-.no-wrap {
-  white-space: nowrap;
+td.action {
+  width: 10.2em;
 }
 
-tr.audit-log-results.new-values {
-  border-top: 1px lightgrey solid;
-}
-tr.audit-log-results.old-values {
-  color: darkgrey;
-}
-
+/* Styling for the audit log filter and results */
 .date-time-container {
   width: 14em;
 }
@@ -203,8 +197,15 @@ tr.audit-log-results.old-values {
   font-size: small;
 }
 
-td.action {
-  width: 10.2em;
+.bootstrap-datetimepicker-widget {
+  background: white;
+}
+
+tr.audit-log-results.new-values {
+  border-top: 1px lightgrey solid;
+}
+tr.audit-log-results.old-values {
+  color: darkgrey;
 }
 
 .results-table-section th,
@@ -214,6 +215,7 @@ td.action {
   padding: 0 0.1em !important;
 }
 
-.bootstrap-datetimepicker-widget {
-  background: white;
+.no-wrap {
+  white-space: nowrap;
 }
+/* End of styling for the audit log filter and results */
