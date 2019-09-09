@@ -87,12 +87,20 @@ var ResultColumn = (function () {
       }
 
       var result = isForNew ? matchingChangedValues[0].currentValue : matchingChangedValues[0].previousValue;
-      // Do special things here, eg for images, etc. Note that we assume the data type from the property name,
-      // which we should improve (but it would be a lot of work).
-      // @TODO: We could also show the old value in grey (using a class, of course).
-      if (matchingChangedValues[0].recordProperty === 'image') {
-        if (result !== null) {
-          result = '<img src="' + result + '"/>';
+      // Do any special things here, eg for images, etc. Note that we assume the data type from the property
+      // name, which we should improve (but it would be a lot of work).
+      if (result !== null) {
+        switch (matchingChangedValues[0].recordProperty) {
+          case 'image':
+            // Just show the image. The user can "mouseover" and/or open in a new tab if they need the URL.
+            result = '<img src="' + result + '"/>';
+            break;
+          case 'purchaseUrl':
+            // Show the URL, but make it a link (that opens in a new tab)
+            result = '<a href="' + result + '" target="_blank">' + result + '</a>';
+            break;
+          default:
+            break;
         }
       }
       result = (result === null ? '[NULL]' : result);
