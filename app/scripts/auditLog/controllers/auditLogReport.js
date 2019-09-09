@@ -109,11 +109,19 @@ angular.module('endslaverynowApp')
       };
 
       $scope.refreshResults = function refreshResults(requireApply) {
+        // @TODO: Currently, every time the "value" field changes (eg after every keypress"), this method is
+        // @TODO: called. If/when we have a lot of records in the future, this might end up being very slow.
+        // @TODO: I would suggest implementing a debounce (explained here: https://john-dugan.com/javascript-debounce/)
+        // @TODO: so that the first change (keypress) will wait for (eg) 1 second before invoking this method, and
+        // @TODO: any change events during that second will basically be ignored. Add a parameter to this method
+        // @TODO: to say whether to use debounce or not - most fields don't need it.
+
         // Angular doesn't know when the from/to dates are changed, so we have to call refresh programmatically,
         // which means we have to wrap it in an apply (otherwise the screen doesn't update).
         if (requireApply === true) {
           $scope.$apply(refreshResults(false));
         }
+
         $scope.sanitiseCriteria($scope.criteria);
         $scope.noFilter = !$scope.anyCriteria();
         $scope.results = [];
@@ -132,7 +140,6 @@ angular.module('endslaverynowApp')
         if ($scope.noFilter) {
           return; // No filters. Don't attempt to filter. The screen will show a suitable message.
         }
-        // @TODO: This needs to use a "debounce", ideally. Or at least the option of using one.
         $scope.results = $scope.auditLogFilterer.applyFilter($scope.auditLogs, $scope.criteria);
         if ($scope.results.length === 0) {
           return; // Filtering returned zero results. No point determining result columns. Screen will show appropriate message.
