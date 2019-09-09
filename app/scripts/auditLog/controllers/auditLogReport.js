@@ -74,16 +74,33 @@ angular.module('endslaverynowApp')
         $scope.showFilters = !$scope.showFilters;
       };
 
-      $scope.getEarliestFilterDate = function getEarliestFilterDate() {
-        return $scope.filters ?
-          (new moment($scope.filters.dates.min)).set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0}) :
-          false;
+      $scope.buildFilterLimitDate = function buildFilterLimitDate(dateValue, isFromDate) {
+        // Create a moment object from the date value. Then, if the result is for the "from" date, go
+        // back to the previous midnight, otherwise go forward to just before the next midnight.
+        // We do this because the datetime-picker uses the time part of the "max date" as the default time
+        // when the user chooses a date. For the "from" date, we want this to be midnight on the morning of
+        // the date; for the "to" date, we need it to be the midnight (well, a millisecond before) of the
+        // date.
+        var result = new moment(dateValue);
+        if (isFromDate) {
+          result.set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+        } else {
+          result.set({'hour': 23, 'minute': 59, 'second': 59, 'millisecond': 999});
+        }
+
+        return result;
       };
 
-      $scope.getLatestFilterDate = function getLatestFilterDate() {
-        return $scope.filters ?
-          (new moment($scope.filters.dates.max)).set({'hour': 23, 'minute': 59, 'second': 59, 'millisecond': 999}) :
-          false;
+      $scope.getEarliestFilterDate = function getEarliestFilterDate(isFromDate) {
+        // "false" just means, "there is no earliest date" and is used if this is called before we've started
+        // parsing all the audit log records.
+        return $scope.filters ? this.buildFilterLimitDate($scope.filters.dates.min, isFromDate) : false;
+      };
+
+      $scope.getLatestFilterDate = function getLatestFilterDate(isFromDate) {
+        // "false" just means, "there is no latest date" and is used if this is called before we've started
+        // parsing all the audit log records.
+        return $scope.filters ? this.buildFilterLimitDate($scope.filters.dates.max, isFromDate) : false;
       };
 
       $scope.clearRecordSubFilters = function clearRecordSubFilters() {

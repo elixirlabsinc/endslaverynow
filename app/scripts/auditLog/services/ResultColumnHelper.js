@@ -22,6 +22,6 @@ var ResultColumnHelper = function() {
   };
 
   this.makeColumn = function makeColumn(tableName, columnName) {
-    return new ResultColumn('column', tableName+'<br/>'+columnName, tableName, columnName);
+    return new ResultColumn('column', tableName+':<br/>'+columnName, tableName, columnName);
   };
 };

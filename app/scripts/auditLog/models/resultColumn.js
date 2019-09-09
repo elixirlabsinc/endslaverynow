@@ -16,11 +16,6 @@ var ResultColumn = (function () {
       'recordType',
       'recordId'
     ];
-    this.monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-    this.padDateTime = function padDateTime(value) {
-      return (value < 10 ? '0' : '')+value.toString(); // The result must always be a string.
-    };
   };
 
   ResultColumn.prototype = {
@@ -34,6 +29,12 @@ var ResultColumn = (function () {
 
     getRowSpan: function getRowSpan(isForNew) {
       return (isForNew && this.spansTwoRows()) ? 2 : 1;
+    },
+
+    getClass: function getClass() {
+      // Yes, this is hard-coded at the moment. If we have more classes in the future, the class(es) will need
+      // to be a property of this object.
+      return this.columnType === 'datetime' ? 'no-wrap' : null;
     },
 
     isCellDisplayed: function isCellDisplayed(isForNew) {

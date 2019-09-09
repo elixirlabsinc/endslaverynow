@@ -174,7 +174,14 @@ a:hover {
     font-size: 2em;
   }
 
-.audit-log-results.old-values {
+.no-wrap {
+  white-space: nowrap;
+}
+
+tr.audit-log-results.new-values {
+  border-top: 1px lightgrey solid;
+}
+tr.audit-log-results.old-values {
   color: grey;
 }
 
@@ -198,4 +205,15 @@ a:hover {
 
 td.action {
   width: 10.2em;
+}
+
+.results-table-section th,
+.results-table-section td,
+.matching-records th,
+.matching-records td {
+  padding: 0 0.1em !important;
+}
+
+.bootstrap-datetimepicker-widget {
+  background: white;
 }

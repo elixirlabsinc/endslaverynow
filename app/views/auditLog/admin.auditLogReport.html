@@ -7,11 +7,11 @@
     <table id="results-table" ng-if="showFilters">
         <tr>
             <td>
-                <table>
+                <table class="results-table-section">
                     <thead>
                     <tr>
                         <th>Users</th>
-                        <th>Operation Types</th>
+                        <th>Operation<br/>Types</th>
                         <th>Event Dates/times</th>
                     </tr>
                     </thead>
@@ -35,19 +35,13 @@
                             <div class="form-group date-time-container">
                                 <div class="date-time input-group date">
                                     <span class="prompt">From:</span>
-                                    <input type="text" value="" class="date-time" readonly="readonly" id="date-from"/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                                    <input type="text" value="" class="date-time" data-is-from-date="1" readonly="readonly" id="date-from"/>
                                 </div>
                             </div>
                             <div class="form-group date-time-container">
                                 <div class="date-time input-group date">
                                     <span class="prompt">To:</span>
-                                    <input type="text" value="" class="date-time" readonly="readonly" id="date-to"/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                                    <input type="text" value="" class="date-time" data-is-from-date="0" readonly="readonly" id="date-to"/>
                                 </div>
                             </div>
                         </td>
@@ -58,7 +52,7 @@
         </tr>
         <tr>
             <td>
-                <table>
+                <table class="results-table-section">
                     <thead>
                     <tr>
                         <th>Record Type</th>
@@ -106,22 +100,32 @@
       $(document).ready(
         function() {
           $("input.date-time")
-            .datetimepicker({
-              format: 'DD-MMM-YYYY HH:mm',
-              showClear: true,
-              showClose: true,
-              ignoreReadonly: true,
-              minDate: scope.getEarliestFilterDate ? scope.getEarliestFilterDate() : false,
-              maxDate: scope.getLatestFilterDate ? scope.getLatestFilterDate() : false
-            })
-            .on(
-              'dp.change',
-              function (e) {
-                // @TODO: We need to get this sorted - Angular doesn't seem to update the model when the user chooses a date.
-                // @TODO: Nor does it fire the ng-change event thing.
-                scope.criteria.dates.from = document.getElementById('date-from').value;
-                scope.criteria.dates.to = document.getElementById('date-to').value;
-                scope.refreshResults(true);
+            .each(
+              function () {
+                var isFromDate = $(this).data('isFromDate');
+                $(this)
+                    .datetimepicker({
+                      format: 'DD-MMM-YYYY HH:mm',
+                      showClear: true,
+                      showClose: true,
+                      ignoreReadonly: true,
+                      minDate: scope.getEarliestFilterDate ? scope.getEarliestFilterDate(isFromDate) : false,
+                      maxDate: (scope.getLatestFilterDate ? scope.getLatestFilterDate(isFromDate) : false)
+                    })
+                    .on(
+                      'dp.change',
+                      function (e) {
+                        // @TODO: We need to get this sorted - Angular doesn't seem to update the model when the user chooses a date.
+                        // @TODO: Nor does it fire the ng-change event thing.
+                        // @TODO: Currently, we're working around both those things.
+                        scope.criteria.dates.from = document.getElementById('date-from').value;
+                        scope.criteria.dates.to = document.getElementById('date-to').value;
+                        scope.refreshResults(true);
+                      }
+                    )
+                    // I have to do this because when "maxDate" is set (above), it actually puts the value in
+                    // the input field, which is not what we want.
+                    .val(null);
               }
             );
         }
@@ -134,16 +138,17 @@
 
     <p ng-if="!noFilter && results.length === 0">No log entries match your criteria</p>
 
-    <table ng-if="results.length > 0">
+    <table ng-if="results.length > 0" class="matching-records">
         <thead>
         <tr>
-            <td ng-repeat="resultColumn in resultColumns" ng-bind-html="resultColumn.getHeading()"></td>
+            <th ng-repeat="resultColumn in resultColumns" ng-bind-html="resultColumn.getHeading()"></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat-start="result in results" class="audit-log-results new-values">
             <td
                     ng-repeat="resultColumn in resultColumns"
+                    ng-class="resultColumn.getClass()"
                     rowspan="{{ resultColumn.getRowSpan(true) }}"
                     ng-bind-html="resultColumn.getDisplayValue(result, true)"
             >
@@ -152,6 +157,7 @@
         <tr ng-repeat-end class="audit-log-results old-values">
             <td
                     ng-repeat="resultColumn in resultColumns"
+                    ng-class="resultColumn.getClass()"
                     ng-if="resultColumn.isCellDisplayed(false)"
                     ng-bind-html="resultColumn.getDisplayValue(result, false)"
             >
