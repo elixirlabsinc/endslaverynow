@@ -16,6 +16,32 @@ var ResultColumn = (function () {
       'recordType',
       'recordId'
     ];
+
+    this.buildExternalRecordLinkCell = function buildExternalRecordLinkCell(recordType, id, model) {
+      var prompt = 'Unknown';
+      var editPath = 'unknown';
+      switch (recordType) {
+        case 'category':
+          prompt = 'Category';
+          editPath = 'editCategory';
+          break;
+        case 'brand':
+          prompt = 'Brand';
+          editPath = 'editBrand';
+          break;
+      }
+      var tooltip = prompt + ': ' + (model === null ? '[deleted]' : model.getName());
+      var link = '';
+      if (model !== null) {
+        link = ' <a href="/#!/admin/' + editPath + '/' + id + '" target="_blank">Go</a>';
+      }
+      var result = '<span title="' + tooltip + '">' +
+        id +
+        link +
+        '</span>';
+
+      return result;
+    };
   };
 
   ResultColumn.prototype = {
@@ -43,9 +69,11 @@ var ResultColumn = (function () {
 
     /**
      * @param {AuditLog} auditLog
+     * @param isForNew
+     * @param {DataRepository} dataRepository This is really horrible, of course, but we need access to the current data sets.
      * @returns {string|null}
      */
-    getDisplayValue: function getDisplayValue(auditLog, isForNew) {
+    getDisplayValue: function getDisplayValue(auditLog, isForNew, dataRepository) {
       if (this.spansTwoRows()) {
         // We only show one entry per result, and it comes from the audit log header.
         switch (this.columnType) {
@@ -98,6 +126,19 @@ var ResultColumn = (function () {
           case 'purchaseUrl':
             // Show the URL, but make it a link (that opens in a new tab)
             result = '<a href="' + result + '" target="_blank">' + result + '</a>';
+            break;
+          case 'categoryId':
+          case 'parentCategoryId':
+            if (result > 0) {
+              var category = dataRepository.getCategoryById(result);
+              result = this.buildExternalRecordLinkCell('category', result, category);
+            }
+            break;
+          case 'brandId':
+            if (result > 0) {
+              var brand = dataRepository.getBrandById(result);
+              result = this.buildExternalRecordLinkCell('brand', result, brand);
+            }
             break;
           default:
             break;

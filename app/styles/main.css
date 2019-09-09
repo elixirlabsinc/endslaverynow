@@ -182,7 +182,7 @@ tr.audit-log-results.new-values {
   border-top: 1px lightgrey solid;
 }
 tr.audit-log-results.old-values {
-  color: grey;
+  color: darkgrey;
 }
 
 .date-time-container {

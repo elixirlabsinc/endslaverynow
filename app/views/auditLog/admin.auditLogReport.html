@@ -150,7 +150,7 @@
                     ng-repeat="resultColumn in resultColumns"
                     ng-class="resultColumn.getClass()"
                     rowspan="{{ resultColumn.getRowSpan(true) }}"
-                    ng-bind-html="resultColumn.getDisplayValue(result, true)"
+                    ng-bind-html="resultColumn.getDisplayValue(result, true, dataRepository)"
             >
             </td>
         </tr>
@@ -159,7 +159,7 @@
                     ng-repeat="resultColumn in resultColumns"
                     ng-class="resultColumn.getClass()"
                     ng-if="resultColumn.isCellDisplayed(false)"
-                    ng-bind-html="resultColumn.getDisplayValue(result, false)"
+                    ng-bind-html="resultColumn.getDisplayValue(result, false, dataRepository)"
             >
             </td>
         </tr>
