@@ -73,8 +73,21 @@ var AuditLogFilterer = function() {
         }
       }
     );
-    // @TODO: Go through the record ids and sort them into ascending order. Ditto columns.
-    // @TODO: Also sort the operation types into the order "insert", "update", "delete".
+
+    // Go through the various "lists" in the filter object and sort them into ascending order.
+    result.users.admins.sort();
+    result.operationTypes.sort();
+    // This is a bit yucky because we're actually sorting an object's properties by their key names!
+    var recordTypesInOrder = {};
+    Object.keys(result.records).sort().forEach(
+      function(key) {
+        recordTypesInOrder[key] = result.records[key];
+        // And while we're here, sort the columns and ids. The yuckiness of the property sort actually makes this easier!
+        recordTypesInOrder[key].columns.sort();
+        recordTypesInOrder[key].ids.sort();
+      }
+    );
+    result.records = recordTypesInOrder;
 
     return result;
   };
