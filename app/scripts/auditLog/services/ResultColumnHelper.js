@@ -1,6 +1,10 @@
 'use strict';
 
 var ResultColumnHelper = function() {
+  this.makeVisitRecord = function makeVisitRecord() {
+    return new ResultColumn('visitRecord', 'Go');
+  };
+
   this.makeDatetime = function makeDatetime() {
     return new ResultColumn('datetime', 'Date/Time');
   };

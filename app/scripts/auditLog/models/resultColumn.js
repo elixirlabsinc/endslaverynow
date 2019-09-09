@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * This is a table column in the result set, not a column in a record.
+ */
 var ResultColumn = (function () {
 
   var ResultColumn = function ResultColumn(columnType, columnHeading, recordType, propertyName) {
@@ -10,6 +13,7 @@ var ResultColumn = (function () {
 
     // This says which columns span 2 rows (new & old values).
     this.columnsSpanningTwoRows = [
+      'visitRecord',
       'datetime',
       'user',
       'operation',
@@ -17,27 +21,45 @@ var ResultColumn = (function () {
       'recordId'
     ];
 
-    this.buildExternalRecordLinkCell = function buildExternalRecordLinkCell(recordType, id, model) {
-      var prompt = 'Unknown';
+    this.buildExternalRecordLinkAnchor = function buildExternalRecordLinkAnchor(recordType, id, model) {
       var editPath = 'unknown';
       switch (recordType) {
-        case 'category':
-          prompt = 'Category';
+        case 'brands':
+          editPath = 'editBrand';
+          break;
+        case 'categories':
           editPath = 'editCategory';
           break;
-        case 'brand':
+        case 'products':
+          editPath = 'editProduct';
+          break;
+      }
+      var result = '';
+      if (model !== null) {
+        result = '<a href="/#!/admin/' + editPath + '/' + id + '" target="_blank">Go</a>';
+      }
+
+      return result;
+    };
+
+    this.buildExternalRecordLinkCell = function buildExternalRecordLinkCell(recordType, id, model) {
+      var prompt = 'Unknown';
+      switch (recordType) {
+        case 'brands':
           prompt = 'Brand';
-          editPath = 'editBrand';
+          break;
+        case 'categories':
+          prompt = 'Category';
+          break;
+        case 'products':
+          prompt = 'Product';
           break;
       }
       var tooltip = prompt + ': ' + (model === null ? '[deleted]' : model.getName());
-      var link = '';
-      if (model !== null) {
-        link = ' <a href="/#!/admin/' + editPath + '/' + id + '" target="_blank">Go</a>';
-      }
+      var link = this.buildExternalRecordLinkAnchor(recordType, id, model);
       var result = '<span title="' + tooltip + '">' +
         id +
-        link +
+        (link === '' ? '' : ' ' + link) +
         '</span>';
 
       return result;
@@ -77,6 +99,22 @@ var ResultColumn = (function () {
       if (this.spansTwoRows()) {
         // We only show one entry per result, and it comes from the audit log header.
         switch (this.columnType) {
+          case 'visitRecord':
+            var recordType = auditLog.recordType;
+            var id = auditLog.recordId;
+            var model = null;
+            switch (recordType) {
+              case 'brands':
+                model = dataRepository.getBrandById(id);
+                break;
+              case 'categories':
+                model = dataRepository.getCategoryById(id);
+                break;
+              case 'products':
+                model = dataRepository.getProductById(id);
+                break;
+            }
+            return this.buildExternalRecordLinkAnchor(recordType, id, model);
           case 'datetime':
             // @TODO: Need to make sure users understand what timezone the date/time represents.
             var changeDate = new moment(auditLog.dateTime);
@@ -131,13 +169,13 @@ var ResultColumn = (function () {
           case 'parentCategoryId':
             if (result > 0) {
               var category = dataRepository.getCategoryById(result);
-              result = this.buildExternalRecordLinkCell('category', result, category);
+              result = this.buildExternalRecordLinkCell('categories', result, category);
             }
             break;
           case 'brandId':
             if (result > 0) {
               var brand = dataRepository.getBrandById(result);
-              result = this.buildExternalRecordLinkCell('brand', result, brand);
+              result = this.buildExternalRecordLinkCell('brands', result, brand);
             }
             break;
           default:
