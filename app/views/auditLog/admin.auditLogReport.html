@@ -3,7 +3,7 @@
 <p ng-if="auditLogs === null">Please wait while we load the data...</p>
 
 <div ng-if="auditLogs !== null">
-    <h3 class="filter-heading">Filters <span ng-if="showFilters" ng-click="toggleShowFilter()">Hide</span><span ng-if="!showFilters" ng-click="toggleShowFilter()">Show</span></h3>
+    <h3 class="filter-heading">Filters <span ng-click="toggleShowFilter()"><span ng-if="showFilters">Hide</span><span ng-if="!showFilters">Show</span></span></h3>
     <table id="results-table" ng-if="showFilters">
         <tr>
             <td>
@@ -165,16 +165,4 @@
         </tr>
         </tbody>
     </table>
-
-    <div ng-if="false">
-    <p>Tmp user: {{ criteria.user }}</p>
-    <p>Tmp operation: {{ criteria.operationType }}</p>
-    <p>Tmp Date from: {{ criteria.dates.from }}</p>
-    <p>Tmp Date to: {{ criteria.dates.to }}</p>
-    <p>Tmp record type: {{ criteria.record.type }}</p>
-    <p>Tmp record id: {{ criteria.record.id }}</p>
-    <p>Tmp record column: {{ criteria.record.column }}</p>
-    <p>Tmp field value: {{ criteria.field.value }}</p>
-    <p>Tmp transition: {{ criteria.field.transition }}</p>
-    </div>
 </div>

@@ -94,6 +94,8 @@ var AuditLogFilterer = function() {
 
   /**
    * If the searchValue starts with "admin$", strip it off, otherwise return the same value.
+   * @TODO: "admin$" should be in a constant in case we ever want to change it.
+   *
    * @param {string} searchValue
    * @returns {string}
    */
@@ -132,7 +134,7 @@ var AuditLogFilterer = function() {
               return false; // User is not anonymous.
             }
           } else {
-            // They are filtering on an admin user, or "any" admin user. For various reasons, "admin$$" has been
+            // They are filtering on an admin user, or "any" admin user. For various reasons, "admin$" has been
             // prepended to the criteria value when it's a specific admin, so we need to strip it off before
             // testing against the audit log.
             if (auditLog.userType !== self.userTypes.admin ||
