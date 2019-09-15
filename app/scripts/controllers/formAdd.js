@@ -165,44 +165,26 @@ angular.module('endslaverynowApp')
         if (!validInput(item, itemTypes[$scope.formType].requiredInputs)) {
           $scope.errorMessage = true;
         } else {
+          var persistService = new PersistService(
+            dataRepositoryFactory,
+            $scope.dataRepository,
+            dataRepositoryFactory.getStorageRepository()
+          );
           var onCompletion = function onCompletion() {
             var addForm = document.getElementById('add-form');
             addForm.style.display = 'none';
             var successMessage = document.getElementById('submitted-form');
             successMessage.style.display = 'block';
           };
-          // @TODO: I don't think we need "doPersist()" - the methods in persistService save the relevant
-          // @TODO: record, so we don't need to also do it here. We just need to do, for example:
-          // @TODO: persistService.processBrand(model, null, onCompletion);
-          // @TODO: This is fixed in issue #33. When it is merged into master, we need to merge master in
-          // @TODO: to this branch and fix the merge conflicts (discard changes in this branch!).
-          var doPersist = function doPersist() {
-            switch ($scope.formType) {
-              case $scope.availableTypes.Brands:
-                $scope.dataRepository.persistBrand(model, null, onCompletion);
-                break;
-              case $scope.availableTypes.Categories:
-                $scope.dataRepository.persistCategory(model, null, onCompletion);
-                break;
-              case $scope.availableTypes.Products:
-                $scope.dataRepository.persistProduct(model, null, onCompletion);
-                break;
-            }
-          };
-          var persistService = new PersistService(
-            dataRepositoryFactory,
-            $scope.dataRepository,
-            dataRepositoryFactory.getStorageRepository()
-          );
           switch ($scope.formType) {
             case $scope.availableTypes.Brands:
-              persistService.processBrand(model, null, doPersist);
+              persistService.processBrand(model, null, onCompletion);
               break;
             case $scope.availableTypes.Categories:
-              persistService.processCategory(model, null, doPersist);
+              persistService.processCategory(model, null, onCompletion);
               break;
             case $scope.availableTypes.Products:
-              persistService.processProduct(model, null, doPersist);
+              persistService.processProduct(model, null, onCompletion);
               break;
           }
         }
