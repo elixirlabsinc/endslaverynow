@@ -11,7 +11,6 @@ var DataRepositoryFactory = function ($firebaseObject, $firebaseArray) {
   };
 
   this.dataRepository = null;
-  this.auditLogger = null;
   this.storageRepository = new StorageRepository(firebase);
 
   /**
@@ -24,7 +23,7 @@ var DataRepositoryFactory = function ($firebaseObject, $firebaseArray) {
     var self = this;
 
     this.syncObject.$loaded().then(function () {
-      self.dataRepository = new DataRepository(self.recordSets, new AuditLogger(self.recordSets));
+      self.dataRepository = new DataRepository(self.recordSets);
       // @TODO: We should probably check that "callback" is defined and is a function.
       callback();
     });

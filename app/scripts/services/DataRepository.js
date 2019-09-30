@@ -6,12 +6,11 @@
  * the container that's passed in.
  *
  * @param recordSets
- * @param {AuditLogger} auditLogger
  * @constructor
  */
-var DataRepository = function (recordSets, auditLogger) {
+var DataRepository = function (recordSets) {
   this.recordSets = recordSets;
-  this.auditLogger = auditLogger;
+  this.auditLogger = new AuditLogger(this.recordSets);
 
   this.brands = [];
   this.categories = [];
