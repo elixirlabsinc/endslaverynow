@@ -21,7 +21,7 @@ var AuditLog = (function () {
     if (!auditLogHelper.isValidOperationType(this.operationType)) {
       // @TODO: Throw some kind of error.
     }
-    if (this.delta === null) {
+    if (this.changedValues === null) {
       // @TODO: Throw some kind of error.
     }
   };

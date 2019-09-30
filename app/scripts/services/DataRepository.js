@@ -6,12 +6,11 @@
  * the container that's passed in.
  *
  * @param recordSets
- * @param {AuditLogger} auditLogger
  * @constructor
  */
-var DataRepository = function (recordSets, auditLogger) {
+var DataRepository = function (recordSets) {
   this.recordSets = recordSets;
-  this.auditLogger = auditLogger;
+  this.auditLogger = new AuditLogger(this.recordSets);
 
   this.brands = [];
   this.categories = [];
@@ -210,7 +209,7 @@ var DataRepository = function (recordSets, auditLogger) {
     return null;
   };
 
-  this.insert = function insert(collectionName, record, successMsg, callback, recordId, currentState) {
+  this.insert = function insert(collectionName, record, successMsg, callback, recordId) {
     var self = this;
     this.recordSets[collectionName].$add(record).then(
       function () {
@@ -221,7 +220,7 @@ var DataRepository = function (recordSets, auditLogger) {
           callback();
         }
         // Save the audit log (for insert).
-        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().insert, collectionName, recordId, null, currentState);
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().insert, collectionName, recordId, null, record);
       },
       function (error) {
         window.alert('Error: ' + error.toString());
@@ -320,7 +319,7 @@ var DataRepository = function (recordSets, auditLogger) {
       // Populate the record with the values from the model.
       this.populateRecordFromBrandModel(newBrand, brand);
       // Create the record in the store.
-      this.insert(collectionNames.brands, newBrand, successMsg, callback, brand.getId(), newBrand);
+      this.insert(collectionNames.brands, newBrand, successMsg, callback, brand.getId());
 
     }
   };
@@ -359,7 +358,7 @@ var DataRepository = function (recordSets, auditLogger) {
       // Populate the record with the values from the model.
       this.populateRecordFromCategoryModel(newCategory, category);
       // Create the record in the store.
-      this.insert(collectionNames.categories, newCategory, successMsg, callback, category.getId(), newCategory);
+      this.insert(collectionNames.categories, newCategory, successMsg, callback, category.getId());
 
     }
   };
@@ -398,7 +397,7 @@ var DataRepository = function (recordSets, auditLogger) {
       // Populate the record with the values from the model.
       this.populateRecordFromProductModel(newProduct, product);
       // Create the record in the store.
-      this.insert(collectionNames.products, newProduct, successMsg, callback, product.getId(), newProduct);
+      this.insert(collectionNames.products, newProduct, successMsg, callback, product.getId());
 
     }
   };
