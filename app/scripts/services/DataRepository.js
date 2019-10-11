@@ -10,6 +10,8 @@
  */
 var DataRepository = function (recordSets) {
   this.recordSets = recordSets;
+  this.auditLogger = new AuditLogger(this.recordSets);
+
   this.brands = [];
   this.categories = [];
   this.products = [];
@@ -18,6 +20,8 @@ var DataRepository = function (recordSets) {
     categories: 'categories',
     products: 'products'
   };
+
+  this.auditLogHelper = new AuditLogHelper();
 
   this.init = function init() {
     this.brands = [];
@@ -179,7 +183,8 @@ var DataRepository = function (recordSets) {
     return null;
   };
 
-  this.insert = function insert(collectionName, record, successMsg, callback) {
+  this.insert = function insert(collectionName, record, successMsg, callback, recordId) {
+    var self = this;
     this.recordSets[collectionName].$add(record).then(
       function () {
         if (successMsg) {
@@ -188,6 +193,8 @@ var DataRepository = function (recordSets) {
         if (callback) {
           callback();
         }
+        // Save the audit log (for insert).
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().insert, collectionName, recordId, null, record);
       },
       function (error) {
         window.alert('Error: ' + error.toString());
@@ -195,7 +202,17 @@ var DataRepository = function (recordSets) {
     );
   };
 
-  this.update = function update(collectionName, recordIndex, successMsg, callback) {
+  /**
+   * @param {string} collectionName
+   * @param {int} recordIndex
+   * @param {string} successMsg
+   * @param callback
+   * @param {int} recordId
+   * @param {object} previousState
+   * @param {object} currentState
+   */
+  this.update = function update(collectionName, recordIndex, successMsg, callback, recordId, previousState, currentState) {
+    var self = this;
     this.recordSets[collectionName].$save(recordIndex).then(
       function () {
         if (successMsg) {
@@ -204,6 +221,8 @@ var DataRepository = function (recordSets) {
         if (callback) {
           callback();
         }
+        // Save the audit log (for update).
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().update, collectionName, recordId, previousState, currentState);
       },
       function (error) {
         window.alert('Error: ' + error.toString());
@@ -255,10 +274,14 @@ var DataRepository = function (recordSets) {
       var brandIndex = this.determineIndexFromBrandModel(brand);
       // Create a reference to the object in the array.
       var brandSource = this.recordSets.brands[brandIndex];
+      // @TODO: I wonder if the original version of the record should be in the model, before the model constructor
+      // @TODO: does any data migrations (adding columns, etc).
+      var originalBrand = {};
+      angular.copy(brandSource, originalBrand);
       // Overwrite the record with the values from the model.
       this.populateRecordFromBrandModel(brandSource, brand);
       // Save the record back to the store.
-      this.update(collectionNames.brands, brandIndex, successMsg, callback);
+      this.update(collectionNames.brands, brandIndex, successMsg, callback, brand.getId(), originalBrand, brandSource);
 
     } else {
 
@@ -270,7 +293,7 @@ var DataRepository = function (recordSets) {
       // Populate the record with the values from the model.
       this.populateRecordFromBrandModel(newBrand, brand);
       // Create the record in the store.
-      this.insert(collectionNames.brands, newBrand, successMsg, callback);
+      this.insert(collectionNames.brands, newBrand, successMsg, callback, brand.getId());
 
     }
   };
@@ -290,10 +313,14 @@ var DataRepository = function (recordSets) {
       var categoryIndex = this.determineIndexFromCategoryModel(category);
       // Create a reference to the object in the array.
       var categorySource = this.recordSets.categories[categoryIndex];
+      // @TODO: I wonder if the original version of the record should be in the model, before the model constructor
+      // @TODO: does any data migrations (adding columns, etc).
+      var originalCategory = {};
+      angular.copy(categorySource, originalCategory);
       // Overwrite the record with the values from the model.
       this.populateRecordFromCategoryModel(categorySource, category);
       // Save the record back to the store.
-      this.update(collectionNames.categories, categoryIndex, successMsg, callback);
+      this.update(collectionNames.categories, categoryIndex, successMsg, callback, category.getId(), originalCategory, categorySource);
 
     } else {
 
@@ -305,7 +332,7 @@ var DataRepository = function (recordSets) {
       // Populate the record with the values from the model.
       this.populateRecordFromCategoryModel(newCategory, category);
       // Create the record in the store.
-      this.insert(collectionNames.categories, newCategory, successMsg, callback);
+      this.insert(collectionNames.categories, newCategory, successMsg, callback, category.getId());
 
     }
   };
@@ -325,10 +352,14 @@ var DataRepository = function (recordSets) {
       var productIndex = this.determineIndexFromProductModel(product);
       // Create a reference to the object in the array.
       var productSource = this.recordSets.products[productIndex];
+      // @TODO: I wonder if the original version of the record should be in the model, before the model constructor
+      // @TODO: does any data migrations (adding columns, etc).
+      var originalProduct = {};
+      angular.copy(productSource, originalProduct);
       // Overwrite the record with the values from the model.
       this.populateRecordFromProductModel(productSource, product);
       // Save the record back to the store.
-      this.update(collectionNames.products, productIndex, successMsg, callback);
+      this.update(collectionNames.products, productIndex, successMsg, callback, product.getId(), originalProduct, productSource);
 
     } else {
 
@@ -340,7 +371,7 @@ var DataRepository = function (recordSets) {
       // Populate the record with the values from the model.
       this.populateRecordFromProductModel(newProduct, product);
       // Create the record in the store.
-      this.insert(collectionNames.products, newProduct, successMsg, callback);
+      this.insert(collectionNames.products, newProduct, successMsg, callback, product.getId());
 
     }
   };
@@ -419,12 +450,17 @@ var DataRepository = function (recordSets) {
    * @param callback
    */
   this.deleteBrand = function deleteBrand(brandModel, callback) {
+    var self = this;
     // Determine the index of the firebase array, using the brand model's id.
     var indexToDelete = this.determineIndexFromBrandModel(brandModel);
     if (indexToDelete !== null) {
+      var previousState = {};
+      this.populateRecordFromBrandModel(previousState, brandModel);
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.brands.$remove(indexToDelete).then(function () {
         callback();
+        // Save the audit log (for delete for brand).
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().delete, collectionNames.brands, brandModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting brand: ", error);
         }
@@ -440,12 +476,17 @@ var DataRepository = function (recordSets) {
    * @param callback
    */
   this.deleteCategory = function deleteCategory(categoryModel, callback) {
+    var self = this;
     // Determine the index of the firebase array, using the category model's id.
     var indexToDelete = this.determineIndexFromCategoryModel(categoryModel);
     if (indexToDelete !== null) {
+      var previousState = {};
+      this.populateRecordFromCategoryModel(previousState, categoryModel);
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.categories.$remove(indexToDelete).then(function () {
         callback();
+        // Save the audit log (for delete for category).
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().delete, collectionNames.categories, categoryModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting category: ", error);
         }
@@ -461,12 +502,17 @@ var DataRepository = function (recordSets) {
    * @param callback
    */
   this.deleteProduct = function deleteProduct(productModel, callback) {
+    var self = this;
     // Determine the index of the firebase array, using the product model's id.
     var indexToDelete = this.determineIndexFromProductModel(productModel);
     if (indexToDelete !== null) {
+      var previousState = {};
+      this.populateRecordFromProductModel(previousState, productModel);
       // We found it, so delete it. If the delete was successful, run the callback function.
       this.recordSets.products.$remove(indexToDelete).then(function () {
         callback();
+        // Save the audit log (for delete for product).
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().delete, collectionNames.products, productModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting product: ", error);
         }
