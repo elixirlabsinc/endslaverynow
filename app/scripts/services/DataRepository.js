@@ -87,8 +87,7 @@ var DataRepository = function (recordSets) {
       if (this.recordSets.hasOwnProperty(collectionNames.auditLog)) {
         this.recordSets.auditLog.forEach(
           function (auditLog) {
-            var auditLogHelper = new AuditLogHelper();
-            self.auditLogs.push(new AuditLog(auditLogHelper.fromStorage(auditLog)));
+            self.auditLogs.push(new AuditLog(self.auditLogHelper.fromStorage(auditLog)));
           }
         );
       }
