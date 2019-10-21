@@ -18,8 +18,11 @@ var DataRepository = function (recordSets) {
   const collectionNames = {
     brands: 'brands',
     categories: 'categories',
-    products: 'products'
+    products: 'products',
+    auditLog: 'auditLog'
   };
+
+  this.auditLogs = null; // "null" indicates we haven't populated it yet - it becomes an array after that.
 
   this.auditLogHelper = new AuditLogHelper();
 
@@ -72,6 +75,28 @@ var DataRepository = function (recordSets) {
   // Note: at the moment, this.certifications will always be an empty array.
   this.getCertifications = function getCertifications() {
     return this.certifications;
+  };
+
+  // Note: Audit logs are different to the other record sets because they are loaded "on demand", so this
+  // method must handle parsing the raw data first as necessary.
+  this.getAuditLogs = function getAuditLogs() {
+    if (this.auditLogs === null) {
+      // We haven't loaded the audit logs, so do it now.
+      this.auditLogs = [];
+      var self = this;
+      if (this.recordSets.hasOwnProperty(collectionNames.auditLog)) {
+        this.recordSets.auditLog.forEach(
+          function (auditLog) {
+            self.auditLogs.push(new AuditLog(self.auditLogHelper.fromStorage(auditLog)));
+          }
+        );
+      }
+      // We want the latest first, and we can assume that the logs were adding in chronological order, so we
+      // simply need to reverse the order of the elements.
+      this.auditLogs.reverse(); // Note this changes the array.
+    }
+
+    return this.auditLogs;
   };
 
   this.getTopLevelCategories = function getTopLevelCategories() {

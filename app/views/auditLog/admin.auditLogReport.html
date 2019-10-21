@@ -1,0 +1,168 @@
+<h2>Audit Log Reporter</h2>
+
+<p ng-if="auditLogs === null">Please wait while we load the data...</p>
+
+<div ng-if="auditLogs !== null">
+    <h3 class="filter-heading">Filters <span ng-click="toggleShowFilter()"><span ng-if="showFilters">Hide</span><span ng-if="!showFilters">Show</span></span></h3>
+    <table id="results-table" ng-if="showFilters">
+        <tr>
+            <td>
+                <table class="results-table-section">
+                    <thead>
+                    <tr>
+                        <th>Users</th>
+                        <th>Operation<br/>Types</th>
+                        <th>Event Dates/times</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <select ng-model="criteria.user" title="Select user" ng-change="refreshResults()">
+                                <option value="">Select...</option>
+                                <option ng-if="filters.users.anon" value="anonymous">Anonymous</option>
+                                <option ng-if="filters.users.admins.length > 0" value="any-admin">Any admin</option>
+                                <option ng-repeat="username in filters.users.admins" value="admin${{ username }}">{{ username }}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select ng-model="criteria.operationType" title="Select operation type" ng-change="refreshResults()">
+                                <option value="">Select...</option>
+                                <option ng-repeat="operationType in filters.operationTypes" value="{{ operationType }}">{{ operationType }}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="form-group date-time-container">
+                                <div class="date-time input-group date">
+                                    <span class="prompt">From:</span>
+                                    <input type="text" value="" class="date-time" data-is-from-date="1" readonly="readonly" id="date-from"/>
+                                </div>
+                            </div>
+                            <div class="form-group date-time-container">
+                                <div class="date-time input-group date">
+                                    <span class="prompt">To:</span>
+                                    <input type="text" value="" class="date-time" data-is-from-date="0" readonly="readonly" id="date-to"/>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table class="results-table-section">
+                    <thead>
+                    <tr>
+                        <th>Record Type</th>
+                        <th>Record Ids</th>
+                        <th>Fields</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <select ng-model="criteria.record.type" title="Select record type" ng-change="clearRecordSubFilters(); refreshResults()">
+                                <option value="">Select...</option>
+                                <option ng-repeat="(recordType, children) in filters.records" value="{{ recordType }}">{{ recordType }}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select ng-model="criteria.record.id" title="Select record id" ng-change="refreshResults()">
+                                <option value="">Select...</option>
+                                <option ng-repeat="recordId in filters.records[criteria.record.type].ids" value="{{ recordId }}">{{ recordId }}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select ng-model="criteria.record.column" title="Select field" ng-change="refreshResults()">
+                                <option value="">Select...</option>
+                                <option ng-repeat="recordColumn in filters.records[criteria.record.type].columns" value="{{ recordColumn }}">{{ recordColumn }}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" value="" ng-model="criteria.field.value" ng-change="refreshResults()"/>
+                            <br/>
+                            <label>From<input type="radio" name="transition" ng-model="criteria.field.transition" value="from" ng-change="refreshResults()"/></label>
+                            <label>To<input type="radio" name="transition" ng-model="criteria.field.transition" value="to" ng-change="refreshResults()"/></label>
+                            <label>Either<input type="radio" name="transition" ng-model="criteria.field.transition" value="either" ng-change="refreshResults()"/></label>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <script ng-if="showFilters">
+      var scope = angular.element(document.getElementById('results-table')).scope();
+      $(document).ready(
+        function() {
+          $("input.date-time")
+            .each(
+              function () {
+                var isFromDate = $(this).data('isFromDate');
+                $(this)
+                    .datetimepicker({
+                      format: 'DD-MMM-YYYY HH:mm',
+                      showClear: true,
+                      showClose: true,
+                      ignoreReadonly: true,
+                      minDate: scope.getEarliestFilterDate ? scope.getEarliestFilterDate(isFromDate) : false,
+                      maxDate: (scope.getLatestFilterDate ? scope.getLatestFilterDate(isFromDate) : false)
+                    })
+                    .on(
+                      'dp.change',
+                      function (e) {
+                        // @TODO: We need to get this sorted - Angular doesn't seem to update the model when the user chooses a date.
+                        // @TODO: Nor does it fire the ng-change event thing.
+                        // @TODO: Currently, we're working around both those things.
+                        scope.criteria.dates.from = document.getElementById('date-from').value;
+                        scope.criteria.dates.to = document.getElementById('date-to').value;
+                        scope.refreshResults(true);
+                      }
+                    )
+                    // I have to do this because when "maxDate" is set (above), it actually puts the value in
+                    // the input field, which is not what we want.
+                    .val(null);
+              }
+            );
+        }
+      );
+    </script>
+
+    <h3>Matching</h3>
+
+    <p ng-if="noFilter">Please enter some search criteria</p>
+
+    <p ng-if="!noFilter && results.length === 0">No log entries match your criteria</p>
+
+    <table ng-if="results.length > 0" class="matching-records">
+        <thead>
+        <tr>
+            <th ng-repeat="resultColumn in resultColumns" ng-bind-html="resultColumn.getHeading()"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat-start="result in results" class="audit-log-results new-values">
+            <td
+                    ng-repeat="resultColumn in resultColumns"
+                    ng-class="resultColumn.getClass()"
+                    rowspan="{{ resultColumn.getRowSpan(true) }}"
+                    ng-bind-html="resultColumn.getDisplayValue(result, true, dataRepository)"
+            >
+            </td>
+        </tr>
+        <tr ng-repeat-end class="audit-log-results old-values">
+            <td
+                    ng-repeat="resultColumn in resultColumns"
+                    ng-class="resultColumn.getClass()"
+                    ng-if="resultColumn.isCellDisplayed(false)"
+                    ng-bind-html="resultColumn.getDisplayValue(result, false, dataRepository)"
+            >
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

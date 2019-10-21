@@ -19,12 +19,15 @@
             <td>{{brand.getRanking()}}</td>
             <td>{{brand.getDescription()}}</td>
 
-            <td>
+            <td class="action">
                 <button type="button" class="btn btn-success">
                     <a href="#!/admin/editBrand/{{ brand.getId() }}">Edit</a>
                 </button>
                 <button type="button" class="btn btn-danger" ng-click="deleteBrand(brand)">
                   Delete
+                </button>
+                <button type="button" class="btn btn-info">
+                    <a href="#!/admin/auditLogReport?recordType=brands&recordId={{ brand.getId() }}">History</a>
                 </button>
             </td>
 

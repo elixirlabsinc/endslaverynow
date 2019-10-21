@@ -31,6 +31,8 @@ module.exports = function(config) {
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/ng-file-upload/ng-file-upload.js',
+      'bower_components/moment/moment.js',
+      'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js',

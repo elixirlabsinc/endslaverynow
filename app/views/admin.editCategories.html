@@ -16,13 +16,16 @@
 
             <td>{{category.getName()}}</td>
             <td>{{category.getDescription()}}</td>
-            <td>
+            <td class="action">
               <button type="button" class="btn btn-success">
                 <a href="#!/admin/editCategory/{{ category.getId() }}">Edit</a>
               </button>
               <button type="button" class="btn btn-danger" ng-click="deleteCategory(category)">
                 Delete
               </button>
+                <button type="button" class="btn btn-info">
+                    <a href="#!/admin/auditLogReport?recordType=categories&recordId={{ category.getId() }}">History</a>
+                </button>
             </td>
         </tr>
     </tbody>

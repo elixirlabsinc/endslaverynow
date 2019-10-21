@@ -10,6 +10,7 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -106,6 +107,8 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -138,11 +141,16 @@
         <script src="scripts/models/product.js"></script>
         <script src="scripts/models/ranking.js"></script>
         <script src="scripts/envConfig.js"></script>
-        <script src="scripts/auditLog/models/auditLog.js"></script>
-        <script src="scripts/auditLog/models/auditLogChangedValue.js"></script>
-        <script src="scripts/auditLog/services/AuditLogHelper.js"></script>
-        <script src="scripts/auditLog/services/AuditLogger.js"></script>
     <!-- endbuild -->
+
+    <script src="scripts/auditLog/models/auditLog.js"></script>
+    <script src="scripts/auditLog/models/auditLogChangedValue.js"></script>
+    <script src="scripts/auditLog/models/resultColumn.js"></script>
+    <script src="scripts/auditLog/services/AuditLogFilterer.js"></script>
+    <script src="scripts/auditLog/services/AuditLogger.js"></script>
+    <script src="scripts/auditLog/services/AuditLogHelper.js"></script>
+    <script src="scripts/auditLog/services/ResultColumnHelper.js"></script>
+    <script src="scripts/auditLog/controllers/auditLogReport.js"></script>
 
     <!-- Styles -->
     <link rel="stylesheet" type="text/css" href="styles/main.css">

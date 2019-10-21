@@ -21,12 +21,15 @@
             <td>{{getNameForBrandId(product.getBrandId())}}</td>
             <td>{{getNameForCategoryId(product.getCategoryId())}}</td>
             <td>{{product.getDescription()}}</td>
-            <td>
+            <td class="action">
                 <button type="button" class="btn btn-success">
                     <a href="#!/admin/editProduct/{{ product.getId() }}">Edit</a>
                 </button>
                 <button type="button" class="btn btn-danger" ng-click="deleteProduct(product)">
                   Delete
+                </button>
+                <button type="button" class="btn btn-info">
+                    <a href="#!/admin/auditLogReport?recordType=products&recordId={{ product.getId() }}">History</a>
                 </button>
             </td>
         </tr>

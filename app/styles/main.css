@@ -173,3 +173,49 @@ a:hover {
     padding-bottom: 20%;
     font-size: 2em;
   }
+
+td.action {
+  width: 10.2em;
+}
+
+/* Styling for the audit log filter and results */
+.date-time-container {
+  width: 14em;
+}
+.date-time {
+  position: relative
+}
+.date-time input {
+  width: 9em;
+}
+.date-time .prompt {
+  display: inline-block;
+  width: 2.5em;
+}
+
+.filter-heading span {
+  font-size: small;
+}
+
+.bootstrap-datetimepicker-widget {
+  background: white;
+}
+
+tr.audit-log-results.new-values {
+  border-top: 1px lightgrey solid;
+}
+tr.audit-log-results.old-values {
+  color: darkgrey;
+}
+
+.results-table-section th,
+.results-table-section td,
+.matching-records th,
+.matching-records td {
+  padding: 0 0.1em !important;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+/* End of styling for the audit log filter and results */
