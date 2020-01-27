@@ -1,0 +1,87 @@
+<div class="form-group">
+    <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="Name"
+            ng-model="addItem.name"
+            required
+    >
+</div>
+
+<div class="form-group">
+      <textarea
+              type="textarea"
+              class="form-control"
+              rows=5
+              value=""
+              placeholder="Description"
+              ng-model="addItem.description"
+              required
+      ></textarea>
+</div>
+
+<div class="form-group" ng-if="formType === availableTypes.Products">
+    <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="Link to Product"
+            ng-model="addItem.purchaseUrl"
+            required
+    >
+</div>
+
+<div class="dropdown form-group" ng-if="formType !== availableTypes.Categories">
+    <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{selectedCategoryName || 'Select Category'}}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setCategory(category)" class="dropdown-item form-control">{{category.name}}</button>
+    </div>
+</div>
+
+<div class="dropdown form-group" ng-if="formType === availableTypes.Categories">
+    <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{selectedParentCategoryName || 'Select Parent Category'}}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setParentCategory(category)" class="dropdown-item form-control">
+            {{category.name}}
+        </button>
+    </div>
+</div>
+
+<div class="dropdown form-group" ng-if="formType === availableTypes.Products">
+    <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{selectedBrandName || 'Select Brand'}}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <button ng-repeat="brand in brands" ng-if="brand.name.length > 0" ng-click="setBrand(brand)" class="dropdown-item form-control">{{brand.name}}</button>
+    </div>
+</div>
+
+<div class="dropdown form-group" ng-if="formType === availableTypes.Brands">
+    <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{selectedRankName || 'Select Ranking'}}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <button ng-repeat="rank in rankingOptions" ng-if="rank.length > 0" ng-click="setRanking(rank)" class="dropdown-item form-control">{{rank}}</button>
+    </div>
+</div>
+
+<div class="form-group">
+    <input
+            id="pictures"
+            type="submit"
+            ngf-select ng-model="addItem.image"
+            name="file"
+            value="Select Image"
+            accept="image/*"
+            ngf-max-size="2MB"
+            ngf-keep="true"
+            ngf-keep-distinct="true"
+            class="btn image-upload"
+            required
+    />
+</div>
