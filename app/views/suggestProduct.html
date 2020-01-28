@@ -6,6 +6,8 @@
 
 <p>TBC: Fill in as much or as little as you want</p>
 
+<p>TBC: If you supply an email address, we'll keep you posted about your suggestion</p>
+
 <div class="add-form" id="add-form" ng-if="loaded">
 
     <h3>The Product</h3>
@@ -18,7 +20,7 @@
                 class="form-control"
                 value=""
                 placeholder="Your name"
-                ng-model="suggester.name"
+                ng-model="addItem.suggesterName"
         >
     </div>
 
@@ -28,7 +30,7 @@
                 class="form-control"
                 value=""
                 placeholder="Your contact telephone number"
-                ng-model="suggester.telephoneNumber"
+                ng-model="addItem.suggesterTelephoneNumber"
         >
     </div>
 
@@ -38,7 +40,7 @@
                 class="form-control"
                 value=""
                 placeholder="Your email address"
-                ng-model="suggester.emailAddress"
+                ng-model="addItem.suggesterEmailAddress"
         >
     </div>
 
@@ -49,12 +51,12 @@
               rows=5
               value=""
               placeholder="Enter any additional notes here, eg about why you are suggesting it, anything you're not sure about, etc..."
-                  ng-model="suggester.notes"
+                  ng-model="addItem.suggesterNotes"
               required
       ></textarea>
     </div>
 
-    <input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm(addItem, suggester)" value="Submit">
+    <input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm(addItem)" value="Submit">
 
 </div>
 

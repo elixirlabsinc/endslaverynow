@@ -24,22 +24,21 @@ angular.module('endslaverynowApp')
       };
 
       $scope.formType = $scope.availableTypes.Products;
+      // The new record has some product fields and some suggester fields.
       $scope.addItem = {
         name: null,
         description: null,
         purchaseUrl: null,
-        image: null
+        image: null,
+        suggesterName: null,
+        suggesterTelephoneNumber: null,
+        suggesterEmailAddress: null,
+        suggesterNotes: null
       };
       $scope.selectedCategoryId = null;
       $scope.selectedCategoryName = null;
       $scope.selectedBrandId = null;
       $scope.selectedBrandName = null;
-      $scope.suggester = {
-        name: null,
-        telephoneNumber: null,
-        emailAddress: null,
-        notes: null
-      };
 
       // @TODO: This is a duplicate of the one in formAdd.js - maybe put it in some kind of service?
       var alphabetizeCollection = function alphabetizeCollection(collection) {
@@ -83,7 +82,7 @@ angular.module('endslaverynowApp')
         $scope.selectedBrandName = brand.getName();
       };
 
-      $scope.processForm = function (item, suggester) {
+      $scope.processForm = function (item) {
         // @TODO: Process the form - validate the entries, save the product and the suggester details.
         // @TODO: Populate the hidden fields in the suggester - status, submitted timestamp.
 
