@@ -86,6 +86,16 @@ angular.module('endslaverynowApp')
         // @TODO: Process the form - validate the entries, save the product and the suggester details.
         // @TODO: Populate the hidden fields in the suggester - status, submitted timestamp.
 
+        // Populate the ids.
+        item.categoryId = $scope.selectedCategoryId ? $scope.selectedCategoryId.toString() : null;
+        item.brandId = $scope.selectedBrandId ? $scope.selectedBrandId.toString() : null;
+
+        // Validate the entries.
+
+        // Instantiate a model.
+        var model = new ProductSuggestion(item);
+
+
 
         $scope.loaded = false;
         $scope.success = true;
