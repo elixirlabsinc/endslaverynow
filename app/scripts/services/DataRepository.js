@@ -98,6 +98,10 @@ var DataRepository = function (recordSets) {
     return this.products;
   };
 
+  this.getSuggestedProducts = function getSuggestedProducts() {
+    return this.productSuggestions;
+  };
+
   // Note: at the moment, this.certifications will always be an empty array.
   this.getCertifications = function getCertifications() {
     return this.certifications;

@@ -1,0 +1,25 @@
+<h2>Suggested Products</h2>
+
+<div ng-if="!loaded">
+    <p>Loading...</p>
+</div>
+
+<div ng-if="loaded">
+    <div>
+        <p>Include...</p>
+        <label><input type="checkbox" ng-model="include.pending"/> Pending</label>
+        <label><input type="checkbox" ng-model="include.approved"/> Approved</label>
+        <label><input type="checkbox" ng-model="include.rejected"/> Rejected</label>
+    </div>
+
+    <P>TODO: Add more columns; link to view 1 record; option to approve or reject</P>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+        </tr>
+        <tr ng-repeat="suggestedProduct in getFilteredSuggestedProducts()">
+            <td>{{suggestedProduct.name}}</td>
+        </tr>
+    </table>
+    <p ng-if="getFilteredSuggestedProducts().length == 0">No suggested products match the filter</p>
+</div>

@@ -173,6 +173,17 @@ angular
 				templateUrl: 'views/rankings.html',
 				controller: 'RankingsCtrl',
 				controllerAs: 'rankings'
+            })
+            .state('admin.listSuggestedProducts', {
+              url: '/admin.listSuggestedProducts',
+              templateUrl: 'views/admin.listSuggestedProducts.html',
+              controller: 'ListSuggestedProductsCtrl',
+              controllerAs: 'ListSuggestedProducts',
+              resolve: {
+                'currentAuth': ['Auth', function(Auth) {
+                  return Auth.$requireSignIn;
+                }]
+              }
 			})
 			.state('admin.auditLogReport', {
 				url: '/auditLogReport',
