@@ -219,6 +219,20 @@ var DataRepository = function (recordSets) {
     return null;
   };
 
+  this.getSuggestedProductByRowid = function getSuggestedProductByRowid(rowid) {
+    var matching = this.productSuggestions.filter(
+      function (productSuggestion) {
+        return rowid === productSuggestion.getRowid();
+      }
+    );
+
+    if (matching.length === 1) {
+      return matching.shift(); // Take the first one (index not necessarily 0)
+    }
+
+    return null;
+  };
+
   this.insert = function insert(collectionName, record, successMsg, callback, recordId) {
     var self = this;
     this.recordSets[collectionName].$add(record).then(

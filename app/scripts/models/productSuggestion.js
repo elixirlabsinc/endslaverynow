@@ -8,6 +8,10 @@ var ProductSuggestion = (function () {
 
     angular.extend(this, new Product(data));
 
+    // The raw row reference in the store. People who suggest a product need to be able to come back and view
+    // their suggestion. We can't use our own generated id because they'll go finishing!
+    this.rowid = data.hasOwnProperty('$id') ? data.$id : null;
+
     // BrandId and categoryId are mandatory in Product, but not in ProductSuggestion. The former assumes they
     // are present, but if they are null, the properties end up as NaN. So, if they are NaN, set them to null.
     this.brandId = Number.isNaN(this.brandId) ? null : this.brandId;
@@ -30,6 +34,10 @@ var ProductSuggestion = (function () {
   };
 
   ProductSuggestion.prototype = {
+    getRowid: function getRowid() {
+      return this.rowid;
+    },
+
     getGeneratedProduct: function getGeneratedProduct() {
       return this.generatedProduct;
     },

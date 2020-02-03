@@ -184,12 +184,18 @@ angular
 						return Auth.$requireSignIn;
 					}]
 				}
-			})
+            })
 			.state('suggestProduct', {
 				url: '/suggestProduct',
 				templateUrl: 'views/suggestProduct.html',
 				controller: 'SuggestProductCtrl',
 				controllerAs: 'suggestProduct'
+			})
+			.state('ViewSuggestedProductCtrl', {
+				url: '/viewSuggestedProduct/:rowid',
+				templateUrl: 'views/viewSuggestedProduct.html',
+				controller: 'ViewSuggestedProductCtrl',
+				controllerAs: 'viewSuggestedProduct'
 			});
 
 			$urlRouterProvider.otherwise('/')
