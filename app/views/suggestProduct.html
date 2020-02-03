@@ -4,7 +4,7 @@
 
 <p>TBC: If you want to suggest a product to be included on this website, please fill in the form below</p>
 
-<p>TBC: Fill in as much or as little as you want</p>
+<p>TBC: Fill in as much or as little as you want (only the product name is mandatory)</p>
 
 <p>TBC: If you supply an email address, we'll keep you posted about your suggestion</p>
 
@@ -19,8 +19,18 @@
                 type="text"
                 class="form-control"
                 value=""
-                placeholder="Your name"
-                ng-model="addItem.suggesterName"
+                placeholder="Your given (first) name"
+                ng-model="addItem.suggesterGivenName"
+        >
+    </div>
+
+    <div class="form-group">
+        <input
+                type="text"
+                class="form-control"
+                value=""
+                placeholder="Your family (last)name"
+                ng-model="addItem.suggesterFamilyName"
         >
     </div>
 

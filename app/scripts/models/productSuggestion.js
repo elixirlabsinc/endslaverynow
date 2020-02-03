@@ -13,7 +13,8 @@ var ProductSuggestion = (function () {
     this.brandId = Number.isNaN(this.brandId) ? null : this.brandId;
     this.categoryId = Number.isNaN(this.categoryId) ? null : this.categoryId;
 
-    this.suggesterName = data.hasOwnProperty('suggesterName') ? data.suggesterName : null;
+    this.suggesterGivenName = data.hasOwnProperty('suggesterGivenName') ? data.suggesterGivenName : null;
+    this.suggesterFamilyName = data.hasOwnProperty('suggesterFamilyName') ? data.suggesterFamilyName : null;
     this.suggesterTelephoneNumber = data.hasOwnProperty('suggesterTelephoneNumber') ? data.suggesterTelephoneNumber : null;
     this.suggesterEmailAddress = data.hasOwnProperty('suggesterEmailAddress') ? data.suggesterEmailAddress : null;
     this.suggesterNotes = data.hasOwnProperty('suggesterNotes') ? data.suggesterNotes : null;

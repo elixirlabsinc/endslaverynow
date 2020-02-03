@@ -30,7 +30,8 @@ angular.module('endslaverynowApp')
         description: null,
         purchaseUrl: null,
         image: null,
-        suggesterName: null,
+        suggesterGivenName: null,
+        suggesterFamilyName: null,
         suggesterTelephoneNumber: null,
         suggesterEmailAddress: null,
         suggesterNotes: null
@@ -94,7 +95,6 @@ angular.module('endslaverynowApp')
 
         // Instantiate a model.
         var model = new ProductSuggestion(item);
-
 
 
         $scope.loaded = false;
