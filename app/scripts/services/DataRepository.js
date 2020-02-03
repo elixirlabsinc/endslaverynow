@@ -15,10 +15,12 @@ var DataRepository = function (recordSets) {
   this.brands = [];
   this.categories = [];
   this.products = [];
+  this.productSuggestions = [];
   const collectionNames = {
     brands: 'brands',
     categories: 'categories',
     products: 'products',
+    productSuggestions: 'productSuggestions',
     auditLog: 'auditLog'
   };
 
@@ -30,6 +32,7 @@ var DataRepository = function (recordSets) {
     this.brands = [];
     this.categories = [];
     this.products = [];
+    this.productSuggestions = [];
     this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
     var self = this;
 
@@ -53,6 +56,14 @@ var DataRepository = function (recordSets) {
       this.recordSets.products.forEach(
         function (product) {
           self.products.push(new Product(product));
+        }
+      );
+    }
+
+    if (this.recordSets.hasOwnProperty(collectionNames.productSuggestions)) {
+      this.recordSets.productSuggestions.forEach(
+        function (productSuggestion) {
+          self.productSuggestions.push(new ProductSuggestion(productSuggestion));
         }
       );
     }
@@ -284,6 +295,20 @@ var DataRepository = function (recordSets) {
     // productRecord.$$hashKey = product.$$hashKey(); @TODO: Do we save this? When does it change?
   };
 
+  this.populateRecordFromProductSuggestionModel = function populateRecordFromProductSuggestionModel(productSuggestionRecord, productSuggestion) {
+    // Do what the parent Product does.
+    this.populateRecordFromProductModel(productSuggestionRecord, productSuggestion);
+    // Then do the things specific to product suggestions.
+    productSuggestionRecord.generatedProduct = productSuggestion.getGeneratedProduct();
+    productSuggestionRecord.suggesterGivenName = productSuggestion.getSuggesterGivenName();
+    productSuggestionRecord.suggesterFamilyName = productSuggestion.getSuggesterFamilyName();
+    productSuggestionRecord.suggesterTelephoneNumber = productSuggestion.getSuggesterTelephoneNumber();
+    productSuggestionRecord.suggesterEmailAddress = productSuggestion.getSuggesterEmailAddress();
+    productSuggestionRecord.suggesterNotes = productSuggestion.getSuggesterNotes();
+    productSuggestionRecord.status = productSuggestion.getStatus();
+    productSuggestionRecord.createdAtUtc = productSuggestion.getCreatedAtUtc().toISOString();
+  };
+
   /**
    * Save the given brand back to the data store.
    *
@@ -401,6 +426,49 @@ var DataRepository = function (recordSets) {
     }
   };
 
+  /**
+   * Save the given product suggestion back to the data store.
+   *
+   * @param productSuggestion {ProductSuggestion}
+   * @param successMsg
+   * @param callback
+   */
+  this.persistProductSuggestion = function persistProductSuggestion(productSuggestion, successMsg, callback) {
+
+    if (productSuggestion.hasId()) {
+
+      // This is an update.
+      // Determine the index of the record in the array from the model's id.
+      // @TODO: write this method.
+      var productSuggestionIndex = this.determineIndexFromProductSuggestionModel(productSuggestion);
+      // Create a reference to the object in the array.
+      // @TODO: We need productSuggestions in recordsets, too.
+      var productSuggestionSource = this.recordSets.productSuggestions[productSuggestionIndex];
+      // @TODO: I wonder if the original version of the record should be in the model, before the model constructor
+      // @TODO: does any data migrations (adding columns, etc).
+      var originalProductSuggestion = {};
+      angular.copy(productSuggestionSource, originalProductSuggestion);
+      // Overwrite the record with the values from the model.
+      // @TODO: Write this method.
+      this.populateRecordFromProductSuggestionModel(productSuggestionSource, productSuggestion);
+      // Save the record back to the store.
+      this.update(collectionNames.productSuggestions, productSuggestionIndex, successMsg, callback, productSuggestion.getId(), originalProductSuggestion, productSuggestionSource);
+
+    } else {
+
+      // This is an insert. Generate a new id and start a new object.
+      productSuggestion.setId(this.generateNextProductSuggestionId());
+      var newProductSuggestion = {
+        id: productSuggestion.getId()
+      };
+      // Populate the record with the values from the model.
+      this.populateRecordFromProductSuggestionModel(newProductSuggestion, productSuggestion);
+      // Create the record in the store.
+      this.insert(collectionNames.productSuggestions, newProductSuggestion, successMsg, callback, productSuggestion.getId());
+
+    }
+  };
+
   this.generateNextBrandId = function generateNextBrandId() {
     var id = 0;
     this.recordSets.brands.forEach(function (brand) {
@@ -425,6 +493,16 @@ var DataRepository = function (recordSets) {
     var id = 0;
     this.recordSets.products.forEach(function (product) {
       id = Math.max(id, product.id);
+    });
+    ++id;
+
+    return id;
+  };
+
+  this.generateNextProductSuggestionId = function generateNextProductSuggestionId() {
+    var id = 0;
+    this.recordSets.productSuggestions.forEach(function (productSuggestion) {
+      id = Math.max(id, productSuggestion.id);
     });
     ++id;
 

@@ -83,6 +83,11 @@ angular.module('endslaverynowApp')
         $scope.selectedBrandName = brand.getName();
       };
 
+      $scope.validInput = function validInput(item) {
+        // @TODO: Write all the validation.
+        return true;
+      };
+
       $scope.processForm = function (item) {
         // @TODO: Process the form - validate the entries, save the product and the suggester details.
         // @TODO: Populate the hidden fields in the suggester - status, submitted timestamp.
@@ -91,14 +96,26 @@ angular.module('endslaverynowApp')
         item.categoryId = $scope.selectedCategoryId ? $scope.selectedCategoryId.toString() : null;
         item.brandId = $scope.selectedBrandId ? $scope.selectedBrandId.toString() : null;
 
-        // Validate the entries.
-
         // Instantiate a model.
         var model = new ProductSuggestion(item);
 
+        // Validate the entries.
+        if (!$scope.validInput(item)) {
+          $scope.errorMessage = true;
+        } else {
+          var persistService = new PersistService(
+            dataRepositoryFactory,
+            $scope.dataRepository,
+            dataRepositoryFactory.getStorageRepository()
+          );
+          var onCompletion = function onCompletion() {
+            $scope.loaded = false;
+            $scope.success = true;
+          };
 
-        $scope.loaded = false;
-        $scope.success = true;
+          persistService.processProductSuggestion(model, null, onCompletion);
+        }
+
       };
 
       $scope.reloadPage = function () {

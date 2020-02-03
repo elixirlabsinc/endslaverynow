@@ -84,4 +84,29 @@ var PersistService = function (dataRepositoryFactory, dataRepository, storageRep
       doPersist();
     }
   };
+
+  this.processProductSuggestion = function processProductSuggestion(productSuggestion, message, callback) {
+    var localProductSuggestion = productSuggestion;
+    // Build the process that will persist the product suggestion (mainly so we don't have to duplicate fairly complex code).
+    var self = this;
+    var doPersist = function doPersist() {
+      self.dataRepository.persistProductSuggestion(localProductSuggestion, message, callback);
+    };
+
+    if (localProductSuggestion.imageRequiresUploading()) {
+      // The image is an upload, so upload it, get the URL.
+      // Store the product suggestion images with the product images. This is so that if an admin user approves
+      // the suggestion, we only have to copy the image URL to products; we don't have to move the image itself.
+      this.storageRepository.uploadImageInModel(
+        localProductSuggestion.getImage(),
+        this.storageRepository.getImageUploadFolderNames().product, // It is correct that this is "product" - see above.
+        function (downloadURL) {
+          localProductSuggestion.setImage(downloadURL);
+          doPersist();
+        }
+      );
+    } else {
+      doPersist();
+    }
+  };
 };

@@ -13,6 +13,9 @@ var ProductSuggestion = (function () {
     this.brandId = Number.isNaN(this.brandId) ? null : this.brandId;
     this.categoryId = Number.isNaN(this.categoryId) ? null : this.categoryId;
 
+    // A reference to the product that was generated from this suggestion.
+    this.generatedProduct = data.hasOwnProperty('generatedProduct') ? data.generatedProduct : null;
+
     this.suggesterGivenName = data.hasOwnProperty('suggesterGivenName') ? data.suggesterGivenName : null;
     this.suggesterFamilyName = data.hasOwnProperty('suggesterFamilyName') ? data.suggesterFamilyName : null;
     this.suggesterTelephoneNumber = data.hasOwnProperty('suggesterTelephoneNumber') ? data.suggesterTelephoneNumber : null;
@@ -23,13 +26,44 @@ var ProductSuggestion = (function () {
     // @TODO: The valid status values need to be in some library code somewhere (eg for the default value here).
     // @TODO: Validate that the status ends up with a valid value.
     this.status = data.hasOwnProperty('status') ? data.status : 'pending';
-    // @TODO: Test this works when we load existing records from the store.
-    this.createdAt = data.hasOwnProperty('createdAt') ? new moment(data.createdAt) : new moment();
+    this.createdAtUtc = data.hasOwnProperty('createdAtUtc') ? new moment(data.createdAtUtc) : new moment();
   };
 
   ProductSuggestion.prototype = {
+    getGeneratedProduct: function getGeneratedProduct() {
+      return this.generatedProduct;
+    },
 
+    getSuggesterGivenName: function getSuggesterGivenName() {
+      return this.suggesterGivenName;
+    },
+
+    getSuggesterFamilyName: function getSuggesterFamilyName() {
+      return this.suggesterFamilyName;
+    },
+
+    getSuggesterTelephoneNumber: function getSuggesterTelephoneNumber() {
+      return this.suggesterTelephoneNumber;
+    },
+
+    getSuggesterEmailAddress: function getSuggesterEmailAddress() {
+      return this.suggesterEmailAddress;
+    },
+
+    getSuggesterNotes: function getSuggesterNotes() {
+      return this.suggesterNotes;
+    },
+
+    getStatus: function getStatus() {
+      return this.status;
+    },
+
+    getCreatedAtUtc: function getCreatedAtUtc() {
+      // createdAtUtc is an instance of moment.
+      return this.createdAtUtc;
+    }
   };
+  angular.extend(ProductSuggestion.prototype, Product.prototype);
 
   return ProductSuggestion;
 
