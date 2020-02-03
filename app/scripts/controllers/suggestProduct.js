@@ -89,9 +89,6 @@ angular.module('endslaverynowApp')
       };
 
       $scope.processForm = function (item) {
-        // @TODO: Process the form - validate the entries, save the product and the suggester details.
-        // @TODO: Populate the hidden fields in the suggester - status, submitted timestamp.
-
         // Populate the ids.
         item.categoryId = $scope.selectedCategoryId ? $scope.selectedCategoryId.toString() : null;
         item.brandId = $scope.selectedBrandId ? $scope.selectedBrandId.toString() : null;
@@ -115,7 +112,6 @@ angular.module('endslaverynowApp')
 
           persistService.processProductSuggestion(model, null, onCompletion);
         }
-
       };
 
       $scope.reloadPage = function () {

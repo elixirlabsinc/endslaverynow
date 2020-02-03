@@ -442,14 +442,12 @@ var DataRepository = function (recordSets) {
       // @TODO: write this method.
       var productSuggestionIndex = this.determineIndexFromProductSuggestionModel(productSuggestion);
       // Create a reference to the object in the array.
-      // @TODO: We need productSuggestions in recordsets, too.
       var productSuggestionSource = this.recordSets.productSuggestions[productSuggestionIndex];
       // @TODO: I wonder if the original version of the record should be in the model, before the model constructor
       // @TODO: does any data migrations (adding columns, etc).
       var originalProductSuggestion = {};
       angular.copy(productSuggestionSource, originalProductSuggestion);
       // Overwrite the record with the values from the model.
-      // @TODO: Write this method.
       this.populateRecordFromProductSuggestionModel(productSuggestionSource, productSuggestion);
       // Save the record back to the store.
       this.update(collectionNames.productSuggestions, productSuggestionIndex, successMsg, callback, productSuggestion.getId(), originalProductSuggestion, productSuggestionSource);
@@ -543,6 +541,18 @@ var DataRepository = function (recordSets) {
     });
 
     return productIndex;
+  };
+
+  this.determineIndexFromProductSuggestionModel = function determineIndexFromProductSuggestionModel(productSuggestionModel) {
+    // Determine the index of the firebase array, using the product suggestion model's id.
+    var productSuggestionIndex = null;
+    this.recordSets.productSuggestions.forEach(function(productSuggestion, index) {
+      if (productSuggestion.id === productSuggestionModel.getId()) {
+        productSuggestionIndex = index;
+      }
+    });
+
+    return productSuggestionIndex;
   };
 
   /**
