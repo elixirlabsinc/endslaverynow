@@ -11,8 +11,9 @@ angular.module('endslaverynowApp')
   .controller('SuggestProductCtrl', [
     '$scope',
     '$state',
+    '$location',
     'dataRepositoryFactory',
-    function ($scope, $state, dataRepositoryFactory) {
+    function ($scope, $state, $location, dataRepositoryFactory) {
       $scope.loaded = false;
       $scope.success = false;
       $scope.errorMessages = [];
@@ -128,6 +129,16 @@ angular.module('endslaverynowApp')
           var onCompletion = function onCompletion() {
             $scope.loaded = false;
             $scope.success = true;
+
+            // We need the rowid, but it's not populated on save, so we have to get the storage repository
+            // to reparse the records, and then we need to ask for the model by id.
+            $scope.dataRepository.parse($scope.dataRepository.getCollectionNames().productSuggestions);
+            var suggestedProduct = $scope.dataRepository.getSuggestedProductById(model.getId());
+
+            // Build a URL that the suggester can bookmark. It needs to take into account the host, protocol, etc.
+            // There must be a better way of doing this (I couldn't find one).
+            var pathParts = $location.absUrl().split('#!');
+            $scope.suggestionUrl = pathParts[0]+'#!/viewSuggestedProduct/'+suggestedProduct.getRowid();
           };
 
           persistService.processProductSuggestion(model, null, onCompletion);

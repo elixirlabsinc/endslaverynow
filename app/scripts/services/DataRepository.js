@@ -23,53 +23,68 @@ var DataRepository = function (recordSets) {
     productSuggestions: 'productSuggestions',
     auditLog: 'auditLog'
   };
+  const allCollections = '_all';
 
   this.auditLogs = null; // "null" indicates we haven't populated it yet - it becomes an array after that.
 
   this.auditLogHelper = new AuditLogHelper();
 
-  this.init = function init() {
-    this.brands = [];
-    this.categories = [];
-    this.products = [];
-    this.productSuggestions = [];
-    this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
+  this.parse = function parse(limitTo) {
+    limitTo = limitTo === undefined ? allCollections : limitTo;
     var self = this;
 
-    if (this.recordSets.hasOwnProperty(collectionNames.brands)) {
-      this.recordSets.brands.forEach(
-        function (brand) {
-          self.brands.push(new Brand(brand));
-        }
-      );
+    if (limitTo === allCollections || limitTo === collectionNames.brands) {
+      this.brands = [];
+      if (this.recordSets.hasOwnProperty(collectionNames.brands)) {
+        this.recordSets.brands.forEach(
+          function (brand) {
+            self.brands.push(new Brand(brand));
+          }
+        );
+      }
     }
 
-    if (this.recordSets.hasOwnProperty(collectionNames.categories)) {
-      this.recordSets.categories.forEach(
-        function (category) {
-          self.categories.push(new Category(category));
-        }
-      );
+    if (limitTo === allCollections || limitTo === collectionNames.categories) {
+      this.categories = [];
+      if (this.recordSets.hasOwnProperty(collectionNames.categories)) {
+        this.recordSets.categories.forEach(
+          function (category) {
+            self.categories.push(new Category(category));
+          }
+        );
+      }
     }
 
-    if (this.recordSets.hasOwnProperty(collectionNames.products)) {
-      this.recordSets.products.forEach(
-        function (product) {
-          self.products.push(new Product(product));
-        }
-      );
+    if (limitTo === allCollections || limitTo === collectionNames.products) {
+      this.products = [];
+      if (this.recordSets.hasOwnProperty(collectionNames.products)) {
+        this.recordSets.products.forEach(
+          function (product) {
+            self.products.push(new Product(product));
+          }
+        );
+      }
     }
 
-    if (this.recordSets.hasOwnProperty(collectionNames.productSuggestions)) {
-      this.recordSets.productSuggestions.forEach(
-        function (productSuggestion) {
-          self.productSuggestions.push(new ProductSuggestion(productSuggestion));
-        }
-      );
+    if (limitTo === allCollections || limitTo === collectionNames.productSuggestions) {
+      this.productSuggestions = [];
+      if (this.recordSets.hasOwnProperty(collectionNames.productSuggestions)) {
+        this.recordSets.productSuggestions.forEach(
+          function (productSuggestion) {
+            self.productSuggestions.push(new ProductSuggestion(productSuggestion));
+          }
+        );
+      }
     }
+
+    this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
   };
 
-  this.init();
+  this.parse();
+
+  this.getCollectionNames = function getCollectionNames() {
+    return collectionNames;
+  };
 
   this.getBrands = function getBrands() {
     return this.brands;
@@ -209,6 +224,20 @@ var DataRepository = function (recordSets) {
     var matching = this.products.filter(
       function (product) {
         return productId === product.getId();
+      }
+    );
+
+    if (matching.length === 1) {
+      return matching.shift(); // Take the first one (index not necessarily 0)
+    }
+
+    return null;
+  };
+
+  this.getSuggestedProductById = function getSuggestedProductById(id) {
+    var matching = this.productSuggestions.filter(
+      function (productSuggestion) {
+        return id === productSuggestion.getId();
       }
     );
 
