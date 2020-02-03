@@ -15,6 +15,7 @@ angular.module('endslaverynowApp')
     function ($scope, $state, dataRepositoryFactory) {
       $scope.loaded = false;
       $scope.success = false;
+      $scope.errorMessages = [];
 
       // @TODO: This is a duplicate of the code in formAdd.js
       $scope.availableTypes = {
@@ -83,9 +84,29 @@ angular.module('endslaverynowApp')
         $scope.selectedBrandName = brand.getName();
       };
 
+      /**
+       * Validate the entries.
+       * Note: the validation is subject to change.
+       *
+       * @param item
+       *
+       * @return {string[]}
+       */
       $scope.validInput = function validInput(item) {
-        // @TODO: Write all the validation.
-        return true;
+        var result = [];
+
+        // Product name must be entered.
+        if (item.name === null || item.name === '' || item.name === undefined) {
+          result.push('Product name must be entered');
+        }
+
+        if (item.suggesterEmailAddress === undefined) {
+          // We have told Angular that the input field is an email address. If the address is entered and is
+          // not valid, it comes through as "undefined".
+          result.push('Email address is not valid');
+        }
+
+        return result;
       };
 
       $scope.processForm = function (item) {
@@ -97,9 +118,8 @@ angular.module('endslaverynowApp')
         var model = new ProductSuggestion(item);
 
         // Validate the entries.
-        if (!$scope.validInput(item)) {
-          $scope.errorMessage = true;
-        } else {
+        $scope.errorMessages = $scope.validInput(item);
+        if ($scope.errorMessages.length === 0) {
           var persistService = new PersistService(
             dataRepositoryFactory,
             $scope.dataRepository,

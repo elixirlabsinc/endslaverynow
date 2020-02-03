@@ -46,7 +46,7 @@
 
     <div class="form-group">
         <input
-                type="text"
+                type="email"
                 class="form-control"
                 value=""
                 placeholder="Your email address"
@@ -65,6 +65,10 @@
               required
       ></textarea>
     </div>
+
+    <div class="errorMessage" ng-if="errorMessages.length > 0">There are errors in the form:<br><br></div>
+
+    <div class="errorMessage" ng-repeat="errorMessage in errorMessages">{{ errorMessage }}<br><br></div>
 
     <input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm(addItem)" value="Submit">
 

@@ -439,7 +439,6 @@ var DataRepository = function (recordSets) {
 
       // This is an update.
       // Determine the index of the record in the array from the model's id.
-      // @TODO: write this method.
       var productSuggestionIndex = this.determineIndexFromProductSuggestionModel(productSuggestion);
       // Create a reference to the object in the array.
       var productSuggestionSource = this.recordSets.productSuggestions[productSuggestionIndex];
@@ -609,6 +608,7 @@ var DataRepository = function (recordSets) {
 
   /**
    * @TODO: Presumably we should update any references to this product (or prevent delete if anything references it)?
+   * @TODO: There is now a reference to products in product suggestions.
    * @TODO: And what about uploaded images? Should they be deleted? What if something else is referencing it?
    *
    * @param {Product} productModel
