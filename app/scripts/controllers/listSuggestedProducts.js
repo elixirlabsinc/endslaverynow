@@ -9,9 +9,8 @@
  */
 angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
   '$scope',
-  '$state',
   'dataRepositoryFactory',
-  function ($scope, $state, dataRepositoryFactory) {
+  function ($scope, dataRepositoryFactory) {
     $scope.dataRepository = null;
 
     $scope.loaded = false;
@@ -42,6 +41,9 @@ angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
       }
     );
 
+    /**
+     * @return {ProductSuggestion[]|Product[]}
+     */
     $scope.getFilteredSuggestedProducts = function getFilteredSuggestedProducts() {
       return $scope.suggestedProducts.filter(
         function (suggestedProduct) {
@@ -50,6 +52,28 @@ angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
             (suggestedProduct.getStatus() === 'rejected' && $scope.include.rejected);
         }
       );
+    };
+
+    /**
+     * @param {ProductSuggestion|Product} suggestedProduct
+     */
+    $scope.getCategory = function getCategory(suggestedProduct) {
+      if (suggestedProduct.getCategoryId()) {
+        return this.dataRepository.getCategoryById(suggestedProduct.getCategoryId()).getName();
+      }
+
+      return null;
+    };
+
+    /**
+     * @param {ProductSuggestion|Product} suggestedProduct
+     */
+    $scope.getBrand = function getBrand(suggestedProduct) {
+      if (suggestedProduct.getBrandId()) {
+        return this.dataRepository.getBrandById(suggestedProduct.getBrandId()).getName();
+      }
+
+      return null;
     };
   }
 ])

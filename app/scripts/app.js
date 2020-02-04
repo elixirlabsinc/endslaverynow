@@ -175,7 +175,7 @@ angular
 				controllerAs: 'rankings'
             })
             .state('admin.listSuggestedProducts', {
-              url: '/admin.listSuggestedProducts',
+              url: '/listSuggestedProducts',
               templateUrl: 'views/admin.listSuggestedProducts.html',
               controller: 'ListSuggestedProductsCtrl',
               controllerAs: 'ListSuggestedProducts',
@@ -185,6 +185,17 @@ angular
                 }]
               }
 			})
+            .state('admin.reviewSuggestedProduct', {
+              url: '/reviewSuggestedProduct/:id',
+              templateUrl: 'views/admin.reviewSuggestedProduct.html',
+              controller: 'ReviewSuggestedProductCtrl',
+              controllerAs: 'ReviewSuggestedProduct',
+              resolve: {
+                'currentAuth': ['Auth', function(Auth) {
+                  return Auth.$requireSignIn;
+                }]
+              }
+            })
 			.state('admin.auditLogReport', {
 				url: '/auditLogReport',
 				templateUrl: 'views/auditLog/admin.auditLogReport.html',
