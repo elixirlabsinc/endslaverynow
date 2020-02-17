@@ -7,4 +7,16 @@
 <div ng-if="loaded">
     <p>This is the suggested product:</p>
     <table class="table" ng-include="'/views/partials/viewSuggestedProduct.html'"></table>
+
+    <!-- The options depend on the current state -->
+    <h2 ng-if="suggestedProduct.getStatus() == 'in review' || suggestedProduct.getStatus() == 'rejected'">Options</h2>
+    <div ng-if="suggestedProduct.getStatus() == 'in review'">
+        <p>Approve this product (TODO: need to make sure all mandatory fields are populated.)</p>
+        <p>Edit this suggestion (TODO: need an edit button, on clicking switch to an edit screen)</p>
+        <p>Reject (TODO: need button. On click, confirm, then update the status. Stay in this view)</p>
+    </div>
+    <div ng-if="suggestedProduct.getStatus() == 'rejected'">
+        <p>Switch back to "in review" (TODO: as for Reject above)</p>
+        <p>Permanently delete this suggestion (TODO: button, confirm, actually delete the record)</p>
+    </div>
 </div>
