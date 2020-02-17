@@ -15,10 +15,10 @@ angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
 
     $scope.loaded = false;
 
-    // Include product suggestions in these states. User can toggle any of the flags. Defaults to just pending.
+    // Include product suggestions in these states. User can toggle any of the flags. Defaults to just "in review".
     // @TODO: The keys should be provided by a service.
     $scope.include = {
-      'pending': true,
+      'inReview': true,
       'approved': false,
       'rejected': false
     };
@@ -47,7 +47,7 @@ angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
     $scope.getFilteredSuggestedProducts = function getFilteredSuggestedProducts() {
       return $scope.suggestedProducts.filter(
         function (suggestedProduct) {
-          return (suggestedProduct.getStatus() === 'pending' && $scope.include.pending) ||
+          return (suggestedProduct.getStatus() === 'in review' && $scope.include.inReview) ||
             (suggestedProduct.getStatus() === 'approved' && $scope.include.approved) ||
             (suggestedProduct.getStatus() === 'rejected' && $scope.include.rejected);
         }
