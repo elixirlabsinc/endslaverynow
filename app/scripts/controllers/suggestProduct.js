@@ -101,6 +101,28 @@ angular.module('endslaverynowApp')
           result.push('Product name must be entered');
         }
 
+        // Suggester given name and family name must be entered.
+        var givenNameMissing = (item.suggesterGivenName === null || item.suggesterGivenName === '' || item.suggesterGivenName === undefined);
+        var familyNameMissing = (item.suggesterFamilyName === null || item.suggesterFamilyName === '' || item.suggesterFamilyName === undefined);
+        if (givenNameMissing || familyNameMissing) {
+          var messageParts = [];
+          if (givenNameMissing) {
+            messageParts.push('given name ');
+          }
+          if (familyNameMissing) {
+            messageParts.push('family name ');
+          }
+          result.push('Your '+(messageParts.join('and '))+' must be entered');
+        }
+
+        // Suggester telephone number or email address must be entered.
+        if (
+          (item.suggesterTelephoneNumber === null || item.suggesterTelephoneNumber === '' || item.suggesterTelephoneNumber === undefined) &&
+          (item.suggesterEmailAddress === null || item.suggesterEmailAddress === '')
+          ) {
+          result.push('You must enter either a telephone number or an email address');
+        }
+
         if (item.suggesterEmailAddress === undefined) {
           // We have told Angular that the input field is an email address. If the address is entered and is
           // not valid, it comes through as "undefined".
