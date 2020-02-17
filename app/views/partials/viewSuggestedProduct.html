@@ -1,0 +1,26 @@
+<tr><td colspan="2">Product Details</td></tr>
+<tr><th>Name</th><td>{{suggestedProduct.getName()}}</td></tr>
+<tr><th>Description</th><td>{{suggestedProduct.getDescription()}}</td></tr>
+<tr>
+    <th>Purchase URL</th>
+    <td><a href="{{suggestedProduct.getPurchaseUrl()}}" target="_new">{{suggestedProduct.getPurchaseUrl()}}</a></td>
+</tr>
+<tr><th>Category</th><td>{{category.getName()}}</td></tr>
+<tr><th>Brand</th><td>{{brand.getName()}}</td></tr>
+<tr>
+    <th>Image</th>
+    <td><img ng-if="suggestedProduct.getImage()" src="{{suggestedProduct.getImage()}}"/></td>
+</tr>
+
+<tr><td colspan="2">Suggester Details</td></tr>
+<tr>
+    <th>Name</th>
+    <td>{{suggestedProduct.getSuggesterGivenName()}} {{suggestedProduct.getSuggesterFamilyName()}}</td>
+</tr>
+<tr><th>Telephone</th><td>{{suggestedProduct.getSuggesterTelephoneNumber()}}</td></tr>
+<tr><th>Email</th><td>{{suggestedProduct.getSuggesterEmailAddress()}}</td></tr>
+<tr><th>Notes</th><td>{{suggestedProduct.getSuggesterNotes()}}</td></tr>
+
+<tr><td colspan="2">About Your Suggestion</td></tr>
+<tr><th>Status</th><td>{{suggestedProduct.getStatus()}}</td></tr>
+<tr><th>Suggested At</th><td>{{suggestedProduct.getCreatedAtUtc()}}</td></tr>

@@ -27,20 +27,20 @@ angular.module('endslaverynowApp')
       dataRepositoryFactory.ready(
         function () {
           var dataRepository = dataRepositoryFactory.getDataRepository();
-          $scope.suggestedProductDetails = dataRepository.getSuggestedProductByRowid($scope.suggestedProductRowid);
+          $scope.suggestedProduct = dataRepository.getSuggestedProductByRowid($scope.suggestedProductRowid);
 
           $scope.loaded = true; // Data repository has all the data.
 
-          if ($scope.suggestedProductDetails === null) {
+          if ($scope.suggestedProduct === null) {
             return;
           }
 
-          if ($scope.suggestedProductDetails.getCategoryId()) {
-            $scope.category = dataRepository.getCategoryById($scope.suggestedProductDetails.getCategoryId());
+          if ($scope.suggestedProduct.getCategoryId()) {
+            $scope.category = dataRepository.getCategoryById($scope.suggestedProduct.getCategoryId());
           }
 
-          if ($scope.suggestedProductDetails.getBrandId()) {
-            $scope.brand = dataRepository.getBrandById($scope.suggestedProductDetails.getBrandId());
+          if ($scope.suggestedProduct.getBrandId()) {
+            $scope.brand = dataRepository.getBrandById($scope.suggestedProduct.getBrandId());
           }
 
           $scope.found = true; // The rowid was valid, and we retrieved the record.
@@ -56,7 +56,7 @@ angular.module('endslaverynowApp')
         // @TODO: Use the proper services to validate the code. For now, if it starts "a1", assume it's valid.
         if (validationCode.toLowerCase().indexOf('a1') === 0) {
           // @TODO: We should use the status value from the service/object/whatever.
-          $scope.suggestedProductDetails.setStatus('in review');
+          $scope.suggestedProduct.setStatus('in review');
 
           var persistService = new PersistService(
             dataRepositoryFactory,
@@ -68,7 +68,7 @@ angular.module('endslaverynowApp')
             $scope.validated = true;
           };
 
-          persistService.processProductSuggestion($scope.suggestedProductDetails, null, onCompletion);
+          persistService.processProductSuggestion($scope.suggestedProduct, null, onCompletion);
         } else {
           window.alert('Sorry, that code is not valid. Please try again');
         }

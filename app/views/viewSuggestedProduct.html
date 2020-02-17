@@ -10,7 +10,7 @@
     </div>
 
     <div ng-if="found">
-        <div ng-if="suggestedProductDetails.status == 'pending'">
+        <div ng-if="suggestedProduct.getStatus() == 'pending'">
             <h3>Thank you for suggesting a product!</h3>
 
             <p>You can track your suggestion with the URL in the address bar.</p>
@@ -27,35 +27,6 @@
             <p>[TBC] It will now be reviewed by one of our experts.</p>
         </div>
 
-        <table class="table">
-
-            <tr><td colspan="2">Product Details</td></tr>
-            <tr><th>Name</th><td>{{suggestedProductDetails.name}}</td></tr>
-            <tr><th>Description</th><td>{{suggestedProductDetails.description}}</td></tr>
-            <tr>
-                <th>Purchase URL</th>
-                <td><a href="{{suggestedProductDetails.purchaseUrl}}" target="_new">{{suggestedProductDetails.purchaseUrl }}</a></td>
-            </tr>
-            <tr><th>Category</th><td>{{category.name}}</td></tr>
-            <tr><th>Brand</th><td>{{brand.name}}</td></tr>
-            <tr>
-                <th>Image</th>
-                <td><img ng-if="suggestedProductDetails.image" src="{{suggestedProductDetails.image}}"/></td>
-            </tr>
-
-            <tr><td colspan="2">Suggester Details</td></tr>
-            <tr>
-                <th>Name</th>
-                <td>{{suggestedProductDetails.suggesterGivenName}} {{suggestedProductDetails.suggesterFamilyName}}</td>
-            </tr>
-            <tr><th>Telephone</th><td>{{suggestedProductDetails.suggesterTelephoneNumber}}</td></tr>
-            <tr><th>Email</th><td>{{suggestedProductDetails.suggesterEmailAddress}}</td></tr>
-            <tr><th>Notes</th><td>{{suggestedProductDetails.suggesterNotes}}</td></tr>
-
-            <tr><td colspan="2">About Your Suggestion</td></tr>
-            <tr><th>Status</th><td>{{suggestedProductDetails.status}}</td></tr>
-            <tr><th>Suggested At</th><td>{{suggestedProductDetails.createdAtUtc}}</td></tr>
-
-        </table>
+        <table class="table" ng-include="'/views/partials/viewSuggestedProduct.html'"></table>
     </div>
 </div>
