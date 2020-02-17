@@ -66,6 +66,11 @@ var ProductSuggestion = (function () {
       return this.status;
     },
 
+    setStatus: function setStatus(newStatus) {
+      // @TODO: We should validate the status
+      this.status = newStatus;
+    },
+
     getCreatedAtUtc: function getCreatedAtUtc() {
       // createdAtUtc is an instance of moment.
       return this.createdAtUtc;

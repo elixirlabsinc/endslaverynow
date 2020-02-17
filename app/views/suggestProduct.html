@@ -75,13 +75,3 @@
     <input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm(addItem)" value="Submit">
 
 </div>
-
-<div ng-if="success">
-    <h2>Thank you for suggesting a product!</h2>
-
-    <p>You can track your suggestion with this URL: <a href="{{suggestionUrl}}" target="_new">{{suggestionUrl}}</a></p>
-
-    <div class="select-item-type" ng-click="reloadPage()">
-        Suggest another product
-    </div>
-</div>

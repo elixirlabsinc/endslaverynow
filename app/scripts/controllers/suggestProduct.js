@@ -15,7 +15,6 @@ angular.module('endslaverynowApp')
     'dataRepositoryFactory',
     function ($scope, $state, $location, dataRepositoryFactory) {
       $scope.loaded = false;
-      $scope.success = false;
       $scope.errorMessages = [];
 
       // @TODO: This is a duplicate of the code in formAdd.js
@@ -149,18 +148,17 @@ angular.module('endslaverynowApp')
             dataRepositoryFactory.getStorageRepository()
           );
           var onCompletion = function onCompletion() {
-            $scope.loaded = false;
-            $scope.success = true;
+            // @TODO: At this point, we need to send a code to either the telephone number or email address.
+            // @TODO: I imagine we'd have to put some kind of identifier in the record (maybe before save, or here).
 
             // We need the rowid, but it's not populated on save, so we have to get the storage repository
             // to reparse the records, and then we need to ask for the model by id.
             $scope.dataRepository.parse($scope.dataRepository.getCollectionNames().productSuggestions);
             var suggestedProduct = $scope.dataRepository.getSuggestedProductById(model.getId());
 
-            // Build a URL that the suggester can bookmark. It needs to take into account the host, protocol, etc.
-            // There must be a better way of doing this (I couldn't find one).
-            var pathParts = $location.absUrl().split('#!');
-            $scope.suggestionUrl = pathParts[0]+'#!/viewSuggestedProduct/'+suggestedProduct.getRowid();
+            // Redirect the user to the "view" screen for this product. It will include, amongst other things,
+            // a field to enter the validation code in.
+            $location.path('/viewSuggestedProduct/'+suggestedProduct.getRowid());
           };
 
           persistService.processProductSuggestion(model, null, onCompletion);
