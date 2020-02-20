@@ -12,7 +12,6 @@
         <label><input type="checkbox" ng-model="include.rejected"/> Rejected</label>
     </div>
 
-    <P>TODO: link to view 1 record; option to approve or reject</P>
     <table class="table">
         <tr>
             <th>Date Suggested</th>
@@ -22,7 +21,7 @@
             <th>Category</th>
             <th>Brand</th>
             <th>Notes</th>
-            <th>View</th>
+            <th></th>
         </tr>
         <tr ng-repeat="suggestedProduct in getFilteredSuggestedProducts()">
             <td>{{suggestedProduct.getCreatedAtUtc().format('DD MMM YYYY HH:mm')}}</td>
