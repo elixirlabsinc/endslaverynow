@@ -5,8 +5,8 @@
     <th>Purchase URL</th>
     <td><a href="{{suggestedProduct.getPurchaseUrl()}}" target="_new">{{suggestedProduct.getPurchaseUrl()}}</a></td>
 </tr>
-<tr><th>Category</th><td>{{category.getName()}}</td></tr>
-<tr><th>Brand</th><td>{{brand.getName()}}</td></tr>
+<tr><th>Category</th><td><span ng-if="category">{{category.getName()}}</span></td></tr>
+<tr><th>Brand</th><td><span ng-if="brand">{{brand.getName()}}</span></td></tr>
 <tr>
     <th>Image</th>
     <td><img ng-if="suggestedProduct.getImage()" src="{{suggestedProduct.getImage()}}"/></td>

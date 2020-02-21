@@ -679,4 +679,33 @@ var DataRepository = function (recordSets) {
       );
     }
   };
+
+  /**
+   * @TODO: Presumably we should update any references to this product suggestion (or prevent delete if anything references it)?
+   * @TODO: Although... I don't think there are any.
+   * @TODO: And what about uploaded images? Should they be deleted? What if something else is referencing it?
+   *
+   * @param {ProductSuggestion} productSuggestionModel
+   * @param callback
+   */
+  this.deleteProductSuggestion = function deleteProductSuggestion(productSuggestionModel, callback) {
+    var self = this;
+    // Determine the index of the firebase array, using the product suggestion model's id.
+    var indexToDelete = this.determineIndexFromProductSuggestionModel(productSuggestionModel);
+    if (indexToDelete !== null) {
+      var previousState = {};
+      this.populateRecordFromProductSuggestionModel(previousState, productSuggestionModel);
+      // We found it, so delete it. If the delete was successful, run the callback function.
+      this.recordSets.productSuggestions.$remove(indexToDelete).then(function () {
+        if (callback) {
+          callback();
+        }
+        // Save the audit log (for delete for product suggestion).
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().delete, collectionNames.productSuggestions, productSuggestionModel.getId(), previousState, null);
+      }).catch(function (error) {
+          console.log("Error deleting product suggestion: ", error);
+        }
+      );
+    }
+  };
 };
