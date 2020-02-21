@@ -354,6 +354,7 @@ var DataRepository = function (recordSets) {
     productSuggestionRecord.suggesterNotes = productSuggestion.getSuggesterNotes();
     productSuggestionRecord.status = productSuggestion.getStatus();
     productSuggestionRecord.createdAtUtc = productSuggestion.getCreatedAtUtc().toISOString();
+    productSuggestionRecord.adminNotes = productSuggestion.getAdminNotes();
   };
 
   /**

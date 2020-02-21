@@ -8,8 +8,30 @@
     <p>This is the suggested product:</p>
     <table class="table" ng-include="'/views/partials/viewSuggestedProduct.html'"></table>
 
+    <h3>Admin Notes</h3>
+    <div ng-if="!editingNotes">
+        <pre ng-if="suggestedProduct.hasAdminNotes()" style="background-color: transparent;">{{suggestedProduct.getAdminNotes()}}</pre>
+        <button class="btn btn-primary btn-lg" ng-click="editNotes()">
+            <span ng-if="!suggestedProduct.hasAdminNotes()">Add</span>
+            <span ng-if="suggestedProduct.hasAdminNotes()">Edit</span>
+            notes
+        </button>
+    </div>
+    <div ng-if="editingNotes">
+        <div class="form-group">
+          <textarea
+              class="form-control"
+              rows=5
+              placeholder="Add your notes..."
+              ng-model="adminNotes"
+          ></textarea>
+        </div>
+        <button class="btn btn-primary btn-lg" ng-click="saveNotes(adminNotes)">Save Notes</button>
+        <button class="btn btn-warning btn-lg" ng-click="cancelEditNotes()">Cancel</button>
+    </div>
+
     <!-- The options depend on the current state -->
-    <div ng-if="suggestedProduct.getStatus() == 'in review' || suggestedProduct.getStatus() == 'rejected'">
+    <div ng-if="!editingNotes && (suggestedProduct.getStatus() == 'in review' || suggestedProduct.getStatus() == 'rejected')">
         <h2>Options</h2>
         <div ng-if="suggestedProduct.getStatus() == 'in review'">
             <p ng-if="isValid()"><button class="btn btn-primary btn-lg" ng-click="approve()">Approve this suggestion</button></p>

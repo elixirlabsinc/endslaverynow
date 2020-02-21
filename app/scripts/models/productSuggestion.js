@@ -26,6 +26,8 @@ var ProductSuggestion = (function () {
     this.suggesterEmailAddress = data.hasOwnProperty('suggesterEmailAddress') ? data.suggesterEmailAddress : null;
     this.suggesterNotes = data.hasOwnProperty('suggesterNotes') ? data.suggesterNotes : null;
 
+    this.adminNotes = data.hasOwnProperty('adminNotes') ? data.adminNotes : null;
+
     // Some fields with default values.
     // @TODO: The valid status values need to be in some library code somewhere (eg for the default value here).
     // @TODO: Validate that the status ends up with a valid value.
@@ -74,6 +76,18 @@ var ProductSuggestion = (function () {
     getCreatedAtUtc: function getCreatedAtUtc() {
       // createdAtUtc is an instance of moment.
       return this.createdAtUtc;
+    },
+
+    getAdminNotes: function getAdminNotes() {
+      return this.adminNotes;
+    },
+
+    setAdminNotes: function setAdminNotes(newNotes) {
+      this.adminNotes = newNotes;
+    },
+
+    hasAdminNotes: function hasAdminNotes() {
+      return this.adminNotes != null && this.adminNotes != '';
     }
   };
   angular.extend(ProductSuggestion.prototype, Product.prototype);

@@ -17,8 +17,10 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
     $scope.suggestedProductId = parseInt($transition$.params().id);
     $scope.category = null;
     $scope.brand = null;
+    $scope.adminNotes = null;
 
     $scope.loaded = false;
+    $scope.editingNotes = false;
 
     $scope.suggestedProduct = null;
 
@@ -26,6 +28,7 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
       function () {
         $scope.dataRepository = dataRepositoryFactory.getDataRepository();
         $scope.suggestedProduct = $scope.dataRepository.getSuggestedProductById($scope.suggestedProductId);
+        // @TODO: We might not need this, but leave it here because I think edit mode will need it.
         $scope.persistService = new PersistService(
           dataRepositoryFactory,
           $scope.dataRepository,
@@ -53,13 +56,33 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
       );
     };
 
+    $scope.editNotes = function editNotes() {
+      $scope.adminNotes = $scope.suggestedProduct.getAdminNotes();
+      $scope.editingNotes = true;
+    };
+
+    $scope.closeEditNotes = function closeEditNotes() {
+      $scope.adminNotes = null;
+      $scope.editingNotes = false;
+    };
+
+    $scope.cancelEditNotes = function cancelEditNotes() {
+      $scope.closeEditNotes();
+    };
+
+    $scope.saveNotes = function saveNotes(adminNotes) {
+      $scope.suggestedProduct.setAdminNotes(adminNotes);
+      $scope.dataRepository.persistProductSuggestion($scope.suggestedProduct, 'Your notes have been saved');
+      $scope.closeEditNotes();
+    };
+
     $scope.reject = function reject() {
       if (!window.confirm('Are you sure you want to reject this product suggestion?')) {
         return;
       }
 
       $scope.suggestedProduct.setStatus('rejected'); // @TODO: Need to use a constant here.
-      $scope.persistService.processProductSuggestion($scope.suggestedProduct, 'This product suggestion has been rejected');
+      $scope.dataRepository.persistProductSuggestion($scope.suggestedProduct, 'This product suggestion has been rejected');
     };
 
     $scope.unreject = function unreject() {
@@ -68,7 +91,7 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
       }
 
       $scope.suggestedProduct.setStatus('in review'); // @TODO: Need to use a constant here.
-      $scope.persistService.processProductSuggestion($scope.suggestedProduct, 'This product suggestion has been moved back to "in review"');
+      $scope.dataRepository.persistProductSuggestion($scope.suggestedProduct, 'This product suggestion has been moved back to "in review"');
     };
 
     $scope.deleteSuggestion = function deleteSuggestion() {
