@@ -6,16 +6,15 @@
 
 <div ng-if="loaded">
     <div>
-        <span>Include...</span>
-        <label><input type="checkbox" ng-model="include.inReview"/> In Review</label>
-        <label><input type="checkbox" ng-model="include.approved"/> Approved</label>
-        <label><input type="checkbox" ng-model="include.rejected"/> Rejected</label>
+        <span>Show...</span>
+        <label><input name="stateFilter" type="radio" ng-value="include.inReview" ng-model="includeFilter.value"/> In Review</label>
+        <label><input name="stateFilter" type="radio" ng-value="include.approved" ng-model="includeFilter.value"/> Approved</label>
+        <label><input name="stateFilter" type="radio" ng-value="include.rejected" ng-model="includeFilter.value"/> Rejected</label>
     </div>
 
     <table class="table">
         <tr>
             <th>Date Suggested</th>
-            <th>Status</th>
             <th>Name</th>
             <th>Description</th>
             <th>Category</th>
@@ -25,7 +24,6 @@
         </tr>
         <tr ng-repeat="suggestedProduct in getFilteredSuggestedProducts()">
             <td>{{suggestedProduct.getCreatedAtUtc().format('DD MMM YYYY HH:mm')}}</td>
-            <td>{{suggestedProduct.getStatus()}}</td>
             <td>{{suggestedProduct.getName()}}</td>
             <td>{{suggestedProduct.getDescription()}}</td>
             <td>{{getCategory(suggestedProduct)}}</td>
@@ -33,7 +31,7 @@
             <td>{{suggestedProduct.getSuggesterNotes()}}</td>
             <td class="action">
                 <button type="button" class="btn btn-success">
-                    <a href="#!/admin/reviewSuggestedProduct/{{ suggestedProduct.getId() }}">Review</a>
+                    <a href="#!/admin/reviewSuggestedProduct/{{ suggestedProduct.getId() }}">{{getReviewButtonText(suggestedProduct)}}</a>
                 </button>
             </td>
         </tr>

@@ -18,9 +18,13 @@ angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
     // Include product suggestions in these states. User can toggle any of the flags. Defaults to just "in review".
     // @TODO: The keys should be provided by a service.
     $scope.include = {
-      'inReview': true,
-      'approved': false,
-      'rejected': false
+      inReview: 'in review',
+      approved: 'approved',
+      rejected: 'rejected'
+    };
+    // This only seems to work if it's an object!
+    $scope.includeFilter = {
+      value: $scope.include.inReview
     };
 
     $scope.suggestedProducts = [];
@@ -47,9 +51,7 @@ angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
     $scope.getFilteredSuggestedProducts = function getFilteredSuggestedProducts() {
       return $scope.suggestedProducts.filter(
         function (suggestedProduct) {
-          return (suggestedProduct.getStatus() === 'in review' && $scope.include.inReview) ||
-            (suggestedProduct.getStatus() === 'approved' && $scope.include.approved) ||
-            (suggestedProduct.getStatus() === 'rejected' && $scope.include.rejected);
+          return suggestedProduct.getStatus() === $scope.includeFilter.value;
         }
       );
     };
@@ -74,6 +76,13 @@ angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
       }
 
       return null;
+    };
+
+    /**
+     * @param {ProductSuggestion|Product} suggestedProduct
+     */
+    $scope.getReviewButtonText = function getReviewButtonText(suggestedProduct) {
+      return suggestedProduct.getStatus() === $scope.include.inReview ? 'Review...' : 'View...';
     };
   }
 ])
