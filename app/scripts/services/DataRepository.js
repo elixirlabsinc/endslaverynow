@@ -351,6 +351,7 @@ var DataRepository = function (recordSets) {
     productSuggestionRecord.suggesterFamilyName = productSuggestion.getSuggesterFamilyName();
     productSuggestionRecord.suggesterTelephoneNumber = productSuggestion.getSuggesterTelephoneNumber();
     productSuggestionRecord.suggesterEmailAddress = productSuggestion.getSuggesterEmailAddress();
+    productSuggestionRecord.suggesterWhy = productSuggestion.getSuggesterWhy();
     productSuggestionRecord.suggesterNotes = productSuggestion.getSuggesterNotes();
     productSuggestionRecord.status = productSuggestion.getStatus();
     productSuggestionRecord.createdAtUtc = productSuggestion.getCreatedAtUtc().toISOString();

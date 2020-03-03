@@ -24,6 +24,7 @@ var ProductSuggestion = (function () {
     this.suggesterFamilyName = data.hasOwnProperty('suggesterFamilyName') ? data.suggesterFamilyName : null;
     this.suggesterTelephoneNumber = data.hasOwnProperty('suggesterTelephoneNumber') ? data.suggesterTelephoneNumber : null;
     this.suggesterEmailAddress = data.hasOwnProperty('suggesterEmailAddress') ? data.suggesterEmailAddress : null;
+    this.suggesterWhy = data.hasOwnProperty('suggesterWhy') ? data.suggesterWhy : null;
     this.suggesterNotes = data.hasOwnProperty('suggesterNotes') ? data.suggesterNotes : null;
 
     this.adminNotes = data.hasOwnProperty('adminNotes') ? data.adminNotes : null;
@@ -58,6 +59,10 @@ var ProductSuggestion = (function () {
 
     getSuggesterEmailAddress: function getSuggesterEmailAddress() {
       return this.suggesterEmailAddress;
+    },
+
+    getSuggesterWhy: function getSuggesterWhy() {
+      return this.suggesterWhy;
     },
 
     getSuggesterNotes: function getSuggesterNotes() {

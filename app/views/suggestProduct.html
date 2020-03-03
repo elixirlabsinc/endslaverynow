@@ -60,11 +60,22 @@
       <textarea
               type="textarea"
               class="form-control"
-              rows=5
+              rows=2
               value=""
-              placeholder="Enter any additional notes here, eg about why you are suggesting it, anything you're not sure about, etc..."
-                  ng-model="addItem.suggesterNotes"
+              placeholder="How is this brand or product a slave trade free product?"
+              ng-model="addItem.suggesterWhy"
               required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <textarea
+              type="textarea"
+              class="form-control"
+              rows=3
+              value=""
+              placeholder="Any additional details..."
+              ng-model="addItem.suggesterNotes"
       ></textarea>
     </div>
 

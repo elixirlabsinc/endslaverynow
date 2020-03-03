@@ -35,6 +35,7 @@ angular.module('endslaverynowApp')
         suggesterFamilyName: null,
         suggesterTelephoneNumber: null,
         suggesterEmailAddress: null,
+        suggesterWhy: null,
         suggesterNotes: null
       };
       $scope.selectedCategoryId = null;
@@ -126,6 +127,11 @@ angular.module('endslaverynowApp')
           // We have told Angular that the input field is an email address. If the address is entered and is
           // not valid, it comes through as "undefined".
           result.push('Email address is not valid');
+        }
+
+        // The reason why they think this is a slave-free product must be entered.
+        if (item.suggesterWhy === null || item.suggesterWhy === '' || item.suggesterWhy === undefined) {
+          result.push('You must tell us why you think this is a slave-free product');
         }
 
         return result;
