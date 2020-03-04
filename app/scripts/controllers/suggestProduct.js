@@ -25,6 +25,7 @@ angular.module('endslaverynowApp')
       };
 
       $scope.formType = $scope.availableTypes.Products;
+      $scope.formPurpose = 'product suggestion';
       // The new record has some product fields and some suggester fields.
       $scope.addItem = {
         name: null,
@@ -85,6 +86,16 @@ angular.module('endslaverynowApp')
         $scope.selectedBrandName = brand.getName();
       };
 
+      $scope.hasImage = function hasImage(image) {
+        return Array.isArray(image) && image.length > 0;
+      };
+
+      $scope.removeImage = function removeImage() {
+        if (window.confirm('Are you sure you want to remove this image?')) {
+          $scope.addItem.image = null;
+        }
+      };
+
       /**
        * Validate the entries.
        * Note: the validation is subject to change.
@@ -99,6 +110,19 @@ angular.module('endslaverynowApp')
         // Product name must be entered.
         if (item.name === null || item.name === '' || item.name === undefined) {
           result.push('Product name must be entered');
+        }
+
+        // Any image must be a JPEG and less than 2MB. I know the image form form can validate this, but
+        // any file that fails the constraints is just ignored, and it's impossible for this controller to
+        // know when that happens. So, the form field allows everything, and we test it here.
+        if ($scope.hasImage(item.image)) {
+          var currentImage = item.image[item.image.length-1];
+          if (currentImage.type !== 'image/png') {
+            result.push('Product image must be a png');
+          }
+          if (currentImage.size > 2000000) {
+            result.push('Maximum product image size is 2MB');
+          }
         }
 
         // Suggester given name and family name must be entered.
@@ -148,6 +172,9 @@ angular.module('endslaverynowApp')
         // Validate the entries.
         $scope.errorMessages = $scope.validInput(item);
         if ($scope.errorMessages.length === 0) {
+          if (item.image) {
+            model.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage(item.image));
+          }
           var persistService = new PersistService(
             dataRepositoryFactory,
             $scope.dataRepository,

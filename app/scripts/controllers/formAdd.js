@@ -19,6 +19,7 @@ angular.module('endslaverynowApp')
       $scope.loaded = false;
 
       $scope.formType = '';
+      $scope.formPurpose = 'item add';
       $scope.errorMessage = false;
 
       $scope.availableTypes = {
