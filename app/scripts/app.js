@@ -196,6 +196,17 @@ angular
                 }]
               }
             })
+            .state('admin.editSuggestedProduct', {
+              url: '/editSuggestedProduct/:id',
+              templateUrl: 'views/admin.editSuggestedProduct.html',
+              controller: 'EditSuggestedProductCtrl',
+              controllerAs: 'EditSuggestedProduct',
+              resolve: {
+                'currentAuth': ['Auth', function(Auth) {
+                  return Auth.$requireSignIn;
+                }]
+              }
+            })
 			.state('admin.auditLogReport', {
 				url: '/auditLogReport',
 				templateUrl: 'views/auditLog/admin.auditLogReport.html',

@@ -17,19 +17,26 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 
     $scope.dataRepository = null;
 
-    $scope.NameValue = null;
-    $scope.DescriptionValue = null;
-    $scope.PurchaseURLValue = null;
-    $scope.selectedCategoryId = null;
+    $scope.entity = {
+      NameValue: null,
+      DescriptionValue: null,
+      PurchaseURLValue: null,
+      Image: null
+    };
     $scope.selectedBrandId = null;
-    $scope.Image = null;
+    $scope.selectedCategoryId = null;
+
+    $scope.ctrl = {
+      brands: null,
+      categories: null
+    };
 
     dataRepositoryFactory.ready(
       function () {
         $scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
-        $scope.brands = $scope.dataRepository.getBrands();
-        $scope.categories = $scope.dataRepository.getCategories();
+        $scope.ctrl.brands = $scope.dataRepository.getBrands();
+        $scope.ctrl.categories = $scope.dataRepository.getCategories();
         $scope.products = $scope.dataRepository.getProducts();
 
         // Set up the individual field values.
@@ -39,7 +46,7 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
         var product = $scope.dataRepository.getProductById($scope.productId);
         $scope.name = product.getName();
         $scope.description = product.getDescription();
-        $scope.ranking = product.getRanking();
+        // $scope.ranking = product.getRanking();
         $scope.image = product.getImage();
         $scope.CategoryId = product.getCategoryId();
         $scope.BrandId = product.getBrandId();
@@ -73,14 +80,14 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
        * @var {Product} product
        */
       var product = $scope.dataRepository.getProductById($scope.productId);
-      if ($scope.NameValue) {
-        product.setName($scope.NameValue);
+      if ($scope.entity.NameValue) {
+        product.setName($scope.entity.NameValue);
       }
-      if ($scope.DescriptionValue) {
-        product.setDescription($scope.DescriptionValue);
+      if ($scope.entity.DescriptionValue) {
+        product.setDescription($scope.entity.DescriptionValue);
       }
-      if ($scope.PurchaseURLValue) {
-        product.setPurchaseUrl($scope.PurchaseURLValue);
+      if ($scope.entity.PurchaseURLValue) {
+        product.setPurchaseUrl($scope.entity.PurchaseURLValue);
       }
       if ($scope.selectedCategoryId) {
         product.setCategoryId($scope.selectedCategoryId);
@@ -88,8 +95,8 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
       if ($scope.selectedBrandId) {
         product.setBrandId($scope.selectedBrandId);
       }
-      if ($scope.Image) {
-        product.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.Image));
+      if ($scope.entity.Image) {
+        product.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.entity.Image));
       }
 
       var persistService = new PersistService(
