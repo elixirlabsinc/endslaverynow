@@ -5,7 +5,22 @@
 </div>
 
 <div ng-if="loaded">
+    <!-- The options depend on the current state -->
+    <div ng-if="!editingNotes && (suggestedProduct.getStatus() == 'in review' || suggestedProduct.getStatus() == 'rejected')">
+        <div ng-if="suggestedProduct.getStatus() == 'in review'">
+            <div ng-if="!isValid()">You can't approve this product - not all mandatory fields have been entered.</div>
+            <button ng-if="isValid()" class="btn btn-primary btn-lg" ng-click="approve()">Approve</button>
+            <p>Edit (TODO: need an edit button, on clicking switch to an edit screen)</p>
+            <button class="btn btn-warning btn-lg" ng-click="reject()">Reject</button>
+        </div>
+        <div ng-if="suggestedProduct.getStatus() == 'rejected'">
+            <button class="btn btn-success btn-lg" ng-click="unreject()">Switch back to "in review"</button>
+        </div>
+        <button class="btn btn-danger btn-lg" ng-click="deleteSuggestion()">Permanently delete (cannot be undone)</button>
+    </div>
+
     <p>This is the suggested product:</p>
+
     <table class="table" ng-include="'/views/partials/viewSuggestedProduct.html'"></table>
 
     <h3>Admin Notes</h3>
@@ -28,20 +43,5 @@
         </div>
         <button class="btn btn-primary btn-lg" ng-click="saveNotes(adminNotes)">Save Notes</button>
         <button class="btn btn-warning btn-lg" ng-click="cancelEditNotes()">Cancel</button>
-    </div>
-
-    <!-- The options depend on the current state -->
-    <div ng-if="!editingNotes && (suggestedProduct.getStatus() == 'in review' || suggestedProduct.getStatus() == 'rejected')">
-        <h2>Options</h2>
-        <div ng-if="suggestedProduct.getStatus() == 'in review'">
-            <p ng-if="isValid()"><button class="btn btn-primary btn-lg" ng-click="approve()">Approve this suggestion</button></p>
-            <p ng-if="!isValid()">You can't approve this product - not all mandatory fields have been entered.</p>
-            <p>Edit this suggestion (TODO: need an edit button, on clicking switch to an edit screen)</p>
-            <p><button class="btn btn-warning btn-lg" ng-click="reject()">Reject this suggestion</button></p>
-        </div>
-        <div ng-if="suggestedProduct.getStatus() == 'rejected'">
-            <p><button class="btn btn-success btn-lg" ng-click="unreject()">Switch back to "in review"</button></p>
-        </div>
-        <p><button class="btn btn-danger btn-lg" ng-click="deleteSuggestion()">Permanently delete this suggestion</button> Note: this cannot be undone</p>
     </div>
 </div>
