@@ -16,12 +16,20 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
     $scope.loaded = false;
     $scope.suggestedProductId = parseInt($transition$.params().id);
 
+    // @TODO: We need to change the way this works so that the form only uses models (and not ng-values)
+    // @TODO: so that we can tell when someone blanks out a field.
+    // We have to put these models in an object because the view includes a sub-view and it just doesn't
+    // work otherwise.
     $scope.entity = {
       NameValue: null,
       DescriptionValue: null,
       PurchaseURLValue: null,
       selectedBrandId: null,
-      Image: null
+      Image: null,
+      suggesterGivenNameValue: null,
+      suggesterFamilyNameValue: null,
+      suggesterTelephoneNumberValue: null,
+      suggesterEmailAddressValue: null
     };
     $scope.selectedBrandId = null;
     $scope.selectedCategoryId = null;
@@ -56,6 +64,16 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
         $scope.brand = $scope.dataRepository.getBrandById($scope.BrandId);
         $scope.cat = $scope.dataRepository.getCategoryById($scope.CategoryId);
 
+        $scope.suggesterGivenName = suggestedProduct.getSuggesterGivenName();
+        $scope.suggesterFamilyName = suggestedProduct.getSuggesterFamilyName();
+        $scope.suggesterTelephoneNumber = suggestedProduct.getSuggesterTelephoneNumber();
+        $scope.suggesterEmailAddress = suggestedProduct.getSuggesterEmailAddress();
+
+        $scope.suggesterWhy = suggestedProduct.getSuggesterWhy();
+        $scope.suggesterNotes = suggestedProduct.getSuggesterNotes();
+        $scope.createdAtUtc = suggestedProduct.getCreatedAtUtc();
+        $scope.adminNotes = suggestedProduct.getAdminNotes();
+
         $scope.loaded = true;
 
         /**
@@ -84,25 +102,43 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
       }
     );
 
+    /**
+     * @param {ProductSuggestion} productSuggestion
+     * @param entity
+     *
+     * @return {Array}
+     */
+    $scope.validInput = function (productSuggestion, entity) {
+      var result = [];
+      if (entity.suggesterEmailAddressValue === undefined) {
+        result.push('Suggester email address is not valid');
+      }
+      // @TODO: This doesn't work because if the user blanks out a field, it doesn't get blanked in the model.
+      if (productSuggestion.getSuggesterTelephoneNumber() === null &&
+          productSuggestion.getSuggesterEmailAddress() === null) {
+        result.push('Suggester must have a telephone number or an email address');
+      }
+
+      return result;
+    };
+
     $scope.processForm = function () {
-console.log('processForm...');
       // Start with the original product suggestion object, and overwrite any values with values the user
       // has changed.
       /**
        * @var {ProductSuggestion} productSuggestion
        */
       var productSuggestion = $scope.dataRepository.getSuggestedProductById($scope.suggestedProductId);
+      // Product-related fields.
       if ($scope.entity.NameValue) {
         productSuggestion.setName($scope.entity.NameValue);
       }
-console.log('Desc:', $scope.entity.DescriptionValue);
       if ($scope.entity.DescriptionValue) {
         productSuggestion.setDescription($scope.entity.DescriptionValue);
       }
       if ($scope.entity.PurchaseURLValue) {
         productSuggestion.setPurchaseUrl($scope.entity.PurchaseURLValue);
       }
-console.log('$scope.selectedCategoryId:', $scope.selectedCategoryId);
       if ($scope.selectedCategoryId) {
         productSuggestion.setCategoryId($scope.selectedCategoryId);
       }
@@ -113,13 +149,31 @@ console.log('$scope.selectedCategoryId:', $scope.selectedCategoryId);
         productSuggestion.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.entity.Image));
       }
 
-      $scope.persistService.processProductSuggestion(
-        productSuggestion,
-        'Edit has been completed!',
-        function () {
-          $state.go('admin.reviewSuggestedProduct', {id: $scope.suggestedProductId});
-        }
-      );
+      // Suggester-related fields
+      if ($scope.entity.suggesterGivenNameValue) {
+        productSuggestion.setSuggesterGivenName($scope.entity.suggesterGivenNameValue);
+      }
+      if ($scope.entity.suggesterFamilyNameValue) {
+        productSuggestion.setSuggesterFamilyName($scope.entity.suggesterFamilyNameValue);
+      }
+      if ($scope.entity.suggesterTelephoneNumberValue) {
+        productSuggestion.setSuggesterTelephoneNumber($scope.entity.suggesterTelephoneNumberValue);
+      }
+      if ($scope.entity.suggesterEmailAddressValue) {
+        productSuggestion.setSuggesterEmailAddress($scope.entity.suggesterEmailAddressValue);
+      }
+
+      // Validate the entries.
+      $scope.errorMessages = $scope.validInput(productSuggestion, $scope.entity);
+      if ($scope.errorMessages.length === 0) {
+        $scope.persistService.processProductSuggestion(
+          productSuggestion,
+          'Edit has been completed!',
+          function () {
+            $state.go('admin.reviewSuggestedProduct', {id: $scope.suggestedProductId});
+          }
+        );
+      }
     };
   }
 ])

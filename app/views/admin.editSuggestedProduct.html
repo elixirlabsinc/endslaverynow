@@ -2,14 +2,39 @@
     <br>
     <div ng-if="loaded" class="add-form" id='add-form'>
 
+        <a class="btn btn-warning pull-right" href="#!/admin/reviewSuggestedProduct/{{suggestedProductId}}">Cancel</a>
+
         <h2>Edit Suggested Product</h2>
 
         <div class="table" ng-include="'/views/partials/editProduct.html'"></div>
 
-        <div class="errorMessage" ng-if="errorMessage">Error submitting form. Please complete all fields to continue.
-            <br>
-            <br>
+        <h3>Suggester Details</h3>
+
+        <div class="form-group">
+            <input type="text" class="form-control" required ng-value="suggesterGivenName" placeholder="Their given (first) name" ng-model="entity.suggesterGivenNameValue">
         </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" required ng-value="suggesterFamilyName" placeholder="Their family (last)name" ng-model="entity.suggesterFamilyNameValue">
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" ng-value="suggesterTelephoneNumber" placeholder="Their contact telephone number" ng-model="entity.suggesterTelephoneNumberValue">
+        </div>
+
+        <div class="form-group">
+            <input type="email" class="form-control" ng-value="suggesterEmailAddress" placeholder="Their email address" ng-model="entity.suggesterEmailAddressValue">
+        </div>
+
+        <div class="errorMessage" ng-repeat="errorMessage in errorMessages">{{ errorMessage }}<br><br></div>
+
+        <h3>Other Info</h3>
+        <table class="table">
+            <tr><th>Why This Product?</th><td>{{suggesterWhy}}</td></tr>
+            <tr><th>Notes</th><td>{{suggesterNotes}}</td></tr>
+            <tr><th>Suggested At</th><td>{{createdAtUtc}}</td></tr>
+            <tr><th>Admin notes</th><td>{{adminNotes}}</td></tr>
+        </table>
 
         <input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm()" value="Submit">
 

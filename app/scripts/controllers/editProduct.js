@@ -17,6 +17,8 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 
     $scope.dataRepository = null;
 
+    // We have to put these models in an object because the view includes a sub-view and it just doesn't
+    // work otherwise.
     $scope.entity = {
       NameValue: null,
       DescriptionValue: null,

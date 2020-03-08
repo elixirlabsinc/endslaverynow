@@ -45,16 +45,32 @@ var ProductSuggestion = (function () {
       return this.generatedProduct;
     },
 
+    setSuggesterGivenName: function setSuggesterGivenName(newSuggesterGivenName) {
+      this.suggesterGivenName = newSuggesterGivenName;
+    },
+
     getSuggesterGivenName: function getSuggesterGivenName() {
       return this.suggesterGivenName;
+    },
+
+    setSuggesterFamilyName: function setSuggesterFamilyName(newSuggesterFamilyName) {
+      this.suggesterFamilyName = newSuggesterFamilyName;
     },
 
     getSuggesterFamilyName: function getSuggesterFamilyName() {
       return this.suggesterFamilyName;
     },
 
+    setSuggesterTelephoneNumber: function setSuggesterTelephoneNumber(newSuggesterTelephoneNumber) {
+      this.suggesterTelephoneNumber = newSuggesterTelephoneNumber;
+    },
+
     getSuggesterTelephoneNumber: function getSuggesterTelephoneNumber() {
       return this.suggesterTelephoneNumber;
+    },
+
+    setSuggesterEmailAddress: function setSuggesterEmailAddress(newSuggesterEmailAddress) {
+      this.suggesterEmailAddress = newSuggesterEmailAddress;
     },
 
     getSuggesterEmailAddress: function getSuggesterEmailAddress() {
