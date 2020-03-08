@@ -13,7 +13,7 @@
     <div ng-if="!editingNotes && (suggestedProduct.getStatus() == 'in review' || suggestedProduct.getStatus() == 'rejected')">
         <span ng-if="suggestedProduct.getStatus() == 'in review'">
             <div ng-if="!isValid()">You can't approve this product - not all mandatory fields have been entered.</div>
-            <button ng-if="isValid()" class="btn btn-primary btn-lg" ng-click="approve()">Approve</button>
+            <button ng-if="isValid()" class="btn btn-success btn-lg" ng-click="approve()">Approve</button>
             <a class="btn btn-primary btn-lg" href="#!/admin/editSuggestedProduct/{{suggestedProduct.getId()}}">Edit</a>
             <button class="btn btn-warning btn-lg" ng-click="reject()">Reject</button>
         </span>
