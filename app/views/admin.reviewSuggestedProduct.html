@@ -1,4 +1,8 @@
-<h2>Review a Suggested Product</h2>
+<h2>
+    <span ng-if="suggestedProduct.getStatus() === 'approved'">Approved</span>
+    <span ng-if="suggestedProduct.getStatus() !== 'approved'">Review a</span>
+    Suggested Product
+</h2>
 
 <div ng-if="!loaded">
     Loading...
