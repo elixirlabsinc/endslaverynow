@@ -18,7 +18,7 @@ var ProductSuggestion = (function () {
     this.categoryId = Number.isNaN(this.categoryId) ? null : this.categoryId;
 
     // A reference to the product that was generated from this suggestion.
-    this.generatedProduct = data.hasOwnProperty('generatedProduct') ? data.generatedProduct : null;
+    this.generatedProductId = this.extractInt(data, 'generatedProductId');
 
     this.suggesterGivenName = data.hasOwnProperty('suggesterGivenName') ? data.suggesterGivenName : null;
     this.suggesterFamilyName = data.hasOwnProperty('suggesterFamilyName') ? data.suggesterFamilyName : null;
@@ -41,8 +41,12 @@ var ProductSuggestion = (function () {
       return this.rowid;
     },
 
-    getGeneratedProduct: function getGeneratedProduct() {
-      return this.generatedProduct;
+    setGeneratedProductId: function setGeneratedProductId(newGeneratedProductId) {
+      this.generatedProductId = newGeneratedProductId;
+    },
+
+    getGeneratedProductId: function getGeneratedProductId() {
+      return this.generatedProductId;
     },
 
     setSuggesterGivenName: function setSuggesterGivenName(newSuggesterGivenName) {

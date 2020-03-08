@@ -252,6 +252,20 @@ var DataRepository = function (recordSets) {
     return null;
   };
 
+  this.getSuggestedProductByProductId = function getSuggestedProductByProductId(productId) {
+    var matching = this.productSuggestions.filter(
+      function (productSuggestion) {
+        return productId === productSuggestion.getGeneratedProductId();
+      }
+    );
+
+    if (matching.length === 1) {
+      return matching.shift(); // Take the first one (index not necessarily 0)
+    }
+
+    return null;
+  };
+
   this.getSuggestedProductByRowid = function getSuggestedProductByRowid(rowid) {
     var matching = this.productSuggestions.filter(
       function (productSuggestion) {
@@ -346,7 +360,7 @@ var DataRepository = function (recordSets) {
     // Do what the parent Product does.
     this.populateRecordFromProductModel(productSuggestionRecord, productSuggestion);
     // Then do the things specific to product suggestions.
-    productSuggestionRecord.generatedProduct = productSuggestion.getGeneratedProduct();
+    productSuggestionRecord.generatedProductId = productSuggestion.getGeneratedProductId();
     productSuggestionRecord.suggesterGivenName = productSuggestion.getSuggesterGivenName();
     productSuggestionRecord.suggesterFamilyName = productSuggestion.getSuggesterFamilyName();
     productSuggestionRecord.suggesterTelephoneNumber = productSuggestion.getSuggesterTelephoneNumber();

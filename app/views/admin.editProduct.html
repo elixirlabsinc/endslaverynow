@@ -4,6 +4,8 @@
 
         <h2>Edit Product</h2>
 
+        <p ng-if="productSuggestionId">Go to the <a href="#!/admin/reviewSuggestedProduct/{{productSuggestionId}}">suggestion that generated this product</a>.</p>
+
         <div class="table" ng-include="'/views/partials/editProduct.html'"></div>
 
         <div class="errorMessage" ng-if="errorMessage">Error submitting form. Please complete all fields to continue.

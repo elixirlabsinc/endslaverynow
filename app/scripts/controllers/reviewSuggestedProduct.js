@@ -110,10 +110,27 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
     };
 
     $scope.approve = function approve() {
-      window.alert('This code has not been written yet!');
-      // @TODO: show a confirmation message.
-      // @TODO: create a product from the data in the suggested product, and save it.
-      // @TODO: put the id of the new product in the suggested product record, change the status to pending and save it.
+      if (window.confirm('This will create a product from the details in the suggestion. Are you sure you want to continue?')) {
+        // We need an instance of Product that contains all the common fields from the suggestion.
+        // We can literally pass the ProductSuggestion entity into the Product constructor and get such a thing.
+        // Then we just blank the id (which of course is the suggestion id) so that it inserts the product.
+        var product = new Product($scope.suggestedProduct);
+        product.setId(null);
+        $scope.persistService.processProduct(
+          product,
+          'The product has been created!',
+          function () {
+            // The product has been generated.
+            // Copy the new product id into the product suggestion, set its state to "approved" and save it.
+            $scope.suggestedProduct.setGeneratedProductId(product.getId());
+            $scope.suggestedProduct.setStatus('approved'); // @TODO: The status text should be provided by a service.
+            $scope.persistService.processProductSuggestion(
+              $scope.suggestedProduct,
+              'The product has been linked to this suggestion'
+            );
+          }
+        );
+      }
     };
   }
 ])

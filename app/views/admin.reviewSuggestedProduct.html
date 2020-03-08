@@ -19,6 +19,8 @@
         <button class="btn btn-danger btn-lg" ng-click="deleteSuggestion()">Permanently delete (cannot be undone)</button>
     </div>
 
+    <p ng-if="suggestedProduct.getGeneratedProductId()">Go to the <a href="#!/admin/editProduct/{{suggestedProduct.getGeneratedProductId()}}">product generated from this suggestion</a>.</p>
+
     <p>This is the suggested product:</p>
 
     <table class="table" ng-include="'/views/partials/viewSuggestedProduct.html'"></table>

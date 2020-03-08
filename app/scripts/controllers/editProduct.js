@@ -13,7 +13,7 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
   '$state',
   'dataRepositoryFactory',
   function ($stateParams, $scope, $state, dataRepositoryFactory) {
-    $scope.productId = $stateParams.id;
+    $scope.productId = $stateParams.id ? parseInt($stateParams.id) : null;
 
     $scope.dataRepository = null;
 
@@ -32,6 +32,9 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
       brands: null,
       categories: null
     };
+
+    // The id of the product suggestion that this product was generated from (if there is one).
+    $scope.productSuggestionId = null;
 
     dataRepositoryFactory.ready(
       function () {
@@ -73,6 +76,10 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
           $scope.selectedBrandId = brand.getId();
           $scope.selectedBrandName = brand.getName();
         };
+
+        // See if a product suggestion generated this product. If so, get its id.
+        var productSuggestion = $scope.dataRepository.getSuggestedProductByProductId($scope.productId);
+        $scope.productSuggestionId = productSuggestion ? productSuggestion.getId() : null;
       }
     );
 
