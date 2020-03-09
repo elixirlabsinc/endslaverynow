@@ -10,17 +10,18 @@
 angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
   '$scope',
   'dataRepositoryFactory',
-  function ($scope, dataRepositoryFactory) {
+  'ProductSuggestionStatuses',
+  function ($scope, dataRepositoryFactory, ProductSuggestionStatuses) {
     $scope.dataRepository = null;
+    $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
 
     $scope.loaded = false;
 
     // Include product suggestions in these states. User can toggle any of the flags. Defaults to just "in review".
-    // @TODO: The keys should be provided by a service.
     $scope.include = {
-      inReview: 'in review',
-      approved: 'approved',
-      rejected: 'rejected'
+      inReview: $scope.ProductSuggestionStatuses.inReview,
+      approved: $scope.ProductSuggestionStatuses.approved,
+      rejected: $scope.ProductSuggestionStatuses.rejected
     };
     // This only seems to work if it's an object!
     $scope.includeFilter = {

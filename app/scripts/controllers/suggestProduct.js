@@ -13,7 +13,9 @@ angular.module('endslaverynowApp')
     '$state',
     '$location',
     'dataRepositoryFactory',
-    function ($scope, $state, $location, dataRepositoryFactory) {
+    'ProductSuggestionStatuses',
+    function ($scope, $state, $location, dataRepositoryFactory, ProductSuggestionStatuses) {
+      $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.loaded = false;
       $scope.errorMessages = [];
 
@@ -176,7 +178,7 @@ angular.module('endslaverynowApp')
             model.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage(item.image));
           }
           // @TODO: For now, skip the "validation code" step and move the status on to "in review" (it would normally be "pending").
-          model.setStatus('in review');
+          model.setStatus($scope.ProductSuggestionStatuses.inReview);
 
           var persistService = new PersistService(
             dataRepositoryFactory,

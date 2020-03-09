@@ -12,8 +12,10 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
   '$location',
   '$transition$',
   'dataRepositoryFactory',
-  function ($scope, $location, $transition$, dataRepositoryFactory) {
+  'ProductSuggestionStatuses',
+  function ($scope, $location, $transition$, dataRepositoryFactory, ProductSuggestionStatuses) {
     $scope.dataRepository = null;
+    $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
     $scope.suggestedProductId = parseInt($transition$.params().id);
     $scope.category = null;
     $scope.brand = null;
@@ -81,7 +83,7 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
         return;
       }
 
-      $scope.suggestedProduct.setStatus('rejected'); // @TODO: Need to use a constant here.
+      $scope.suggestedProduct.setStatus($scope.ProductSuggestionStatuses.rejected);
       $scope.dataRepository.persistProductSuggestion($scope.suggestedProduct, 'This product suggestion has been rejected');
     };
 
@@ -90,7 +92,7 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
         return;
       }
 
-      $scope.suggestedProduct.setStatus('in review'); // @TODO: Need to use a constant here.
+      $scope.suggestedProduct.setStatus($scope.ProductSuggestionStatuses.inReview);
       $scope.dataRepository.persistProductSuggestion($scope.suggestedProduct, 'This product suggestion has been moved back to "in review"');
     };
 
@@ -123,7 +125,7 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
             // The product has been generated.
             // Copy the new product id into the product suggestion, set its state to "approved" and save it.
             $scope.suggestedProduct.setGeneratedProductId(product.getId());
-            $scope.suggestedProduct.setStatus('approved'); // @TODO: The status text should be provided by a service.
+            $scope.suggestedProduct.setStatus($scope.ProductSuggestionStatuses.approved);
             $scope.persistService.processProductSuggestion(
               $scope.suggestedProduct,
               'The product has been linked to this suggestion'

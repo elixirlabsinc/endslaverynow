@@ -10,7 +10,7 @@
     </div>
 
     <div ng-if="found">
-        <div ng-if="suggestedProduct.getStatus() == 'pending'">
+        <div ng-if="suggestedProduct.getStatus() == ProductSuggestionStatuses.pending">
             <h3>Thank you for suggesting a product!</h3>
 
             <p>You can track your suggestion with the URL in the address bar.</p>

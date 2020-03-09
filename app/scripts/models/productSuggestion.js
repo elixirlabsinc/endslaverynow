@@ -31,6 +31,7 @@ var ProductSuggestion = (function () {
 
     // Some fields with default values.
     // @TODO: The valid status values need to be in some library code somewhere (eg for the default value here).
+    // @TODO: I just couldn't work out how to do this in a model - I can inject the allowed statuses into controllers.
     // @TODO: Validate that the status ends up with a valid value.
     this.status = data.hasOwnProperty('status') ? data.status : 'pending';
     this.createdAtUtc = data.hasOwnProperty('createdAtUtc') ? new moment(data.createdAtUtc) : new moment();

@@ -243,6 +243,12 @@ angular
 			return new DataRepositoryFactory($firebaseObject, $firebaseArray);
 		}
 	])
+	.constant('ProductSuggestionStatuses', {
+      pending: 'pending', // Created and waiting for validation code
+      inReview: 'in review', // Created and validated; being reviewed by an admin
+      rejected: 'rejected', // Reviewed and rejected
+      approved: 'approved' // Reviewed and approved
+    })
 	.run(['$rootScope', '$transitions', '$state', 'ENV', function($rootScope, $transitions, $state, ENV) {
 		var config = {
 			apiKey: ENV.firebase.apiKey,
