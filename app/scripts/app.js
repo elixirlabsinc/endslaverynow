@@ -242,8 +242,18 @@ angular
 		function($firebaseObject, $firebaseArray) {
 			return new DataRepositoryFactory($firebaseObject, $firebaseArray);
 		}
-	])
-	.constant('ProductSuggestionStatuses', {
+    ])
+    .factory('CollectionService', [
+      function() {
+        return new CollectionService();
+      }
+    ])
+    .constant('AvailableTypes', {
+      Brands: 'brands',
+      Categories: 'categories',
+      Products: 'products'
+    })
+    .constant('ProductSuggestionStatuses', {
       pending: 'pending', // Created and waiting for validation code
       inReview: 'in review', // Created and validated; being reviewed by an admin
       rejected: 'rejected', // Reviewed and rejected

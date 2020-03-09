@@ -13,18 +13,23 @@ angular.module('endslaverynowApp')
     '$state',
     '$location',
     'dataRepositoryFactory',
+    'AvailableTypes',
     'ProductSuggestionStatuses',
-    function ($scope, $state, $location, dataRepositoryFactory, ProductSuggestionStatuses) {
+    'CollectionService',
+    function (
+      $scope,
+      $state,
+      $location,
+      dataRepositoryFactory,
+      AvailableTypes,
+      ProductSuggestionStatuses,
+      CollectionService
+    ) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
+      $scope.collectionService = CollectionService;
+      $scope.availableTypes = AvailableTypes;
       $scope.loaded = false;
       $scope.errorMessages = [];
-
-      // @TODO: This is a duplicate of the code in formAdd.js
-      $scope.availableTypes = {
-        Brands: 'brands',
-        Categories: 'categories',
-        Products: 'products'
-      };
 
       $scope.formType = $scope.availableTypes.Products;
       $scope.formPurpose = 'product suggestion';
@@ -46,25 +51,11 @@ angular.module('endslaverynowApp')
       $scope.selectedBrandId = null;
       $scope.selectedBrandName = null;
 
-      // @TODO: This is a duplicate of the one in formAdd.js - maybe put it in some kind of service?
-      var alphabetizeCollection = function alphabetizeCollection(collection) {
-        if (collection === undefined) {
-          return [];
-        }
-        if (!Array.isArray(collection)) {
-          return [collection];
-        }
-        collection.sort(function (a, b) {
-          return a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
-        });
-        return collection;
-      };
-
       dataRepositoryFactory.ready(
         function () {
           var dataRepository = dataRepositoryFactory.getDataRepository();
-          $scope.categories = alphabetizeCollection(dataRepository.getCategories().filter(Boolean));
-          $scope.brands = alphabetizeCollection(dataRepository.getBrands());
+          $scope.categories = $scope.collectionService.alphabetize(dataRepository.getCategories().filter(Boolean));
+          $scope.brands = $scope.collectionService.alphabetize(dataRepository.getBrands());
           $scope.dataRepository = dataRepository;
           $scope.loaded = true;
         }
