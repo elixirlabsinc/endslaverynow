@@ -43,9 +43,11 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
       function () {
         $scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
-        // @TODO: Do this as a ctrl object.
-        $scope.ctrl.brands = $scope.dataRepository.getBrands();
-        $scope.ctrl.categories = $scope.dataRepository.getCategories();
+        // The brands and categories have to be in an object because of the way the view works.
+        $scope.ctrl = {
+          brands: $scope.dataRepository.getBrands(),
+          categories: $scope.dataRepository.getCategories()
+        };
         $scope.products = $scope.dataRepository.getProducts();
 
         // Set up the individual field values.
@@ -91,7 +93,6 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
           $scope.selectedBrandName = brand.getName();
         };
 
-        // @TODO: We might not need this, but leave it here because I think edit mode will need it.
         $scope.persistService = new PersistService(
           dataRepositoryFactory,
           $scope.dataRepository,

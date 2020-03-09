@@ -28,15 +28,15 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
       function () {
         $scope.dataRepository = dataRepositoryFactory.getDataRepository();
         $scope.suggestedProduct = $scope.dataRepository.getSuggestedProductById($scope.suggestedProductId);
-        // @TODO: We might not need this, but leave it here because I think edit mode will need it.
+
+        $scope.category = $scope.dataRepository.getCategoryById($scope.suggestedProduct.getCategoryId());
+        $scope.brand = $scope.dataRepository.getBrandById($scope.suggestedProduct.getBrandId());
+
         $scope.persistService = new PersistService(
           dataRepositoryFactory,
           $scope.dataRepository,
           dataRepositoryFactory.getStorageRepository()
         );
-
-        $scope.category = $scope.dataRepository.getCategoryById($scope.suggestedProduct.getCategoryId());
-        $scope.brand = $scope.dataRepository.getBrandById($scope.suggestedProduct.getBrandId());
 
         $scope.loaded = true;
       }

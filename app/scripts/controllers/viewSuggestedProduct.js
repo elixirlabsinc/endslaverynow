@@ -54,6 +54,7 @@ angular.module('endslaverynowApp')
 
       $scope.validateCode = function(validationCode) {
         // @TODO: Use the proper services to validate the code. For now, if it starts "a1", assume it's valid.
+        // @TODO: For now, this step is skipped.
         if (validationCode.toLowerCase().indexOf('a1') === 0) {
           // @TODO: We should use the status value from the service/object/whatever.
           $scope.suggestedProduct.setStatus('in review');
