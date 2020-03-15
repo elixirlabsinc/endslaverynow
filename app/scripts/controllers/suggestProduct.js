@@ -16,7 +16,7 @@ angular.module('endslaverynowApp')
     'AvailableTypes',
     'ProductSuggestionStatuses',
     'CollectionService',
-    'MailerService',
+    'EmailHelperService',
     function (
       $scope,
       $state,
@@ -25,11 +25,11 @@ angular.module('endslaverynowApp')
       AvailableTypes,
       ProductSuggestionStatuses,
       CollectionService,
-      MailerService
+      EmailHelperService
     ) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.collectionService = CollectionService;
-      $scope.mailerService = MailerService;
+      $scope.emailHelperService = EmailHelperService;
       $scope.availableTypes = AvailableTypes;
       $scope.loaded = false;
       $scope.errorMessages = [];
@@ -195,11 +195,7 @@ angular.module('endslaverynowApp')
             // @TODO: This is temporary code to send the confirmation email now.
             // @TODO: If we can get captcha working, this code can stay.
             // @TODO: Include at least some of the data
-            $scope.mailerService.send(
-              model.getSuggesterEmailAddress(),
-              'Thank you for suggesting a product',
-              'Product details will appear here. The URL is: '+$location.absUrl()
-            );
+            $scope.emailHelperService.afterCreation(model);
           };
 
           persistService.processProductSuggestion(model, null, onCompletion);

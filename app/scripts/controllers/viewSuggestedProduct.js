@@ -14,10 +14,11 @@ angular.module('endslaverynowApp')
     '$location',
     'dataRepositoryFactory',
     'ProductSuggestionStatuses',
-    'MailerService',
-    function ($transition$, $scope, $location, dataRepositoryFactory, ProductSuggestionStatuses, MailerService) {
+    'EmailHelperService',
+    function ($transition$, $scope, $location, dataRepositoryFactory, ProductSuggestionStatuses, EmailHelperService) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.suggestedProductRowid = $transition$.params().rowid;
+      $scope.emailHelperService = EmailHelperService;
       $scope.loaded = false;
       $scope.found = false;
       $scope.validated = false;
@@ -73,11 +74,7 @@ angular.module('endslaverynowApp')
             // Send an email to confirm they have validated their code.
             // @TODO: Include enough data from the product for the suggester to be able to identify it.
             // @TODO: Sort out any wording. Remove this if we don't use validation codes.
-            $scope.mailerService.send(
-              $scope.suggestedProduct.getSuggesterEmailAddress(),
-              'Thank you for validating your code',
-              'The URL is: '+$location.absUrl()
-            );
+            $scope.emailHelperService.afterCodeValidation($scope.suggestedProduct);
           };
 
           persistService.processProductSuggestion($scope.suggestedProduct, null, onCompletion);

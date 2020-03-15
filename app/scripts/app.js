@@ -250,8 +250,13 @@ angular
     ])
     .factory('MailerService', [
       function() {
-    	// @TODO: Imagine we would pass thins in here, such as $http
+        // @TODO: Imagine we would pass thins in here, such as $http
         return new MailerService();
+      }
+    ])
+    .factory('EmailHelperService', ['MailerService',
+      function(MailerService) {
+        return new EmailHelperService(MailerService);
       }
     ])
     .constant('AvailableTypes', {

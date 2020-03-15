@@ -14,7 +14,6 @@ var MailerService = function() {
   // @TODO: then, and not injected into the controllers.
   // @TODO: Need to determine the URL each time - the "admin" URLs are no good!
   this.send = function send(to, subject, body, cc) {
-console.log('MailerService.send is being called');
     var result = {
       success: false,
       errorMessage: 'Unknown error'
@@ -22,14 +21,11 @@ console.log('MailerService.send is being called');
     if (to === null || to === '') {
       result.errorMessage = '"To" is missing';
 
-console.log('Result:', result);
       return result;
     }
 
-console.log('subject, body, cc:', subject, body, cc);
     result.errorMessage = 'Code is not implemented';
 
-console.log('Result:', result);
     return result;
   };
 };
