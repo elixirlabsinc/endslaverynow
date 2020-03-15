@@ -5,13 +5,16 @@
  * model and build an email appropriate for the method. They then call the actual mail service sender.
  * @TODO: In all the "after" methods here, we need to make sure the appropriate stuff is included in the body.
  *
- * @param {MailerService} mailerService
+ * @param {$location} $location
+ * @param {MailerService} MailerService
+ * @param {UrlHelperService} UrlHelperService
  * @constructor
  */
-var EmailHelperService = function (mailerService)
+var EmailHelperService = function ($location, MailerService, UrlHelperService)
 {
-console.log('EmailHelperService constructor!');
-  this.mailerService = mailerService;
+  this.$location = $location;
+  this.mailerService = MailerService;
+  this.urlHelperService = UrlHelperService;
 
   /**
    * // @TODO: We should have a service that does this. It can be called when the suggestion is first made, when we need to redirect to the view screen.
@@ -19,7 +22,8 @@ console.log('EmailHelperService constructor!');
    * @return {string}
    */
   this.buildUrl = function (productSuggestion) {
-    return 'some.location.com/somewhere'; // @TODO: This needs writing!
+    return this.$location.protocol()+'://'+this.$location.host()+':'+this.$location.port()+'/'+this.$location.hash()+'#!'+
+      this.urlHelperService.getPathForSuggestedProduct(productSuggestion);
   };
 
   /**

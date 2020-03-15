@@ -248,15 +248,20 @@ angular
         return new CollectionService();
       }
     ])
+    .factory('UrlHelperService', [
+      function() {
+        return new UrlHelperService();
+      }
+    ])
     .factory('MailerService', [
       function() {
-        // @TODO: Imagine we would pass thins in here, such as $http
+        // @TODO: I imagine we will need to pass things in here, such as $http, when we finalise this service.
         return new MailerService();
       }
     ])
-    .factory('EmailHelperService', ['MailerService',
-      function(MailerService) {
-        return new EmailHelperService(MailerService);
+    .factory('EmailHelperService', ['$location', 'MailerService', 'UrlHelperService',
+      function($location, MailerService, UrlHelperService) {
+        return new EmailHelperService($location, MailerService, UrlHelperService);
       }
     ])
     .constant('AvailableTypes', {
