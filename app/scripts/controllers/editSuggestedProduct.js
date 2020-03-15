@@ -11,10 +11,13 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
   '$scope',
   '$transition$',
   '$state',
+  '$location',
   'dataRepositoryFactory',
-  function ($scope, $transition$, $state, dataRepositoryFactory) {
+  'MailerService',
+  function ($scope, $transition$, $state, $location, dataRepositoryFactory, MailerService) {
     $scope.loaded = false;
     $scope.suggestedProductId = parseInt($transition$.params().id);
+    $scope.mailerService = MailerService;
 
     // @TODO: We need to change the way this works so that the form only uses models (and not ng-values)
     // @TODO: so that we can tell when someone blanks out a field.
@@ -167,10 +170,18 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
       // Validate the entries.
       $scope.errorMessages = $scope.validInput(productSuggestion, $scope.entity);
       if ($scope.errorMessages.length === 0) {
+        var self = $scope;
         $scope.persistService.processProductSuggestion(
           productSuggestion,
           'Edit has been completed!',
           function () {
+            // Tell the suggester we have edited their suggestion.
+            self.mailerService.send(
+              productSuggestion.getSuggesterEmailAddress(),
+              'Your product suggestion has been edited',
+              'Please see your updated product suggestion ('+$location.absUrl()+').'
+            );
+
             $state.go('admin.reviewSuggestedProduct', {id: $scope.suggestedProductId});
           }
         );

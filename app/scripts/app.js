@@ -248,6 +248,12 @@ angular
         return new CollectionService();
       }
     ])
+    .factory('MailerService', [
+      function() {
+    	// @TODO: Imagine we would pass thins in here, such as $http
+        return new MailerService();
+      }
+    ])
     .constant('AvailableTypes', {
       Brands: 'brands',
       Categories: 'categories',

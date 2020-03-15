@@ -16,6 +16,7 @@ angular.module('endslaverynowApp')
     'AvailableTypes',
     'ProductSuggestionStatuses',
     'CollectionService',
+    'MailerService',
     function (
       $scope,
       $state,
@@ -23,10 +24,12 @@ angular.module('endslaverynowApp')
       dataRepositoryFactory,
       AvailableTypes,
       ProductSuggestionStatuses,
-      CollectionService
+      CollectionService,
+      MailerService
     ) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.collectionService = CollectionService;
+      $scope.mailerService = MailerService;
       $scope.availableTypes = AvailableTypes;
       $scope.loaded = false;
       $scope.errorMessages = [];
@@ -188,6 +191,15 @@ angular.module('endslaverynowApp')
             // Redirect the user to the "view" screen for this product. It will include, amongst other things,
             // a field to enter the validation code in.
             $location.path('/viewSuggestedProduct/'+suggestedProduct.getRowid());
+
+            // @TODO: This is temporary code to send the confirmation email now.
+            // @TODO: If we can get captcha working, this code can stay.
+            // @TODO: Include at least some of the data
+            $scope.mailerService.send(
+              model.getSuggesterEmailAddress(),
+              'Thank you for suggesting a product',
+              'Product details will appear here. The URL is: '+$location.absUrl()
+            );
           };
 
           persistService.processProductSuggestion(model, null, onCompletion);
