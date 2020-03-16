@@ -3,7 +3,6 @@
 /**
  * This is a wrapper around the email service. There are various methods that receive a product suggestion
  * model and build an email appropriate for the method. They then call the actual mail service sender.
- * @TODO: In all the "after" methods here, we need to make sure the appropriate stuff is included in the body.
  *
  * @param {$location} $location
  * @param {MailerService} MailerService
@@ -17,7 +16,6 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
   this.urlHelperService = UrlHelperService;
 
   /**
-   * // @TODO: We should have a service that does this. It can be called when the suggestion is first made, when we need to redirect to the view screen.
    * @param {ProductSuggestion} productSuggestion
    * @return {string}
    */
@@ -34,8 +32,17 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
   this.buildToAddress = function buildTo(productSuggestion) {
     // We want something of the form "email@address.com (Firstname Lastname)".
     // If there is no email address, return null.
-    // @TODO: productSuggestion.getSuggesterEmailAddress()
-    return 'pedanticantic+to-address@gmail.com (Glenn Test)';
+    if (productSuggestion.getSuggesterEmailAddress()) {
+      var name = productSuggestion.getSuggesterGivenName()+' '+productSuggestion.getSuggesterFamilyName();
+      name = name.trim();
+      if (name) {
+        name = ' ('+name+')';
+      }
+
+      return productSuggestion.getSuggesterEmailAddress()+name;
+    } else {
+      return null; // The email sender service will pick this up and simply not send the email.
+    }
   };
 
   /**
@@ -46,7 +53,7 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
       this.buildToAddress(productSuggestion),
       'Thank you for suggesting a product',
       productSuggestion.getSuggesterGivenName(),
-      'Product details will appear here. The URL is: ', // @TODO: finalise this
+      'You have suggested a product for Source Right. Please click the link above and check the details are correct.',
       this.buildLink(productSuggestion)
     );
   };
@@ -72,7 +79,7 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
       this.buildToAddress(productSuggestion),
       'Your product suggestion has been edited',
       productSuggestion.getSuggesterGivenName(),
-      'Please see your updated product suggestion.', // @TODO: finalise this
+      'Please see your updated product suggestion (link above).',
       this.buildLink(productSuggestion)
     );
   };
@@ -85,7 +92,7 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
       this.buildToAddress(productSuggestion),
       'We have added/amended the notes on your product suggestion',
       productSuggestion.getSuggesterGivenName(),
-      'We have added/amended the notes on your product suggestion', // @TODO: finalise this
+      'The new notes are: <pre>'+productSuggestion.getAdminNotes()+'</pre>',
       this.buildLink(productSuggestion)
     );
   };
@@ -98,7 +105,7 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
       this.buildToAddress(productSuggestion),
       'Your product suggestion has been rejected',
       productSuggestion.getSuggesterGivenName(),
-      'We are sorry but we have rejected your product suggestion', // @TODO: finalise this
+      'We are sorry but we have rejected your product suggestion.',
       this.buildLink(productSuggestion)
     );
   };
@@ -111,7 +118,7 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
       this.buildToAddress(productSuggestion),
       'Your product suggestion has been un-rejected',
       productSuggestion.getSuggesterGivenName(),
-      'We are pleased to tell you that we have reversed the rejection your product suggestion', // @TODO: finalise this
+      'We are pleased to tell you that we have reversed the rejection of your product suggestion.',
       this.buildLink(productSuggestion)
     );
   };
@@ -124,7 +131,7 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
       this.buildToAddress(productSuggestion),
       'Your product suggestion has been approved',
       productSuggestion.getSuggesterGivenName(),
-      'We are pleased to tell you that we have approved your product suggestion', // @TODO: finalise this
+      'We are pleased to tell you that we have approved your product suggestion.',
       this.buildLink(productSuggestion)
     );
   };

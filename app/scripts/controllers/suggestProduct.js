@@ -218,10 +218,7 @@ angular.module('endslaverynowApp')
             // a field to enter the validation code in.
             $location.path($scope.urlHelperService.getPathForSuggestedProduct(suggestedProduct));
 
-            // @TODO: This is temporary code to send the confirmation email now.
-            // @TODO: If we can get captcha working, this code can stay.
-            // @TODO: Include at least some of the data
-            $scope.emailHelperService.afterCreation(model);
+            $scope.emailHelperService.afterCreation(suggestedProduct);
           };
 
           persistService.processProductSuggestion(model, null, onCompletion);
