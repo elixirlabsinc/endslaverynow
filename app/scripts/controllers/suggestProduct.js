@@ -18,6 +18,7 @@ angular.module('endslaverynowApp')
     'CollectionService',
     'EmailHelperService',
     'UrlHelperService',
+    'ENV',
     function (
       $scope,
       $state,
@@ -27,7 +28,8 @@ angular.module('endslaverynowApp')
       ProductSuggestionStatuses,
       CollectionService,
       EmailHelperService,
-      UrlHelperService
+      UrlHelperService,
+      ENV
     ) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.collectionService = CollectionService;
@@ -36,6 +38,10 @@ angular.module('endslaverynowApp')
       $scope.availableTypes = AvailableTypes;
       $scope.loaded = false;
       $scope.errorMessages = [];
+
+      // Initialise the recaptcha form, and hide our submit button until the user completes the challenge.
+      $scope.vcRecaptureSiteKey = ENV.grecaptcha.sitekey;
+      $scope.showSubmitButton = false;
 
       $scope.formType = $scope.availableTypes.Products;
       $scope.formPurpose = 'product suggestion';
@@ -66,6 +72,18 @@ angular.module('endslaverynowApp')
           $scope.loaded = true;
         }
       );
+
+      // Callback functions that get called when the recaptcha challenge is completed, and when that
+      // completion times out.
+      $scope.vcRecaptureOnSuccess = function vcRecaptureOnSuccess(response) {
+        // User successfully completed the recapture challenge - allow them to submit the form.
+        $scope.showSubmitButton = true;
+      };
+      $scope.vcRecaptureOnExpire = function vcRecaptureOnExpire() {
+        // User successfully completed the recapture challenge, but it has since expired - do not allow
+        // them to submit the form.
+        $scope.showSubmitButton = false;
+      };
 
       /**
        * @param category {Category}
@@ -105,6 +123,11 @@ angular.module('endslaverynowApp')
        */
       $scope.validInput = function validInput(item) {
         var result = [];
+
+        // Just make sure they are allowed to submit the form (in case anyone has hacked the DOM).
+        if (!$scope.showSubmitButton) {
+          result.push('Please complete the reCaptcha before submitting the form!');
+        }
 
         // Product name must be entered.
         if (item.name === null || item.name === '' || item.name === undefined) {

@@ -19,7 +19,8 @@ angular
 		'ngRoute',
 		'ngSanitize',
 		'ngTouch',
-		'ui.router'
+		'ui.router',
+        'vcRecaptcha'
 	])
 	.config(function($stateProvider, $urlRouterProvider) {
 		$stateProvider

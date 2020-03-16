@@ -83,6 +83,13 @@
 
     <div class="errorMessage" ng-repeat="errorMessage in errorMessages">{{ errorMessage }}<br><br></div>
 
-    <input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm(addItem)" value="Submit">
+    <div
+        vc-recaptcha
+        key="vcRecaptureSiteKey"
+        on-success="vcRecaptureOnSuccess(response)"
+        on-expire="vcRecaptureOnExpire()"
+    >
+    </div>
 
+    <input ng-if="showSubmitButton" class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm(addItem)" value="Submit">
 </div>

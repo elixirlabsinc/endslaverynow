@@ -6,5 +6,8 @@
     "messagingSenderId": "285898483037",
     "projectId": "end-slavery-now-test",
     "storageBucket": "end-slavery-now-test.appspot.com"
+  },
+  "grecaptcha": {
+    "sitekey": "6LfNceEUAAAAAHDoGcSif2RvhO5lfcVfYIGQL2RJ"
   }
 }
