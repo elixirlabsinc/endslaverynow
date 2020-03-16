@@ -219,3 +219,9 @@ tr.audit-log-results.old-values {
   white-space: nowrap;
 }
 /* End of styling for the audit log filter and results */
+
+/* Styling for reCaptcha. It needs to be centred, and needs a gap between it and the submit button underneath. */
+.recaptcha-container>div {
+  margin: 0 auto 1em;
+}
+/* End of styling for reCaptcha */
