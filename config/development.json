@@ -9,5 +9,12 @@
   },
   "grecaptcha": {
     "sitekey": "6LfNceEUAAAAAHDoGcSif2RvhO5lfcVfYIGQL2RJ"
+  },
+  "email": {
+    "emailjs": {
+      "service_id": "default_service",
+      "template_id": "sourceright_template",
+      "user_id": "user_tPEoJvuK2bTQuUqANCsCZ"
+    }
   }
 }

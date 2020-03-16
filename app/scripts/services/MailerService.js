@@ -5,26 +5,54 @@
  * the appropriate controller, and the controller just calls "send" on the object. The controllers don't
  * need to know what service we're using, etc. It means we can change the service without changing the
  * application.
+ * @TODO: This should possibly be renamed to "EmailJsMailerService"?
+ *
+ * @param {$http} $http
+ * @param {ENV} ENV
+ * @constructor
  */
-var MailerService = function() {
-  // @TODO: In all the calls to this, we need to sort out what we're including.
-  // @TODO: In fact, it might be better to have a service that has a method for each type of event, and the
-  // @TODO: application just calls the right method and passed in the suggested product object. Those
-  // @TODO: methods then build the to, subject and body. The Mailer service could be embedded in that service,
-  // @TODO: then, and not injected into the controllers.
-  // @TODO: Need to determine the URL each time - the "admin" URLs are no good!
-  this.send = function send(to, subject, body, cc) {
+var MailerService = function($http, ENV) {
+  this.$http = $http;
+
+  this.send = function send(toEmail, subject, givenName, body, suggestedProductLink) {
     var result = {
       success: false,
       errorMessage: 'Unknown error'
     };
-    if (to === null || to === '') {
+    if (toEmail === null || toEmail === '') {
       result.errorMessage = '"To" is missing';
 
       return result;
     }
 
-    result.errorMessage = 'Code is not implemented';
+    var emailjsConfig = ENV.email.emailjs;
+    this.$http.post(
+      'https://api.emailjs.com/api/v1.0/email/send',
+      {
+        service_id: emailjsConfig.service_id,
+        template_id: emailjsConfig.template_id,
+        user_id: emailjsConfig.user_id,
+        template_params: {
+          subject: subject,
+          to_email: toEmail,
+          given_name: givenName,
+          suggested_product_link: suggestedProductLink,
+          message_html: body
+        }
+      }
+    )
+    // @TODO: We need to do something here, especially if the email fails.
+    .then(
+      function (response) {
+console.log('Email seems to have been sent okay:', response);
+      },
+      function (error) {
+console.log('Email seems to failed:', error);
+      }
+    );
+
+    result.success = true;
+    result.errorMessage = null;
 
     return result;
   };

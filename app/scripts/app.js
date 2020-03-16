@@ -254,10 +254,9 @@ angular
         return new UrlHelperService();
       }
     ])
-    .factory('MailerService', [
-      function() {
-        // @TODO: I imagine we will need to pass things in here, such as $http, when we finalise this service.
-        return new MailerService();
+    .factory('MailerService', ['$http', 'ENV',
+      function($http, ENV) {
+        return new MailerService($http, ENV);
       }
     ])
     .factory('EmailHelperService', ['$location', 'MailerService', 'UrlHelperService',
