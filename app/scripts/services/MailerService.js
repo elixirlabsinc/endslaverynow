@@ -13,8 +13,30 @@
  */
 var MailerService = function($http, ENV) {
   this.$http = $http;
+  this.emailjsConfig = ENV.email.emailjs;
 
-  this.send = function send(toEmail, subject, givenName, body, suggestedProductLink) {
+  this.send = function send(templateId, templateParams) {
+    this.$http.post(
+      'https://api.emailjs.com/api/v1.0/email/send',
+      {
+        service_id: this.emailjsConfig.service_id,
+        template_id: templateId,
+        user_id: this.emailjsConfig.user_id,
+        template_params: templateParams
+      }
+    )
+    // @TODO: We need to do something here, especially if the email fails.
+    .then(
+      function (response) {
+        console.log('Email seems to have been sent okay:', response);
+      },
+      function (error) {
+        console.log('Email seems to failed:', error);
+      }
+    );
+  };
+
+  this.sendToSuggestor = function send(toEmail, subject, givenName, body, suggestedProductLink) {
     var result = {
       success: false,
       errorMessage: 'Unknown error'
@@ -25,29 +47,14 @@ var MailerService = function($http, ENV) {
       return result;
     }
 
-    var emailjsConfig = ENV.email.emailjs;
-    this.$http.post(
-      'https://api.emailjs.com/api/v1.0/email/send',
+    this.send(
+      this.emailjsConfig.suggester_template_id,
       {
-        service_id: emailjsConfig.service_id,
-        template_id: emailjsConfig.template_id,
-        user_id: emailjsConfig.user_id,
-        template_params: {
-          subject: subject,
-          to_email: toEmail,
-          given_name: givenName,
-          suggested_product_link: suggestedProductLink,
-          message_html: body
-        }
-      }
-    )
-    // @TODO: We need to do something here, especially if the email fails.
-    .then(
-      function (response) {
-console.log('Email seems to have been sent okay:', response);
-      },
-      function (error) {
-console.log('Email seems to failed:', error);
+        subject: subject,
+        to_email: toEmail,
+        given_name: givenName,
+        suggested_product_link: suggestedProductLink,
+        message_html: body
       }
     );
 
@@ -55,5 +62,17 @@ console.log('Email seems to failed:', error);
     result.errorMessage = null;
 
     return result;
+  };
+
+  this.sendToAdmin = function send(fromEmail, subject, body, adminLink) {
+    this.send(
+      this.emailjsConfig.admin_template_id,
+      {
+        from_email: fromEmail,
+        subject: subject,
+        message_html: body,
+        admin_link: adminLink
+      }
+    );
   };
 };

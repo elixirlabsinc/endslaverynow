@@ -12,8 +12,10 @@ angular.module('endslaverynowApp')
     '$scope',
     '$transition$',
     'dataRepositoryFactory',
-    function ($scope, $transition$, dataRepositoryFactory) {
+    'EmailHelperService',
+    function ($scope, $transition$, dataRepositoryFactory, EmailHelperService) {
       $scope.suggestedProductRowid = $transition$.params().rowid;
+      $scope.emailHelperService = EmailHelperService;
       $scope.loaded = false;
       $scope.found = false;
       $scope.valid = true;
@@ -46,6 +48,11 @@ angular.module('endslaverynowApp')
         }
 
         // Send the email now.
+        $scope.emailHelperService.sendMessageToAdmins(
+          $scope.suggestedProduct,
+          $scope.message.subject,
+          $scope.message.body
+        );
       };
     }
   ]

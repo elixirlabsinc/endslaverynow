@@ -15,18 +15,34 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
   this.mailerService = MailerService;
   this.urlHelperService = UrlHelperService;
 
+  this.buildLink = function buildLink(productSuggestion, pageUrl, fallbackDescription) {
+    var url = this.$location.protocol()+'://'+this.$location.host()+':'+this.$location.port()+'/'+this.$location.hash()+'#!'+
+      pageUrl;
+    var productName = productSuggestion.getName();
+    productName = productName ? productName : productSuggestion.getDescription();
+    productName = productName ? productName : fallbackDescription;
+
+    return'<a href="'+url+'">'+productName+'</a>';
+  };
+
   /**
    * @param {ProductSuggestion} productSuggestion
    * @return {string}
    */
-  this.buildLink = function (productSuggestion) {
-    var url = this.$location.protocol()+'://'+this.$location.host()+':'+this.$location.port()+'/'+this.$location.hash()+'#!'+
-      this.urlHelperService.getPathForSuggestedProduct(productSuggestion);
-    var productName = productSuggestion.getName();
-    productName = productName ? productName : productSuggestion.getDescription();
-    productName = productName ? productName : 'Your product suggestion';
+  this.buildViewLink = function (productSuggestion) {
+    return this.buildLink(
+      productSuggestion,
+      this.urlHelperService.getPathForSuggestedProduct(productSuggestion),
+      'Your product suggestion'
+    );
+  };
 
-    return'<a href="'+url+'">'+productName+'</a>';
+  this.buildAdminLink = function buildAdminLink(productSuggestion) {
+    return this.buildLink(
+      productSuggestion,
+      this.urlHelperService.getAdminPathForSuggestedProduct(productSuggestion),
+      'The product suggestion'
+    );
   };
 
   this.buildToAddress = function buildTo(productSuggestion) {
@@ -45,16 +61,22 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
     }
   };
 
+  this.buildFromAddress = function buildFromAddress(productSuggestion) {
+    // What we want is actually exactly the same as the "to" address, so just call that method
+    // and return the result.
+    return this.buildToAddress(productSuggestion);
+  };
+
   /**
    * @param {ProductSuggestion} productSuggestion
    */
   this.afterCreation = function (productSuggestion) {
-    this.mailerService.send(
+    this.mailerService.sendToSuggestor(
       this.buildToAddress(productSuggestion),
       'Thank you for suggesting a product',
       productSuggestion.getSuggesterGivenName(),
       'You have suggested a product for Source Right. Please click the link above and check the details are correct.',
-      this.buildLink(productSuggestion)
+      this.buildViewLink(productSuggestion)
     );
   };
 
@@ -62,12 +84,12 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
    * @param {ProductSuggestion} productSuggestion
    */
   this.afterCodeValidation = function (productSuggestion) {
-    this.mailerService.send(
+    this.mailerService.sendToSuggestor(
       this.buildToAddress(productSuggestion),
       'Thank you for validating your code',
       productSuggestion.getSuggesterGivenName(),
       'The URL is: ', // @TODO: finalise this
-      this.buildLink(productSuggestion)
+      this.buildViewLink(productSuggestion)
     );
   };
 
@@ -75,12 +97,12 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
    * @param {ProductSuggestion} productSuggestion
    */
   this.afterEdit = function (productSuggestion) {
-    this.mailerService.send(
+    this.mailerService.sendToSuggestor(
       this.buildToAddress(productSuggestion),
       'Your product suggestion has been edited',
       productSuggestion.getSuggesterGivenName(),
       'Please see your updated product suggestion (link above).',
-      this.buildLink(productSuggestion)
+      this.buildViewLink(productSuggestion)
     );
   };
 
@@ -88,12 +110,12 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
    * @param {ProductSuggestion} productSuggestion
    */
   this.afterAddNotes = function (productSuggestion) {
-    this.mailerService.send(
+    this.mailerService.sendToSuggestor(
       this.buildToAddress(productSuggestion),
       'We have added/amended the notes on your product suggestion',
       productSuggestion.getSuggesterGivenName(),
       'The new notes are: <pre>'+productSuggestion.getAdminNotes()+'</pre>',
-      this.buildLink(productSuggestion)
+      this.buildViewLink(productSuggestion)
     );
   };
 
@@ -101,12 +123,12 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
    * @param {ProductSuggestion} productSuggestion
    */
   this.afterRejection = function (productSuggestion) {
-    this.mailerService.send(
+    this.mailerService.sendToSuggestor(
       this.buildToAddress(productSuggestion),
       'Your product suggestion has been rejected',
       productSuggestion.getSuggesterGivenName(),
       'We are sorry but we have rejected your product suggestion.',
-      this.buildLink(productSuggestion)
+      this.buildViewLink(productSuggestion)
     );
   };
 
@@ -114,12 +136,12 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
    * @param {ProductSuggestion} productSuggestion
    */
   this.afterUnrejection = function (productSuggestion) {
-    this.mailerService.send(
+    this.mailerService.sendToSuggestor(
       this.buildToAddress(productSuggestion),
       'Your product suggestion has been un-rejected',
       productSuggestion.getSuggesterGivenName(),
       'We are pleased to tell you that we have reversed the rejection of your product suggestion.',
-      this.buildLink(productSuggestion)
+      this.buildViewLink(productSuggestion)
     );
   };
 
@@ -127,12 +149,21 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
    * @param {ProductSuggestion} productSuggestion
    */
   this.afterApproval = function (productSuggestion) {
-    this.mailerService.send(
+    this.mailerService.sendToSuggestor(
       this.buildToAddress(productSuggestion),
       'Your product suggestion has been approved',
       productSuggestion.getSuggesterGivenName(),
       'We are pleased to tell you that we have approved your product suggestion.',
-      this.buildLink(productSuggestion)
+      this.buildViewLink(productSuggestion)
+    );
+  };
+
+  this.sendMessageToAdmins = function sendMessageToAdmins(suggestedProduct, subject, body) {
+    this.mailerService.sendToAdmin(
+      this.buildFromAddress(suggestedProduct),
+      subject,
+      body,
+      this.buildAdminLink(suggestedProduct)
     );
   };
 };
