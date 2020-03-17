@@ -64,11 +64,13 @@ var MailerService = function($http, ENV) {
     return result;
   };
 
-  this.sendToAdmin = function send(fromEmail, subject, body, adminLink) {
+  this.sendToAdmin = function sendToAdmin(fromEmail, suggesterName, subject, body, adminLink) {
+    suggesterName = suggesterName ? suggesterName : '-unknown-';
     this.send(
       this.emailjsConfig.admin_template_id,
       {
         from_email: fromEmail,
+        suggester_name: suggesterName,
         subject: subject,
         message_html: body,
         admin_link: adminLink

@@ -49,8 +49,7 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
     // We want something of the form "email@address.com (Firstname Lastname)".
     // If there is no email address, return null.
     if (productSuggestion.getSuggesterEmailAddress()) {
-      var name = productSuggestion.getSuggesterGivenName()+' '+productSuggestion.getSuggesterFamilyName();
-      name = name.trim();
+      var name = productSuggestion.getSuggesterFullName();
       if (name) {
         name = ' ('+name+')';
       }
@@ -161,8 +160,9 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
   this.sendMessageToAdmins = function sendMessageToAdmins(suggestedProduct, subject, body) {
     this.mailerService.sendToAdmin(
       this.buildFromAddress(suggestedProduct),
+      suggestedProduct.getSuggesterFullName(),
       subject,
-      body,
+      '<pre>'+body+'</pre>',
       this.buildAdminLink(suggestedProduct)
     );
   };
