@@ -15,7 +15,7 @@ var MailerService = function($http, ENV) {
   this.$http = $http;
   this.emailjsConfig = ENV.email.emailjs;
 
-  this.send = function send(templateId, templateParams) {
+  this.send = function send(templateId, templateParams, callback) {
     this.$http.post(
       'https://api.emailjs.com/api/v1.0/email/send',
       {
@@ -29,9 +29,13 @@ var MailerService = function($http, ENV) {
     .then(
       function (response) {
         console.log('Email seems to have been sent okay:', response);
+        if (callback) {
+          callback();
+        }
       },
       function (error) {
         console.log('Email seems to failed:', error);
+        window.alert('Sending the email appears to have failed: '+error);
       }
     );
   };
@@ -64,7 +68,7 @@ var MailerService = function($http, ENV) {
     return result;
   };
 
-  this.sendToAdmin = function sendToAdmin(fromEmail, suggesterName, subject, body, adminLink) {
+  this.sendToAdmin = function sendToAdmin(fromEmail, suggesterName, subject, body, adminLink, callback) {
     suggesterName = suggesterName ? suggesterName : '-unknown-';
     this.send(
       this.emailjsConfig.admin_template_id,
@@ -74,7 +78,8 @@ var MailerService = function($http, ENV) {
         subject: subject,
         message_html: body,
         admin_link: adminLink
-      }
+      },
+      callback
     );
   };
 };

@@ -157,13 +157,14 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
     );
   };
 
-  this.sendMessageToAdmins = function sendMessageToAdmins(suggestedProduct, subject, body) {
+  this.sendMessageToAdmins = function sendMessageToAdmins(suggestedProduct, subject, body, callback) {
     this.mailerService.sendToAdmin(
       this.buildFromAddress(suggestedProduct),
       suggestedProduct.getSuggesterFullName(),
       subject,
       '<pre>'+body+'</pre>',
-      this.buildAdminLink(suggestedProduct)
+      this.buildAdminLink(suggestedProduct),
+      callback
     );
   };
 };

@@ -11,10 +11,13 @@ angular.module('endslaverynowApp')
   .controller('SuggestedProductSendMessageCtrl', [
     '$scope',
     '$transition$',
+    '$location',
     'dataRepositoryFactory',
+    'UrlHelperService',
     'EmailHelperService',
-    function ($scope, $transition$, dataRepositoryFactory, EmailHelperService) {
+    function ($scope, $transition$, $location, dataRepositoryFactory, UrlHelperService, EmailHelperService) {
       $scope.suggestedProductRowid = $transition$.params().rowid;
+      $scope.urlHelperService = UrlHelperService;
       $scope.emailHelperService = EmailHelperService;
       $scope.loaded = false;
       $scope.found = false;
@@ -51,7 +54,11 @@ angular.module('endslaverynowApp')
         $scope.emailHelperService.sendMessageToAdmins(
           $scope.suggestedProduct,
           $scope.message.subject,
-          $scope.message.body
+          $scope.message.body,
+          function () {
+            window.alert('Your email has been sent');
+            $location.path($scope.urlHelperService.getPathForSuggestedProduct($scope.suggestedProduct));
+          }
         );
       };
     }
