@@ -224,13 +224,19 @@ angular
 				templateUrl: 'views/suggestProduct.html',
 				controller: 'SuggestProductCtrl',
 				controllerAs: 'suggestProduct'
-			})
-			.state('ViewSuggestedProductCtrl', {
-				url: '/viewSuggestedProduct/:rowid',
-				templateUrl: 'views/viewSuggestedProduct.html',
-				controller: 'ViewSuggestedProductCtrl',
-				controllerAs: 'viewSuggestedProduct'
-			});
+            })
+            .state('ViewSuggestedProductCtrl', {
+              url: '/viewSuggestedProduct/:rowid',
+              templateUrl: 'views/viewSuggestedProduct.html',
+              controller: 'ViewSuggestedProductCtrl',
+              controllerAs: 'viewSuggestedProduct'
+            })
+            .state('SuggestedProductSendMessageCtrl', {
+               url: '/viewSuggestedProduct/:rowid/sendMessage',
+               templateUrl: 'views/suggestedProductSendMessage.html',
+               controller: 'SuggestedProductSendMessageCtrl',
+               controllerAs: 'SuggestedProductSendMessage'
+            });
 
 			$urlRouterProvider.otherwise('/')
 	})

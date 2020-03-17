@@ -19,6 +19,7 @@ angular.module('endslaverynowApp')
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.suggestedProductRowid = $transition$.params().rowid;
       $scope.emailHelperService = EmailHelperService;
+      $scope.baseUrl = $location.absUrl();
       $scope.loaded = false;
       $scope.found = false;
       $scope.validated = false;
