@@ -22,6 +22,7 @@ angular.module('endslaverynowApp')
       $scope.loaded = false;
       $scope.found = false;
       $scope.valid = true;
+      $scope.viewUrl = '';
 
       $scope.message = {
         subject: 'New message',
@@ -41,6 +42,7 @@ angular.module('endslaverynowApp')
 
           $scope.found = true;
           $scope.message.subject = 'New message about '+$scope.suggestedProduct.getName();
+          $scope.viewUrl = '#!'+$scope.urlHelperService.getPathForSuggestedProduct($scope.suggestedProduct);
         }
       );
 
