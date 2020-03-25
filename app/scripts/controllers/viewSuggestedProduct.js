@@ -14,8 +14,10 @@ angular.module('endslaverynowApp')
     '$location',
     'dataRepositoryFactory',
     'ProductSuggestionStatuses',
-    function ($transition$, $scope, $location, dataRepositoryFactory, ProductSuggestionStatuses) {
+    'StatusMapperService',
+    function ($transition$, $scope, $location, dataRepositoryFactory, ProductSuggestionStatuses, StatusMapperService) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
+      $scope.statusMapperService = StatusMapperService;
       $scope.suggestedProductRowid = $transition$.params().rowid;
       $scope.loaded = false;
       $scope.found = false;

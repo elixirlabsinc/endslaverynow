@@ -13,9 +13,11 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
   '$transition$',
   'dataRepositoryFactory',
   'ProductSuggestionStatuses',
-  function ($scope, $location, $transition$, dataRepositoryFactory, ProductSuggestionStatuses) {
+  'StatusMapperService',
+  function ($scope, $location, $transition$, dataRepositoryFactory, ProductSuggestionStatuses, StatusMapperService) {
     $scope.dataRepository = null;
     $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
+    $scope.statusMapperService = StatusMapperService;
     $scope.suggestedProductId = parseInt($transition$.params().id);
     $scope.category = null;
     $scope.brand = null;

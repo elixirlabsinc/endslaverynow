@@ -248,6 +248,11 @@ angular
         return new CollectionService();
       }
     ])
+    .factory('StatusMapperService', [
+      function() {
+        return new StatusMapperService();
+      }
+    ])
     .constant('AvailableTypes', {
       Brands: 'brands',
       Categories: 'categories',
@@ -255,7 +260,7 @@ angular
     })
     .constant('ProductSuggestionStatuses', {
       pending: 'pending', // Created and waiting for validation code
-      inReview: 'in review', // Created and validated; being reviewed by an admin
+      inReview: 'review', // Created and validated; being reviewed by an admin
       rejected: 'rejected', // Reviewed and rejected
       approved: 'approved' // Reviewed and approved
     })
