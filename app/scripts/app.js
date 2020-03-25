@@ -173,7 +173,40 @@ angular
 				templateUrl: 'views/rankings.html',
 				controller: 'RankingsCtrl',
 				controllerAs: 'rankings'
+            })
+            .state('admin.listSuggestedProducts', {
+              url: '/listSuggestedProducts',
+              templateUrl: 'views/admin.listSuggestedProducts.html',
+              controller: 'ListSuggestedProductsCtrl',
+              controllerAs: 'ListSuggestedProducts',
+              resolve: {
+                'currentAuth': ['Auth', function(Auth) {
+                  return Auth.$requireSignIn;
+                }]
+              }
 			})
+            .state('admin.reviewSuggestedProduct', {
+              url: '/reviewSuggestedProduct/:id',
+              templateUrl: 'views/admin.reviewSuggestedProduct.html',
+              controller: 'ReviewSuggestedProductCtrl',
+              controllerAs: 'ReviewSuggestedProduct',
+              resolve: {
+                'currentAuth': ['Auth', function(Auth) {
+                  return Auth.$requireSignIn;
+                }]
+              }
+            })
+            .state('admin.editSuggestedProduct', {
+              url: '/editSuggestedProduct/:id',
+              templateUrl: 'views/admin.editSuggestedProduct.html',
+              controller: 'EditSuggestedProductCtrl',
+              controllerAs: 'EditSuggestedProduct',
+              resolve: {
+                'currentAuth': ['Auth', function(Auth) {
+                  return Auth.$requireSignIn;
+                }]
+              }
+            })
 			.state('admin.auditLogReport', {
 				url: '/auditLogReport',
 				templateUrl: 'views/auditLog/admin.auditLogReport.html',
@@ -184,6 +217,18 @@ angular
 						return Auth.$requireSignIn;
 					}]
 				}
+            })
+			.state('suggestProduct', {
+				url: '/suggestProduct',
+				templateUrl: 'views/suggestProduct.html',
+				controller: 'SuggestProductCtrl',
+				controllerAs: 'suggestProduct'
+			})
+			.state('ViewSuggestedProductCtrl', {
+				url: '/viewSuggestedProduct/:rowid',
+				templateUrl: 'views/viewSuggestedProduct.html',
+				controller: 'ViewSuggestedProductCtrl',
+				controllerAs: 'viewSuggestedProduct'
 			});
 
 			$urlRouterProvider.otherwise('/')
@@ -197,7 +242,28 @@ angular
 		function($firebaseObject, $firebaseArray) {
 			return new DataRepositoryFactory($firebaseObject, $firebaseArray);
 		}
-	])
+    ])
+    .factory('CollectionService', [
+      function() {
+        return new CollectionService();
+      }
+    ])
+    .factory('StatusMapperService', [
+      function() {
+        return new StatusMapperService();
+      }
+    ])
+    .constant('AvailableTypes', {
+      Brands: 'brands',
+      Categories: 'categories',
+      Products: 'products'
+    })
+    .constant('ProductSuggestionStatuses', {
+      pending: 'pending', // Created and waiting for validation code
+      inReview: 'review', // Created and validated; being reviewed by an admin
+      rejected: 'rejected', // Reviewed and rejected
+      approved: 'approved' // Reviewed and approved
+    })
 	.run(['$rootScope', '$transitions', '$state', 'ENV', function($rootScope, $transitions, $state, ENV) {
 		var config = {
 			apiKey: ENV.firebase.apiKey,

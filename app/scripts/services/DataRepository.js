@@ -15,50 +15,76 @@ var DataRepository = function (recordSets) {
   this.brands = [];
   this.categories = [];
   this.products = [];
+  this.productSuggestions = [];
   const collectionNames = {
     brands: 'brands',
     categories: 'categories',
     products: 'products',
+    productSuggestions: 'productSuggestions',
     auditLog: 'auditLog'
   };
+  const allCollections = '_all';
 
   this.auditLogs = null; // "null" indicates we haven't populated it yet - it becomes an array after that.
 
   this.auditLogHelper = new AuditLogHelper();
 
-  this.init = function init() {
-    this.brands = [];
-    this.categories = [];
-    this.products = [];
-    this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
+  this.parse = function parse(limitTo) {
+    limitTo = limitTo === undefined ? allCollections : limitTo;
     var self = this;
 
-    if (this.recordSets.hasOwnProperty(collectionNames.brands)) {
-      this.recordSets.brands.forEach(
-        function (brand) {
-          self.brands.push(new Brand(brand));
-        }
-      );
+    if (limitTo === allCollections || limitTo === collectionNames.brands) {
+      this.brands = [];
+      if (this.recordSets.hasOwnProperty(collectionNames.brands)) {
+        this.recordSets.brands.forEach(
+          function (brand) {
+            self.brands.push(new Brand(brand));
+          }
+        );
+      }
     }
 
-    if (this.recordSets.hasOwnProperty(collectionNames.categories)) {
-      this.recordSets.categories.forEach(
-        function (category) {
-          self.categories.push(new Category(category));
-        }
-      );
+    if (limitTo === allCollections || limitTo === collectionNames.categories) {
+      this.categories = [];
+      if (this.recordSets.hasOwnProperty(collectionNames.categories)) {
+        this.recordSets.categories.forEach(
+          function (category) {
+            self.categories.push(new Category(category));
+          }
+        );
+      }
     }
 
-    if (this.recordSets.hasOwnProperty(collectionNames.products)) {
-      this.recordSets.products.forEach(
-        function (product) {
-          self.products.push(new Product(product));
-        }
-      );
+    if (limitTo === allCollections || limitTo === collectionNames.products) {
+      this.products = [];
+      if (this.recordSets.hasOwnProperty(collectionNames.products)) {
+        this.recordSets.products.forEach(
+          function (product) {
+            self.products.push(new Product(product));
+          }
+        );
+      }
     }
+
+    if (limitTo === allCollections || limitTo === collectionNames.productSuggestions) {
+      this.productSuggestions = [];
+      if (this.recordSets.hasOwnProperty(collectionNames.productSuggestions)) {
+        this.recordSets.productSuggestions.forEach(
+          function (productSuggestion) {
+            self.productSuggestions.push(new ProductSuggestion(productSuggestion));
+          }
+        );
+      }
+    }
+
+    this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
   };
 
-  this.init();
+  this.parse();
+
+  this.getCollectionNames = function getCollectionNames() {
+    return collectionNames;
+  };
 
   this.getBrands = function getBrands() {
     return this.brands;
@@ -70,6 +96,10 @@ var DataRepository = function (recordSets) {
 
   this.getProducts = function getProducts() {
     return this.products;
+  };
+
+  this.getSuggestedProducts = function getSuggestedProducts() {
+    return this.productSuggestions;
   };
 
   // Note: at the moment, this.certifications will always be an empty array.
@@ -208,6 +238,48 @@ var DataRepository = function (recordSets) {
     return null;
   };
 
+  this.getSuggestedProductById = function getSuggestedProductById(id) {
+    var matching = this.productSuggestions.filter(
+      function (productSuggestion) {
+        return id === productSuggestion.getId();
+      }
+    );
+
+    if (matching.length === 1) {
+      return matching.shift(); // Take the first one (index not necessarily 0)
+    }
+
+    return null;
+  };
+
+  this.getSuggestedProductByProductId = function getSuggestedProductByProductId(productId) {
+    var matching = this.productSuggestions.filter(
+      function (productSuggestion) {
+        return productId === productSuggestion.getGeneratedProductId();
+      }
+    );
+
+    if (matching.length === 1) {
+      return matching.shift(); // Take the first one (index not necessarily 0)
+    }
+
+    return null;
+  };
+
+  this.getSuggestedProductByRowid = function getSuggestedProductByRowid(rowid) {
+    var matching = this.productSuggestions.filter(
+      function (productSuggestion) {
+        return rowid === productSuggestion.getRowid();
+      }
+    );
+
+    if (matching.length === 1) {
+      return matching.shift(); // Take the first one (index not necessarily 0)
+    }
+
+    return null;
+  };
+
   this.insert = function insert(collectionName, record, successMsg, callback, recordId) {
     var self = this;
     this.recordSets[collectionName].$add(record).then(
@@ -282,6 +354,22 @@ var DataRepository = function (recordSets) {
     productRecord.purchaseURlClicks = product.getPurchaseUrlClicks();
     productRecord.purchaseUrl = product.getPurchaseUrl();
     // productRecord.$$hashKey = product.$$hashKey(); @TODO: Do we save this? When does it change?
+  };
+
+  this.populateRecordFromProductSuggestionModel = function populateRecordFromProductSuggestionModel(productSuggestionRecord, productSuggestion) {
+    // Do what the parent Product does.
+    this.populateRecordFromProductModel(productSuggestionRecord, productSuggestion);
+    // Then do the things specific to product suggestions.
+    productSuggestionRecord.generatedProductId = productSuggestion.getGeneratedProductId();
+    productSuggestionRecord.suggesterGivenName = productSuggestion.getSuggesterGivenName();
+    productSuggestionRecord.suggesterFamilyName = productSuggestion.getSuggesterFamilyName();
+    productSuggestionRecord.suggesterTelephoneNumber = productSuggestion.getSuggesterTelephoneNumber();
+    productSuggestionRecord.suggesterEmailAddress = productSuggestion.getSuggesterEmailAddress();
+    productSuggestionRecord.suggesterWhy = productSuggestion.getSuggesterWhy();
+    productSuggestionRecord.suggesterNotes = productSuggestion.getSuggesterNotes();
+    productSuggestionRecord.status = productSuggestion.getStatus();
+    productSuggestionRecord.createdAtUtc = productSuggestion.getCreatedAtUtc().toISOString();
+    productSuggestionRecord.adminNotes = productSuggestion.getAdminNotes();
   };
 
   /**
@@ -401,6 +489,46 @@ var DataRepository = function (recordSets) {
     }
   };
 
+  /**
+   * Save the given product suggestion back to the data store.
+   *
+   * @param productSuggestion {ProductSuggestion}
+   * @param successMsg
+   * @param callback
+   */
+  this.persistProductSuggestion = function persistProductSuggestion(productSuggestion, successMsg, callback) {
+
+    if (productSuggestion.hasId()) {
+
+      // This is an update.
+      // Determine the index of the record in the array from the model's id.
+      var productSuggestionIndex = this.determineIndexFromProductSuggestionModel(productSuggestion);
+      // Create a reference to the object in the array.
+      var productSuggestionSource = this.recordSets.productSuggestions[productSuggestionIndex];
+      // @TODO: I wonder if the original version of the record should be in the model, before the model constructor
+      // @TODO: does any data migrations (adding columns, etc).
+      var originalProductSuggestion = {};
+      angular.copy(productSuggestionSource, originalProductSuggestion);
+      // Overwrite the record with the values from the model.
+      this.populateRecordFromProductSuggestionModel(productSuggestionSource, productSuggestion);
+      // Save the record back to the store.
+      this.update(collectionNames.productSuggestions, productSuggestionIndex, successMsg, callback, productSuggestion.getId(), originalProductSuggestion, productSuggestionSource);
+
+    } else {
+
+      // This is an insert. Generate a new id and start a new object.
+      productSuggestion.setId(this.generateNextProductSuggestionId());
+      var newProductSuggestion = {
+        id: productSuggestion.getId()
+      };
+      // Populate the record with the values from the model.
+      this.populateRecordFromProductSuggestionModel(newProductSuggestion, productSuggestion);
+      // Create the record in the store.
+      this.insert(collectionNames.productSuggestions, newProductSuggestion, successMsg, callback, productSuggestion.getId());
+
+    }
+  };
+
   this.generateNextBrandId = function generateNextBrandId() {
     var id = 0;
     this.recordSets.brands.forEach(function (brand) {
@@ -425,6 +553,16 @@ var DataRepository = function (recordSets) {
     var id = 0;
     this.recordSets.products.forEach(function (product) {
       id = Math.max(id, product.id);
+    });
+    ++id;
+
+    return id;
+  };
+
+  this.generateNextProductSuggestionId = function generateNextProductSuggestionId() {
+    var id = 0;
+    this.recordSets.productSuggestions.forEach(function (productSuggestion) {
+      id = Math.max(id, productSuggestion.id);
     });
     ++id;
 
@@ -465,6 +603,18 @@ var DataRepository = function (recordSets) {
     });
 
     return productIndex;
+  };
+
+  this.determineIndexFromProductSuggestionModel = function determineIndexFromProductSuggestionModel(productSuggestionModel) {
+    // Determine the index of the firebase array, using the product suggestion model's id.
+    var productSuggestionIndex = null;
+    this.recordSets.productSuggestions.forEach(function(productSuggestion, index) {
+      if (productSuggestion.id === productSuggestionModel.getId()) {
+        productSuggestionIndex = index;
+      }
+    });
+
+    return productSuggestionIndex;
   };
 
   /**
@@ -521,6 +671,7 @@ var DataRepository = function (recordSets) {
 
   /**
    * @TODO: Presumably we should update any references to this product (or prevent delete if anything references it)?
+   * @TODO: There is now a reference to products in product suggestions.
    * @TODO: And what about uploaded images? Should they be deleted? What if something else is referencing it?
    *
    * @param {Product} productModel
@@ -540,6 +691,35 @@ var DataRepository = function (recordSets) {
         self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().delete, collectionNames.products, productModel.getId(), previousState, null);
       }).catch(function (error) {
           console.log("Error deleting product: ", error);
+        }
+      );
+    }
+  };
+
+  /**
+   * @TODO: Presumably we should update any references to this product suggestion (or prevent delete if anything references it)?
+   * @TODO: Although... I don't think there are any.
+   * @TODO: And what about uploaded images? Should they be deleted? What if something else is referencing it?
+   *
+   * @param {ProductSuggestion} productSuggestionModel
+   * @param callback
+   */
+  this.deleteProductSuggestion = function deleteProductSuggestion(productSuggestionModel, callback) {
+    var self = this;
+    // Determine the index of the firebase array, using the product suggestion model's id.
+    var indexToDelete = this.determineIndexFromProductSuggestionModel(productSuggestionModel);
+    if (indexToDelete !== null) {
+      var previousState = {};
+      this.populateRecordFromProductSuggestionModel(previousState, productSuggestionModel);
+      // We found it, so delete it. If the delete was successful, run the callback function.
+      this.recordSets.productSuggestions.$remove(indexToDelete).then(function () {
+        if (callback) {
+          callback();
+        }
+        // Save the audit log (for delete for product suggestion).
+        self.auditLogger.log(self.auditLogHelper.getAllowedOperationTypes().delete, collectionNames.productSuggestions, productSuggestionModel.getId(), previousState, null);
+      }).catch(function (error) {
+          console.log("Error deleting product suggestion: ", error);
         }
       );
     }

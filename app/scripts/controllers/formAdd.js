@@ -14,18 +14,17 @@ angular.module('endslaverynowApp')
     '$state',
     'Upload',
     'dataRepositoryFactory',
-    function ($stateParams, $scope, $state, Upload, dataRepositoryFactory) {
+    'AvailableTypes',
+    'CollectionService',
+    function ($stateParams, $scope, $state, Upload, dataRepositoryFactory, AvailableTypes, CollectionService) {
+      $scope.availableTypes = AvailableTypes;
+      $scope.collectionService = CollectionService;
       $scope.brandId = $stateParams.id;
       $scope.loaded = false;
 
       $scope.formType = '';
+      $scope.formPurpose = 'item add';
       $scope.errorMessage = false;
-
-      $scope.availableTypes = {
-        Brands: 'brands',
-        Categories: 'categories',
-        Products: 'products'
-      };
 
       var itemTypes = {
         'categories': {
@@ -90,24 +89,11 @@ angular.module('endslaverynowApp')
       $scope.products = [];
       $scope.dataRepository = null;
 
-      var alphabetizeCollection = function alphabetizeCollection(collection) {
-        if (collection === undefined) {
-          return [];
-        }
-        if (!Array.isArray(collection)) {
-          return [collection];
-        }
-        collection.sort(function (a, b) {
-          return a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
-        });
-        return collection;
-      };
-
       dataRepositoryFactory.ready(
         function () {
           var dataRepository = dataRepositoryFactory.getDataRepository();
-          $scope.categories = alphabetizeCollection(dataRepository.getCategories().filter(Boolean));
-          $scope.brands = alphabetizeCollection(dataRepository.getBrands());
+          $scope.categories = $scope.collectionService.alphabetize(dataRepository.getCategories().filter(Boolean));
+          $scope.brands = $scope.collectionService.alphabetize(dataRepository.getBrands());
           $scope.products = dataRepository.getProducts();
           $scope.dataRepository = dataRepository;
           $scope.loaded = true;

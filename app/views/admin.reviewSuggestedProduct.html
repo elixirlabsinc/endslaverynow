@@ -1,0 +1,53 @@
+<h2>
+    <span ng-if="suggestedProduct.getStatus() === ProductSuggestionStatuses.approved">Approved</span>
+    <span ng-if="suggestedProduct.getStatus() !== ProductSuggestionStatuses.approved">Review a</span>
+    Suggested Product
+</h2>
+
+<div ng-if="!loaded">
+    Loading...
+</div>
+
+<div ng-if="loaded">
+    <!-- The options depend on the current state -->
+    <div ng-if="!editingNotes && (suggestedProduct.getStatus() == ProductSuggestionStatuses.inReview || suggestedProduct.getStatus() == ProductSuggestionStatuses.rejected)">
+        <span ng-if="suggestedProduct.getStatus() == ProductSuggestionStatuses.inReview">
+            <div ng-if="!isValid()">You can't approve this product - not all mandatory fields have been entered.</div>
+            <button ng-if="isValid()" class="btn btn-success btn-lg" ng-click="approve()">Approve</button>
+            <a class="btn btn-primary btn-lg" href="#!/admin/editSuggestedProduct/{{suggestedProduct.getId()}}">Edit</a>
+            <button class="btn btn-warning btn-lg" ng-click="reject()">Reject</button>
+        </span>
+        <span ng-if="suggestedProduct.getStatus() == ProductSuggestionStatuses.rejected">
+            <button class="btn btn-success btn-lg" ng-click="unreject()">Switch back to "in review"</button>
+        </span>
+        <button class="btn btn-danger btn-lg" ng-click="deleteSuggestion()">Permanently delete (cannot be undone)</button>
+    </div>
+
+    <p ng-if="suggestedProduct.getGeneratedProductId()">Go to the <a href="#!/admin/editProduct/{{suggestedProduct.getGeneratedProductId()}}">product generated from this suggestion</a>.</p>
+
+    <p>This is the suggested product:</p>
+
+    <table class="table" ng-include="'/views/partials/viewSuggestedProduct.html'"></table>
+
+    <h3>Admin Notes</h3>
+    <div ng-if="!editingNotes">
+        <pre ng-if="suggestedProduct.hasAdminNotes()" style="background-color: transparent;">{{suggestedProduct.getAdminNotes()}}</pre>
+        <button class="btn btn-primary btn-lg" ng-click="editNotes()">
+            <span ng-if="!suggestedProduct.hasAdminNotes()">Add</span>
+            <span ng-if="suggestedProduct.hasAdminNotes()">Edit</span>
+            notes
+        </button>
+    </div>
+    <div ng-if="editingNotes">
+        <div class="form-group">
+          <textarea
+              class="form-control"
+              rows=5
+              placeholder="Add your notes..."
+              ng-model="adminNotes"
+          ></textarea>
+        </div>
+        <button class="btn btn-primary btn-lg" ng-click="saveNotes(adminNotes)">Save Notes</button>
+        <button class="btn btn-warning btn-lg" ng-click="cancelEditNotes()">Cancel</button>
+    </div>
+</div>

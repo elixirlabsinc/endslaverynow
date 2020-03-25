@@ -4,19 +4,23 @@ var Product = (function () {
 
   // @TODO: Get these properties and the getters/setters into a sensible order.
   var Product = function Product(data) {
-    this.brandId = data.hasOwnProperty('brandId') ? parseInt(data.brandId) : null;
-    this.categoryId = data.hasOwnProperty('categoryId') ? parseInt(data.categoryId) : null;
+    this.brandId = this.extractInt(data, 'brandId');
+    this.categoryId = this.extractInt(data, 'categoryId');
     this.description = data.hasOwnProperty('description') ? data.description : null;
-    this.id = data.hasOwnProperty('id') ? parseInt(data.id) : null;
+    this.id = this.extractInt(data, 'id');
     this.image = data.hasOwnProperty('image') ? data.image : null;
     this.name = data.hasOwnProperty('name') ? data.name : null;
-    this.parentCategoryId = data.hasOwnProperty('parentCategoryId') ? parseInt(data.parentCategoryId) : null;
-    this.purchaseURlClicks = data.hasOwnProperty('purchaseURlClicks') ? data.purchaseURlClicks : null;
+    this.parentCategoryId = this.extractInt(data, 'parentCategoryId');
+    this.purchaseURlClicks = this.extractInt(data, 'purchaseURlClicks');
     this.purchaseUrl = data.hasOwnProperty('purchaseUrl') ? data.purchaseUrl : null;
     this.$$hashKey = data.hasOwnProperty('$$hashKey') ? data.$$hashKey : null;
   };
 
   Product.prototype = {
+    extractInt: function extractInt(data, key) {
+      return data.hasOwnProperty(key) && data[key] !== null ? parseInt(data[key]) : null;
+    },
+
     getId: function getId() {
       return this.id;
     },

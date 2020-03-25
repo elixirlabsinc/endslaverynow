@@ -13,23 +13,35 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
   '$state',
   'dataRepositoryFactory',
   function ($stateParams, $scope, $state, dataRepositoryFactory) {
-    $scope.productId = $stateParams.id;
+    $scope.productId = $stateParams.id ? parseInt($stateParams.id) : null;
 
     $scope.dataRepository = null;
 
-    $scope.NameValue = null;
-    $scope.DescriptionValue = null;
-    $scope.PurchaseURLValue = null;
-    $scope.selectedCategoryId = null;
+    // We have to put these models in an object because the view includes a sub-view and it just doesn't
+    // work otherwise.
+    $scope.entity = {
+      NameValue: null,
+      DescriptionValue: null,
+      PurchaseURLValue: null,
+      Image: null
+    };
     $scope.selectedBrandId = null;
-    $scope.Image = null;
+    $scope.selectedCategoryId = null;
+
+    $scope.ctrl = {
+      brands: null,
+      categories: null
+    };
+
+    // The id of the product suggestion that this product was generated from (if there is one).
+    $scope.productSuggestionId = null;
 
     dataRepositoryFactory.ready(
       function () {
         $scope.dataRepository = dataRepositoryFactory.getDataRepository();
 
-        $scope.brands = $scope.dataRepository.getBrands();
-        $scope.categories = $scope.dataRepository.getCategories();
+        $scope.ctrl.brands = $scope.dataRepository.getBrands();
+        $scope.ctrl.categories = $scope.dataRepository.getCategories();
         $scope.products = $scope.dataRepository.getProducts();
 
         // Set up the individual field values.
@@ -39,7 +51,7 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
         var product = $scope.dataRepository.getProductById($scope.productId);
         $scope.name = product.getName();
         $scope.description = product.getDescription();
-        $scope.ranking = product.getRanking();
+        $scope.ranking = product.getRanking(); // Note: this is hard-coded to return null as products don't seem to have rankings.
         $scope.image = product.getImage();
         $scope.CategoryId = product.getCategoryId();
         $scope.BrandId = product.getBrandId();
@@ -64,6 +76,10 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
           $scope.selectedBrandId = brand.getId();
           $scope.selectedBrandName = brand.getName();
         };
+
+        // See if a product suggestion generated this product. If so, get its id.
+        var productSuggestion = $scope.dataRepository.getSuggestedProductByProductId($scope.productId);
+        $scope.productSuggestionId = productSuggestion ? productSuggestion.getId() : null;
       }
     );
 
@@ -73,14 +89,14 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
        * @var {Product} product
        */
       var product = $scope.dataRepository.getProductById($scope.productId);
-      if ($scope.NameValue) {
-        product.setName($scope.NameValue);
+      if ($scope.entity.NameValue) {
+        product.setName($scope.entity.NameValue);
       }
-      if ($scope.DescriptionValue) {
-        product.setDescription($scope.DescriptionValue);
+      if ($scope.entity.DescriptionValue) {
+        product.setDescription($scope.entity.DescriptionValue);
       }
-      if ($scope.PurchaseURLValue) {
-        product.setPurchaseUrl($scope.PurchaseURLValue);
+      if ($scope.entity.PurchaseURLValue) {
+        product.setPurchaseUrl($scope.entity.PurchaseURLValue);
       }
       if ($scope.selectedCategoryId) {
         product.setCategoryId($scope.selectedCategoryId);
@@ -88,8 +104,8 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
       if ($scope.selectedBrandId) {
         product.setBrandId($scope.selectedBrandId);
       }
-      if ($scope.Image) {
-        product.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.Image));
+      if ($scope.entity.Image) {
+        product.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.entity.Image));
       }
 
       var persistService = new PersistService(

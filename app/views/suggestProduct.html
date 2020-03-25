@@ -1,0 +1,88 @@
+<h2>Suggest A Product</h2>
+
+<p>THE TEXT NEEDS TO BE REVIEWED!!</p>
+
+<p>TBC: If you want to suggest a product to be included on this website, please fill in the form below</p>
+
+<p>TBC: Fill in as much or as little as you want (only the product name and your full name are mandatory; you must enter at least an email address or telephone number)</p>
+
+<p>TBC: If you supply an email address, we'll keep you posted about your suggestion</p>
+
+<div class="add-form" id="add-form" ng-if="loaded">
+
+    <h3>The Product</h3>
+    <div ng-include="'/views/partials/addItem.html'"></div>
+
+    <h3>Your Details</h3>
+    <div class="form-group">
+        <input
+                type="text"
+                class="form-control"
+                required
+                value=""
+                placeholder="Your given (first) name"
+                ng-model="addItem.suggesterGivenName"
+        >
+    </div>
+
+    <div class="form-group">
+        <input
+                type="text"
+                class="form-control"
+                required
+                value=""
+                placeholder="Your family (last)name"
+                ng-model="addItem.suggesterFamilyName"
+        >
+    </div>
+
+    <div class="form-group">
+        <input
+                type="text"
+                class="form-control"
+                value=""
+                placeholder="Your contact telephone number"
+                ng-model="addItem.suggesterTelephoneNumber"
+        >
+    </div>
+
+    <div class="form-group">
+        <input
+                type="email"
+                class="form-control"
+                value=""
+                placeholder="Your email address"
+                ng-model="addItem.suggesterEmailAddress"
+        >
+    </div>
+
+    <div class="form-group">
+      <textarea
+              type="textarea"
+              class="form-control"
+              rows=2
+              value=""
+              placeholder="How is this brand or product a slave trade free product?"
+              ng-model="addItem.suggesterWhy"
+              required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <textarea
+              type="textarea"
+              class="form-control"
+              rows=3
+              value=""
+              placeholder="Any additional details..."
+              ng-model="addItem.suggesterNotes"
+      ></textarea>
+    </div>
+
+    <div class="errorMessage" ng-if="errorMessages.length > 0">There are errors in the form:<br><br></div>
+
+    <div class="errorMessage" ng-repeat="errorMessage in errorMessages">{{ errorMessage }}<br><br></div>
+
+    <input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="processForm(addItem)" value="Submit">
+
+</div>

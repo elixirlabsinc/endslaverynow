@@ -7,6 +7,7 @@ var DataRepositoryFactory = function ($firebaseObject, $firebaseArray) {
     brands: $firebaseArray(db.ref('brands')),
     categories: $firebaseArray(db.ref('categories')),
     products: $firebaseArray(db.ref('products')),
+    productSuggestions: $firebaseArray(db.ref('productSuggestions')),
     auditLog: $firebaseArray(db.ref('auditLog'))
   };
 
