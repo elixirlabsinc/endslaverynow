@@ -14,11 +14,13 @@ angular.module('endslaverynowApp')
     '$location',
     'dataRepositoryFactory',
     'ProductSuggestionStatuses',
+    'StatusMapperService',
     'EmailHelperService',
-    function ($transition$, $scope, $location, dataRepositoryFactory, ProductSuggestionStatuses, EmailHelperService) {
+    function ($transition$, $scope, $location, dataRepositoryFactory, ProductSuggestionStatuses, StatusMapperService, EmailHelperService) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
-      $scope.suggestedProductRowid = $transition$.params().rowid;
+      $scope.statusMapperService = StatusMapperService;
       $scope.emailHelperService = EmailHelperService;
+      $scope.suggestedProductRowid = $transition$.params().rowid;
       $scope.baseUrl = $location.absUrl();
       $scope.loaded = false;
       $scope.found = false;

@@ -17,7 +17,7 @@ angular.module('endslaverynowApp').controller('ListSuggestedProductsCtrl', [
 
     $scope.loaded = false;
 
-    // Include product suggestions in these states. User can toggle any of the flags. Defaults to just "in review".
+    // Include product suggestions in these states. User can toggle any of the flags. Defaults to just "review".
     $scope.include = {
       inReview: $scope.ProductSuggestionStatuses.inReview,
       approved: $scope.ProductSuggestionStatuses.approved,

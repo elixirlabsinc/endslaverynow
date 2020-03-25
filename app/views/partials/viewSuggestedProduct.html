@@ -23,5 +23,5 @@
 <tr><th>Notes</th><td>{{suggestedProduct.getSuggesterNotes()}}</td></tr>
 
 <tr><td colspan="2">About Your Suggestion</td></tr>
-<tr><th>Status</th><td>{{suggestedProduct.getStatus()}}</td></tr>
+<tr><th>Status</th><td>{{statusMapperService.codeToDisplay(suggestedProduct.getStatus())}}</td></tr>
 <tr><th>Suggested At</th><td>{{suggestedProduct.getCreatedAtUtc()}}</td></tr>

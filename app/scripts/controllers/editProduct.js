@@ -51,7 +51,7 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
         var product = $scope.dataRepository.getProductById($scope.productId);
         $scope.name = product.getName();
         $scope.description = product.getDescription();
-        // $scope.ranking = product.getRanking();
+        $scope.ranking = product.getRanking(); // Note: this is hard-coded to return null as products don't seem to have rankings.
         $scope.image = product.getImage();
         $scope.CategoryId = product.getCategoryId();
         $scope.BrandId = product.getBrandId();
