@@ -19,6 +19,7 @@ angular.module('endslaverynowApp')
     'EmailHelperService',
     'UrlHelperService',
     'ENV',
+    'LookupService',
     function (
       $scope,
       $state,
@@ -29,12 +30,14 @@ angular.module('endslaverynowApp')
       CollectionService,
       EmailHelperService,
       UrlHelperService,
-      ENV
+      ENV,
+      LookupService
     ) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.collectionService = CollectionService;
       $scope.emailHelperService = EmailHelperService;
       $scope.urlHelperService = UrlHelperService;
+      $scope.lookupService = LookupService;
       $scope.availableTypes = AvailableTypes;
       $scope.loaded = false;
       $scope.errorMessages = [];
@@ -58,8 +61,7 @@ angular.module('endslaverynowApp')
         suggesterWhy: null,
         suggesterNotes: null
       };
-      $scope.selectedCategoryId = null;
-      $scope.selectedCategoryName = null;
+      $scope.lookupService.reset();
       $scope.selectedBrandId = null;
       $scope.selectedBrandName = null;
 
@@ -83,15 +85,6 @@ angular.module('endslaverynowApp')
         // User successfully completed the recapture challenge, but it has since expired - do not allow
         // them to submit the form.
         $scope.showSubmitButton = false;
-      };
-
-      /**
-       * @param category {Category}
-       * @TODO: This is a duplicate of the method in formAdd.js
-       */
-      $scope.setCategory = function (category) {
-        $scope.selectedCategoryId = category.getId();
-        $scope.selectedCategoryName = category.getName();
       };
 
       /**
@@ -185,7 +178,7 @@ angular.module('endslaverynowApp')
 
       $scope.processForm = function (item) {
         // Populate the ids.
-        item.categoryId = $scope.selectedCategoryId ? $scope.selectedCategoryId.toString() : null;
+        item.categoryId = $scope.lookupService.getSelectedCategoryId() ? $scope.lookupService.getSelectedCategoryId().toString() : null;
         item.brandId = $scope.selectedBrandId ? $scope.selectedBrandId.toString() : null;
 
         // Instantiate a model.

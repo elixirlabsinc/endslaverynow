@@ -23,10 +23,10 @@
     Category:
     <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-        {{selectedCategoryName || cat.name}}
+        {{lookupService.getSelectedCategoryName() || cat.name}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="category in ctrl.categories" ng-if="category.name.length > 0" ng-click="setCategory(category)" class="dropdown-item form-control">{{category.name}}</button>
+        <button ng-repeat="category in ctrl.categories" ng-if="category.name.length > 0" ng-click="lookupService.setCategory(category)" class="dropdown-item form-control">{{category.name}}</button>
     </div>
 </div>
 <div class="form-group">

@@ -14,7 +14,9 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
   '$location',
   'dataRepositoryFactory',
   'EmailHelperService',
-  function ($scope, $transition$, $state, $location, dataRepositoryFactory, EmailHelperService) {
+  'LookupService',
+  function ($scope, $transition$, $state, $location, dataRepositoryFactory, EmailHelperService, LookupService) {
+    $scope.lookupService = LookupService;
     $scope.loaded = false;
     $scope.suggestedProductId = parseInt($transition$.params().id);
     $scope.emailHelperService = EmailHelperService;
@@ -35,7 +37,7 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
       suggesterEmailAddressValue: null
     };
     $scope.selectedBrandId = null;
-    $scope.selectedCategoryId = null;
+    $scope.lookupService.reset();
 
     $scope.ctrl = {
       brands: null,
@@ -81,13 +83,6 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
 
         $scope.loaded = true;
 
-        /**
-         * @param category {Category}
-         */
-        $scope.setCategory = function (category) {
-          $scope.selectedCategoryId = category.getId();
-          $scope.selectedCategoryName = category.getName();
-        };
         /**
          * @param brand {Brand}
          */
@@ -143,8 +138,8 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
       if ($scope.entity.PurchaseURLValue) {
         productSuggestion.setPurchaseUrl($scope.entity.PurchaseURLValue);
       }
-      if ($scope.selectedCategoryId) {
-        productSuggestion.setCategoryId($scope.selectedCategoryId);
+      if ($scope.lookupService.getSelectedCategoryId()) {
+        productSuggestion.setCategoryId($scope.lookupService.getSelectedCategoryId());
       }
       if ($scope.entity.selectedBrandId) {
         productSuggestion.setBrandId($scope.entity.selectedBrandId);

@@ -16,9 +16,11 @@ angular.module('endslaverynowApp')
     'dataRepositoryFactory',
     'AvailableTypes',
     'CollectionService',
-    function ($stateParams, $scope, $state, Upload, dataRepositoryFactory, AvailableTypes, CollectionService) {
+    'LookupService',
+    function ($stateParams, $scope, $state, Upload, dataRepositoryFactory, AvailableTypes, CollectionService, LookupService) {
       $scope.availableTypes = AvailableTypes;
       $scope.collectionService = CollectionService;
+      $scope.lookupService = LookupService;
       $scope.brandId = $stateParams.id;
       $scope.loaded = false;
 
@@ -80,8 +82,7 @@ angular.module('endslaverynowApp')
 
       $scope.selectedBrandId = null;
       $scope.selectedBrandName = null;
-      $scope.selectedCategoryId = null;
-      $scope.selectedCategoryName = null;
+      $scope.lookupService.reset();
       $scope.selectedParentCategoryId = null;
       $scope.selectedParentCategoryName = null;
       $scope.selectedRankName = null;
@@ -130,7 +131,7 @@ angular.module('endslaverynowApp')
         var model = null;
         switch ($scope.formType) {
           case $scope.availableTypes.Brands:
-            item.categories = $scope.selectedCategoryId.toString();
+            item.categories = $scope.lookupService.getSelectedCategoryId().toString();
             item.ranking = $scope.selectedRankName;
             model = new Brand(item);
             break;
@@ -140,7 +141,7 @@ angular.module('endslaverynowApp')
             break;
           case $scope.availableTypes.Products:
             item.brandId = $scope.selectedBrandId;
-            item.categoryId = $scope.selectedCategoryId;
+            item.categoryId = $scope.lookupService.getSelectedCategoryId();
             item.purchaseUrl = prependHttp(item.purchaseUrl);
             item.purchaseURlClicks = 0;
             item.parentCategoryId = 0;
@@ -174,14 +175,6 @@ angular.module('endslaverynowApp')
               break;
           }
         }
-      };
-
-      /**
-       * @param category {Category}
-       */
-      $scope.setCategory = function (category) {
-        $scope.selectedCategoryId = category.getId();
-        $scope.selectedCategoryName = category.getName();
       };
 
       /**

@@ -275,6 +275,11 @@ angular
         return new EmailHelperService($location, MailerService, UrlHelperService);
       }
     ])
+    .factory('LookupService', [
+      function() {
+        return new LookupService();
+      }
+    ])
     .constant('AvailableTypes', {
       Brands: 'brands',
       Categories: 'categories',
