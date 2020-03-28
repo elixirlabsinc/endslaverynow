@@ -54,6 +54,7 @@ var MailerService = function($http, ENV) {
     this.send(
       this.emailjsConfig.suggester_template_id,
       {
+        admin_email: this.emailjsConfig.admin_email_address,
         subject: subject,
         to_email: toEmail,
         given_name: givenName,
@@ -73,6 +74,7 @@ var MailerService = function($http, ENV) {
     this.send(
       this.emailjsConfig.admin_template_id,
       {
+        admin_email: this.emailjsConfig.admin_email_address,
         from_email: fromEmail,
         suggester_name: suggesterName,
         subject: subject,

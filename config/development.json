@@ -13,6 +13,7 @@
   "email": {
     "emailjs": {
       "service_id": "default_service",
+      "admin_email_address": "contact@sourceright.org",
       "suggester_template_id": "sourceright_suggester_template",
       "admin_template_id": "sourceright_admin_template",
       "user_id": "user_tPEoJvuK2bTQuUqANCsCZ"
