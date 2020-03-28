@@ -131,7 +131,7 @@ angular.module('endslaverynowApp')
         var model = null;
         switch ($scope.formType) {
           case $scope.availableTypes.Brands:
-            item.categories = $scope.lookupService.getSelectedCategoryId().toString();
+            item.categories = $scope.lookupService.getSelectedCategoryIdAsString();
             item.ranking = $scope.selectedRankName;
             model = new Brand(item);
             break;

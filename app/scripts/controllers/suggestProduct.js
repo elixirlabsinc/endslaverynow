@@ -178,7 +178,7 @@ angular.module('endslaverynowApp')
 
       $scope.processForm = function (item) {
         // Populate the ids.
-        item.categoryId = $scope.lookupService.getSelectedCategoryId() ? $scope.lookupService.getSelectedCategoryId().toString() : null;
+        item.categoryId = $scope.lookupService.getSelectedCategoryIdAsString();
         item.brandId = $scope.selectedBrandId ? $scope.selectedBrandId.toString() : null;
 
         // Instantiate a model.

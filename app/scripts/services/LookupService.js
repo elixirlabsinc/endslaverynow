@@ -20,6 +20,12 @@ var LookupService = function () {
     return this.selectedCategoryId;
   };
 
+  this.getSelectedCategoryIdAsString = function getSelectedCategoryIdAsString() {
+    // Some things are a bit fussy with types. The category id is an int (or null), but some things
+    // need it as a string (or null).
+    return this.selectedCategoryId ? this.selectedCategoryId.toString() : null;
+  };
+
   this.getSelectedCategoryName = function getSelectedCategoryName() {
     return this.selectedCategoryName;
   };
