@@ -63,10 +63,10 @@
 
 <div class="dropdown form-group" ng-if="formType === availableTypes.Brands">
     <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{selectedRankName || 'Select Ranking'}}
+        {{lookupService.getSelectedRankName() || 'Select Ranking'}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="rank in rankingOptions" ng-if="rank.length > 0" ng-click="setRanking(rank)" class="dropdown-item form-control">{{rank}}</button>
+        <button ng-repeat="rank in rankingOptions" ng-if="rank.length > 0" ng-click="lookupService.setRanking(rank)" class="dropdown-item form-control">{{rank}}</button>
     </div>
 </div>
 

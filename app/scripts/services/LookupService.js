@@ -8,6 +8,7 @@ var LookupService = function () {
     this.selectedCategoryName = null;
     this.selectedParentCategoryId = null;
     this.selectedParentCategoryName = null;
+    this.selectedRankName = null;
   };
 
   this.reset();
@@ -70,5 +71,16 @@ var LookupService = function () {
 
   this.getSelectedParentCategoryName = function getSelectedParentCategoryName() {
     return this.selectedParentCategoryName;
+  };
+
+  /**
+   * @param {string} rankName
+   */
+  this.setRanking = function (rankName) {
+    this.selectedRankName = rankName;
+  };
+
+  this.getSelectedRankName = function getSelectedRankName() {
+    return this.selectedRankName;
   };
 };

@@ -81,7 +81,6 @@ angular.module('endslaverynowApp')
       };
 
       $scope.lookupService.reset();
-      $scope.selectedRankName = null;
 
       $scope.products = [];
       $scope.dataRepository = null;
@@ -128,7 +127,7 @@ angular.module('endslaverynowApp')
         switch ($scope.formType) {
           case $scope.availableTypes.Brands:
             item.categories = $scope.lookupService.getSelectedCategoryIdAsString();
-            item.ranking = $scope.selectedRankName;
+            item.ranking = $scope.lookupService.getSelectedRankName();
             model = new Brand(item);
             break;
           case $scope.availableTypes.Categories:
@@ -171,10 +170,6 @@ angular.module('endslaverynowApp')
               break;
           }
         }
-      };
-
-      $scope.setRanking = function (rank) {
-        $scope.selectedRankName = rank;
       };
 
       $scope.selectItemType = function (itemType) {

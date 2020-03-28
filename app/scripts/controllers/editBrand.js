@@ -26,7 +26,6 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 
     $scope.NameValue = null;
     $scope.DescriptionValue = null;
-    $scope.selectedRankName = null;
     $scope.lookupService.reset();
     $scope.Image = null;
 
@@ -52,10 +51,6 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
         $scope.CategoryId = brand.getFirstCategoryId();
         $scope.cat = $scope.CategoryId === null ? null : $scope.dataRepository.getCategoryById($scope.CategoryId);
 
-        $scope.setRanking = function (rankName) {
-          $scope.selectedRankName = rankName;
-        };
-
         $scope.loaded = true;
       }
     );
@@ -72,8 +67,8 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
       if ($scope.DescriptionValue) {
         brand.setDescription($scope.DescriptionValue);
       }
-      if ($scope.selectedRankName) {
-        brand.setRanking($scope.selectedRankName);
+      if ($scope.lookupService.getSelectedRankName()) {
+        brand.setRanking($scope.lookupService.getSelectedRankName());
       }
       if ($scope.lookupService.getSelectedCategoryId()) {
         brand.setCategoryIds([$scope.lookupService.getSelectedCategoryId()]); // We need to pass in an array of category ids.
