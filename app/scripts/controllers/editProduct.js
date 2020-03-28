@@ -27,7 +27,6 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
       PurchaseURLValue: null,
       Image: null
     };
-    $scope.selectedBrandId = null;
     $scope.lookupService.reset();
 
     $scope.ctrl = {
@@ -63,13 +62,6 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
         $scope.cat = $scope.dataRepository.getCategoryById($scope.CategoryId);
 
         $scope.loaded = true;
-        /**
-         * @param brand {Brand}
-         */
-        $scope.setBrand = function (brand) {
-          $scope.selectedBrandId = brand.getId();
-          $scope.selectedBrandName = brand.getName();
-        };
 
         // See if a product suggestion generated this product. If so, get its id.
         var productSuggestion = $scope.dataRepository.getSuggestedProductByProductId($scope.productId);
@@ -95,8 +87,8 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
       if ($scope.lookupService.getSelectedCategoryId()) {
         product.setCategoryId($scope.lookupService.getSelectedCategoryId());
       }
-      if ($scope.selectedBrandId) {
-        product.setBrandId($scope.selectedBrandId);
+      if ($scope.lookupService.getSelectedBrandId()) {
+        product.setBrandId($scope.lookupService.getSelectedBrandId());
       }
       if ($scope.entity.Image) {
         product.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.entity.Image));

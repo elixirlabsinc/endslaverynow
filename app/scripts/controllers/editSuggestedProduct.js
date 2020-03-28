@@ -29,14 +29,12 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
       NameValue: null,
       DescriptionValue: null,
       PurchaseURLValue: null,
-      selectedBrandId: null,
       Image: null,
       suggesterGivenNameValue: null,
       suggesterFamilyNameValue: null,
       suggesterTelephoneNumberValue: null,
       suggesterEmailAddressValue: null
     };
-    $scope.selectedBrandId = null;
     $scope.lookupService.reset();
 
     $scope.ctrl = {
@@ -57,7 +55,7 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
 
         // Set up the individual field values.
         /**
-         * @var {ProductSuggestion} suggestedProduct
+         * @var {Product|ProductSuggestion} suggestedProduct
          */
         var suggestedProduct = $scope.dataRepository.getSuggestedProductById($scope.suggestedProductId);
         $scope.name = suggestedProduct.getName();
@@ -82,14 +80,6 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
         $scope.adminNotes = suggestedProduct.getAdminNotes();
 
         $scope.loaded = true;
-
-        /**
-         * @param brand {Brand}
-         */
-        $scope.setBrand = function (brand) {
-          $scope.entity.selectedBrandId = brand.getId();
-          $scope.selectedBrandName = brand.getName();
-        };
 
         $scope.persistService = new PersistService(
           dataRepositoryFactory,
@@ -125,7 +115,7 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
       // Start with the original product suggestion object, and overwrite any values with values the user
       // has changed.
       /**
-       * @var {ProductSuggestion} productSuggestion
+       * @var {Product|ProductSuggestion} productSuggestion
        */
       var productSuggestion = $scope.dataRepository.getSuggestedProductById($scope.suggestedProductId);
       // Product-related fields.
@@ -141,8 +131,8 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
       if ($scope.lookupService.getSelectedCategoryId()) {
         productSuggestion.setCategoryId($scope.lookupService.getSelectedCategoryId());
       }
-      if ($scope.entity.selectedBrandId) {
-        productSuggestion.setBrandId($scope.entity.selectedBrandId);
+      if ($scope.lookupService.getSelectedBrandId()) {
+        productSuggestion.setBrandId($scope.lookupService.getSelectedBrandId());
       }
       if ($scope.entity.Image) {
         productSuggestion.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.entity.Image));

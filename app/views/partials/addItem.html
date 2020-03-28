@@ -54,10 +54,10 @@
 
 <div class="dropdown form-group" ng-if="formType === availableTypes.Products">
     <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{selectedBrandName || 'Select Brand'}}
+        {{lookupService.getSelectedBrandName() || 'Select Brand'}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="brand in brands" ng-if="brand.name.length > 0" ng-click="setBrand(brand)" class="dropdown-item form-control">{{brand.name}}</button>
+        <button ng-repeat="brand in brands" ng-if="brand.name.length > 0" ng-click="lookupService.setBrand(brand)" class="dropdown-item form-control">{{brand.name}}</button>
     </div>
 </div>
 

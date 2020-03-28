@@ -33,9 +33,9 @@
     Brand:
     <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-        {{selectedBrandName || brand.getName()}}
+        {{lookupService.getSelectedBrandName() || brand.getName()}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="brand in ctrl.brands" ng-if="brand.getName().length > 0" ng-click="setBrand(brand)" class="dropdown-item form-control">{{brand.getName()}}</button>
+        <button ng-repeat="brand in ctrl.brands" ng-if="brand.getName().length > 0" ng-click="lookupService.setBrand(brand)" class="dropdown-item form-control">{{brand.getName()}}</button>
     </div>
 </div>

@@ -80,8 +80,6 @@ angular.module('endslaverynowApp')
         image: null
       };
 
-      $scope.selectedBrandId = null;
-      $scope.selectedBrandName = null;
       $scope.lookupService.reset();
       $scope.selectedParentCategoryId = null;
       $scope.selectedParentCategoryName = null;
@@ -140,7 +138,7 @@ angular.module('endslaverynowApp')
             model = new Category(item);
             break;
           case $scope.availableTypes.Products:
-            item.brandId = $scope.selectedBrandId;
+            item.brandId = $scope.lookupService.getSelectedBrandId();
             item.categoryId = $scope.lookupService.getSelectedCategoryId();
             item.purchaseUrl = prependHttp(item.purchaseUrl);
             item.purchaseURlClicks = 0;
@@ -183,14 +181,6 @@ angular.module('endslaverynowApp')
       $scope.setParentCategory = function (category) {
         $scope.selectedParentCategoryId = category.getId();
         $scope.selectedParentCategoryName = category.getName();
-      };
-
-      /**
-       * @param brand {Brand}
-       */
-      $scope.setBrand = function (brand) {
-        $scope.selectedBrandId = brand.getId();
-        $scope.selectedBrandName = brand.getName();
       };
 
       $scope.setRanking = function (rank) {

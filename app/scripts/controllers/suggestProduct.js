@@ -62,8 +62,6 @@ angular.module('endslaverynowApp')
         suggesterNotes: null
       };
       $scope.lookupService.reset();
-      $scope.selectedBrandId = null;
-      $scope.selectedBrandName = null;
 
       dataRepositoryFactory.ready(
         function () {
@@ -85,15 +83,6 @@ angular.module('endslaverynowApp')
         // User successfully completed the recapture challenge, but it has since expired - do not allow
         // them to submit the form.
         $scope.showSubmitButton = false;
-      };
-
-      /**
-       * @param brand {Brand}
-       * @TODO: This is a duplicate of the method in formAdd.js
-       */
-      $scope.setBrand = function (brand) {
-        $scope.selectedBrandId = brand.getId();
-        $scope.selectedBrandName = brand.getName();
       };
 
       $scope.hasImage = function hasImage(image) {
@@ -179,7 +168,7 @@ angular.module('endslaverynowApp')
       $scope.processForm = function (item) {
         // Populate the ids.
         item.categoryId = $scope.lookupService.getSelectedCategoryIdAsString();
-        item.brandId = $scope.selectedBrandId ? $scope.selectedBrandId.toString() : null;
+        item.brandId = $scope.lookupService.getSelectedBrandIdAsString();
 
         // Instantiate a model.
         var model = new ProductSuggestion(item);
