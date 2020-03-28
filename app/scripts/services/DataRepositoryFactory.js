@@ -25,8 +25,9 @@ var DataRepositoryFactory = function ($firebaseObject, $firebaseArray) {
 
     this.syncObject.$loaded().then(function () {
       self.dataRepository = new DataRepository(self.recordSets);
-      // @TODO: We should probably check that "callback" is defined and is a function.
-      callback();
+      if (callback && callback instanceof Function) {
+        callback();
+      }
     });
   };
 

@@ -87,7 +87,7 @@ var EmailHelperService = function ($location, MailerService, UrlHelperService)
       this.buildToAddress(productSuggestion),
       'Thank you for validating your code',
       productSuggestion.getSuggesterGivenName(),
-      'The URL is: ', // @TODO: finalise this
+      'The URL is: '+this.buildViewLink(productSuggestion),
       this.buildViewLink(productSuggestion)
     );
   };

@@ -47,9 +47,8 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
         $scope.ranking = brand.getRanking();
         $scope.image = brand.getImage();
         $scope.rankingOptions = (new Ranking()).getRankingOptions(); // Ideally needs to be a static method.
-        // @TODO: If $scope.CategoryId is not used anywhere else, it should just be a local variable.
-        $scope.CategoryId = brand.getFirstCategoryId();
-        $scope.cat = $scope.CategoryId === null ? null : $scope.dataRepository.getCategoryById($scope.CategoryId);
+        var categoryId = brand.getFirstCategoryId();
+        $scope.cat = categoryId === null ? null : $scope.dataRepository.getCategoryById(categoryId);
 
         $scope.loaded = true;
       }
