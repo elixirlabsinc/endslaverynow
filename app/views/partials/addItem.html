@@ -43,10 +43,10 @@
 
 <div class="dropdown form-group" ng-if="formType === availableTypes.Categories">
     <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{selectedParentCategoryName || 'Select Parent Category'}}
+        {{lookupService.getSelectedParentCategoryName() || 'Select Parent Category'}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setParentCategory(category)" class="dropdown-item form-control">
+        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="lookupService.setParentCategory(category)" class="dropdown-item form-control">
             {{category.name}}
         </button>
     </div>

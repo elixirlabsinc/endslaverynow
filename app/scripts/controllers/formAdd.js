@@ -81,8 +81,6 @@ angular.module('endslaverynowApp')
       };
 
       $scope.lookupService.reset();
-      $scope.selectedParentCategoryId = null;
-      $scope.selectedParentCategoryName = null;
       $scope.selectedRankName = null;
 
       $scope.products = [];
@@ -134,7 +132,7 @@ angular.module('endslaverynowApp')
             model = new Brand(item);
             break;
           case $scope.availableTypes.Categories:
-            item.parentCategoryId = $scope.selectedParentCategoryId || 0;
+            item.parentCategoryId = $scope.lookupService.getSelectedParentCategoryId() || 0;
             model = new Category(item);
             break;
           case $scope.availableTypes.Products:
@@ -173,14 +171,6 @@ angular.module('endslaverynowApp')
               break;
           }
         }
-      };
-
-      /**
-       * @param category {Category}
-       */
-      $scope.setParentCategory = function (category) {
-        $scope.selectedParentCategoryId = category.getId();
-        $scope.selectedParentCategoryName = category.getName();
       };
 
       $scope.setRanking = function (rank) {
