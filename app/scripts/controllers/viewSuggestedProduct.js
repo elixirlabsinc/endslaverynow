@@ -25,6 +25,7 @@ angular.module('endslaverynowApp')
       $scope.loaded = false;
       $scope.found = false;
       $scope.validated = false;
+      $scope.isAdminUser = false;
 
       $scope.category = null;
       $scope.brand = null;
@@ -52,6 +53,10 @@ angular.module('endslaverynowApp')
 
           $scope.found = true; // The rowid was valid, and we retrieved the record.
           $scope.dataRepository = dataRepository;
+
+          // Now we know firebase has initialised, set the flag to say whether the user is logged in
+          // as an admin user or not.
+          $scope.isAdminUser = firebase.auth().currentUser !== null;
         }
       );
 
