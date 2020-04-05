@@ -4,27 +4,32 @@
 <p>There are quite a few fair trade certifications and labels in the marketplace. Organizations that grant these certifications vary in their economic, social, governance and environmental standards as well as their inspecting, certifying and auditing policies. However, as a whole, fair trade certifications indicate that producers are paid a fair price for their goods; workers receive fair wages and work in good conditions; and there are no instances of forced, bonded or child labor throughout their supply chains. Third-party auditors conduct inspections to ensure that members of these fair trade organizations are in compliance.</p>
 <p>Though a food product may be fair trade certified, there are still ingredients such as milk, vegetable fat, emulsifiers and flavorings in it that can’t be sourced through fair trade. Some of our product suggestions only have one certified ingredient. Products from companies and brands in our Best category have a higher total percentage of fair trade sourced ingredients.</p>
 
-<div ng-if="!loaded">
-        <div class="col-md-12 thumbnail">
-            Error: No Certifications Found
-        </div>
+<div ng-if="certifications === null">
+    <div class="col-md-12 thumbnail">
+        Loading Certifications...
     </div>
+</div>
 
-    <div ng-if="loaded">
-        <div class="" ng-if="loaded && certifications.length > 0">
-            <div class="row">
-                <div ng-repeat="cert in certifications">
-                    <div ng-if="cert != null">
-                        <div class="col-sm-6 col-md-6">
-                            <div class="thumbnail">
-                                <h3>{{ cert.getName() }}</h3>
-                                <p>{{ cert.getDescription() }}</p>
-                                <img ng-if="!cert.hasImage()" src="images/noimage.png" height="200px">
-                                <img ng-if="cert.hasImage()" ng-src="{{ cert.getImage() }}" height="200px">
-                            </div>
-                        </div>
+<div class="certification" ng-if="certifications !== null && certifications.length > 0">
+    <div class="row">
+        <div ng-repeat="cert in certifications">
+            <div ng-if="cert != null">
+                <div class="col-sm-6 col-md-6">
+                    <div class="thumbnail">
+                        <h3>
+                            <a ng-if="cert.getHeadingUrl()" href="{{cert.getHeadingUrl()}}" target="_new">{{ cert.getName() }}</a>
+                            <span ng-if="cert.getHeadingUrl() === null">{{cert.getName()}}</span>
+                        </h3>
+                        <p ng-repeat="paragraph in cert.getParagraphs()">{{paragraph}}</p>
+                        <img
+                                ng-if="cert.hasImages()"
+                                ng-repeat="image in cert.getImages()"
+                                ng-src="{{image}}"
+                                class="pull-left "
+                         />
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>

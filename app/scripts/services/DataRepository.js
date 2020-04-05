@@ -26,6 +26,7 @@ var DataRepository = function (recordSets) {
   const allCollections = '_all';
 
   this.auditLogs = null; // "null" indicates we haven't populated it yet - it becomes an array after that.
+  this.certifications = null; // Same as for audit logs above.
 
   this.auditLogHelper = new AuditLogHelper();
 
@@ -76,8 +77,6 @@ var DataRepository = function (recordSets) {
         );
       }
     }
-
-    this.certifications = []; // @TODO: There doesn't seem to be any certification data, so we don't try to load it.
   };
 
   this.parse();
@@ -94,17 +93,37 @@ var DataRepository = function (recordSets) {
     return this.categories;
   };
 
+  /**
+   * Certifications are only loaded on demand. If the class property is null, it means we haven't
+   * tried to load them (note: an empty array would mean we tried to load them and there were zero
+   * of them).
+   *
+   * @return {Certification[]}
+   */
+  this.getCertifications = function getCertifications() {
+    // If we haven't loaded the certifications, load them now.
+    if (this.certifications === null) {
+      /**
+       * @var {Array} certificationJson Defined in app/scripts/internalDataSource/certifications.js
+       */
+      this.certifications = [];
+      var self = this;
+      certificationJson.forEach(
+        function (certificationRecord) {
+          self.certifications.push(new Certification(certificationRecord));
+        }
+      );
+    }
+
+    return this.certifications;
+  };
+
   this.getProducts = function getProducts() {
     return this.products;
   };
 
   this.getSuggestedProducts = function getSuggestedProducts() {
     return this.productSuggestions;
-  };
-
-  // Note: at the moment, this.certifications will always be an empty array.
-  this.getCertifications = function getCertifications() {
-    return this.certifications;
   };
 
   // Note: Audit logs are different to the other record sets because they are loaded "on demand", so this

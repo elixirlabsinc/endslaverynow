@@ -2,11 +2,32 @@
 
 var Certification = (function () {
 
+  // @TODO: This will act as a template for the JSON
   var Certification = function Certification(data) {
-    // @TODO: Currently there is no certification data, so this is all speculation...
-    this.description = data.hasOwnProperty('description') ? data.description : null;
-    this.image = data.hasOwnProperty('image') ? data.image : null;
+    var self = this;
     this.name = data.hasOwnProperty('name') ? data.name : null;
+    this.paragraphs = [];
+    if (data.hasOwnProperty('paragraphs') && Array.isArray(data.paragraphs)) {
+      data.paragraphs.forEach(
+        function (oneParagraph) {
+          if (typeof oneParagraph === 'string') {
+            self.paragraphs.push(oneParagraph);
+          }
+        }
+      );
+    }
+
+    this.headingUrl = data.hasOwnProperty('headingUrl') ? data.headingUrl : null;
+    this.images = [];
+    if (data.hasOwnProperty('images') && Array.isArray(data.images)) {
+      data.images.forEach(
+        function (oneImage) {
+          if (typeof oneImage === 'string') {
+            self.images.push(oneImage);
+          }
+        }
+      );
+    }
   };
 
   Certification.prototype = {
@@ -14,16 +35,20 @@ var Certification = (function () {
       return this.name;
     },
 
-    getDescription: function getDescription() {
-      return this.description;
+    getParagraphs: function getParagraphs() {
+      return this.paragraphs;
     },
 
-    hasImage: function hasImage() {
-      return this.image !== null;
+    getHeadingUrl: function getHeadingUrl() {
+      return this.headingUrl;
     },
 
-    getImage: function getImage() {
-      return this.image;
+    hasImages: function hasImages() {
+      return this.images.length > 0;
+    },
+
+    getImages: function getImages() {
+      return this.images;
     }
   };
 
