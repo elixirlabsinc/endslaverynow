@@ -12,11 +12,12 @@ angular.module('endslaverynowApp')
     '$transition$',
     '$scope',
     '$location',
+    '$timeout',
     'dataRepositoryFactory',
     'ProductSuggestionStatuses',
     'StatusMapperService',
     'CommunicationsHelperService',
-    function ($transition$, $scope, $location, dataRepositoryFactory, ProductSuggestionStatuses, StatusMapperService, CommunicationsHelperService) {
+    function ($transition$, $scope, $location, $timeout, dataRepositoryFactory, ProductSuggestionStatuses, StatusMapperService, CommunicationsHelperService) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.statusMapperService = StatusMapperService;
       $scope.communicationsHelperService = CommunicationsHelperService;
@@ -30,7 +31,11 @@ angular.module('endslaverynowApp')
       $scope.category = null;
       $scope.brand = null;
 
-      $scope.verificationCode = null;
+      // This has to be an object for the ngModel stuff to work, unfortunately.
+      $scope.verification = {
+        code: null,
+        isInvalid: false
+      };
 
       dataRepositoryFactory.ready(
         function () {
@@ -64,10 +69,9 @@ angular.module('endslaverynowApp')
         $location.path('/suggestProduct');
       };
 
-      $scope.verifyCode = function(verificationCode) {
+      $scope.verifyCode = function() {
         // Extract the code out of the product suggestion and simply compare them.
-        // @TODO: Would be nice to make it pause for a couple of seconds after an incorrect entry, to make it harder to brute force?
-        if (verificationCode === $scope.suggestedProduct.extractVerificationCode()) {
+        if ($scope.verification.code === $scope.suggestedProduct.extractVerificationCode()) {
           $scope.suggestedProduct.setStatus($scope.ProductSuggestionStatuses.inReview);
 
           var persistService = new PersistService(
@@ -86,6 +90,16 @@ angular.module('endslaverynowApp')
           persistService.processProductSuggestion($scope.suggestedProduct, null, onCompletion);
         } else {
           window.alert('Sorry, that code is not valid. Please try again');
+          // Make them wait a couple of seconds before they can try again. It makes a brute for attack harder.
+          // We have to use the angular timeout otherwise it doesn't notice when we reset the flag.
+          // And of course we do this _after_ they close the window alert.
+          $scope.verification.isInvalid = true;
+          $timeout(
+            function () {
+              $scope.verification.isInvalid = false;
+            },
+            2000
+          );
         }
       };
     }

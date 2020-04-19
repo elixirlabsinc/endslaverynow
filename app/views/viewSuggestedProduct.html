@@ -18,10 +18,14 @@
 
             <p>We have sent you a verification code.</p>
 
-            <form ng-submit="verifyCode(verificationCode)">
+            <form ng-submit="verifyCode()">
             <p>
-                When you receive your verification code, please enter it here: <input type="text" ng-model="verificationCode" size="5"/>
-                <input class="btn btn-primary btn-lg" type="submit" value="Verify">
+                When you receive your verification code, please enter it here:
+                <span ng-if="verification.isInvalid">please wait...</span>
+                <span ng-if="!verification.isInvalid">
+                    <input type="text" ng-model="verification.code" size="5" maxlength="6"/>
+                    <input class="btn btn-primary btn-lg" type="submit" value="Verify">
+                </span>
             </p>
             </form>
         </div>

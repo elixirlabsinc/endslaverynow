@@ -109,9 +109,9 @@ var CommunicationsHelperService = function ($location, MailerService, UrlHelperS
     if (whatToSend.email) {
       this.mailerService.sendToSuggestor(
         this.buildToAddress(productSuggestion),
-        'Thank you for validating your code',
+        'Thank you for verifying your suggestion',
         productSuggestion.getSuggesterGivenName(),
-        'Thank you for verifying your submission. Our experts will now review it. We will keep you informed of progress.',
+        'Thank you for verifying your suggestion. Our experts will now review it. We will keep you informed of progress.',
         this.buildViewLink(productSuggestion)
       );
     }
