@@ -29,6 +29,8 @@ var ProductSuggestion = (function () {
 
     this.adminNotes = data.hasOwnProperty('adminNotes') ? data.adminNotes : null;
 
+    this.verificationCodeData = data.hasOwnProperty('verificationCodeData') ? data.verificationCodeData : null;
+
     // Some fields with default values.
     // @TODO: The valid status values need to be in some library code somewhere (eg for the default value here).
     // @TODO: I just couldn't work out how to do this in a model - I can inject the allowed statuses into controllers.
@@ -124,6 +126,40 @@ var ProductSuggestion = (function () {
 
     hasAdminNotes: function hasAdminNotes() {
       return this.adminNotes != null && this.adminNotes != '';
+    },
+
+    /**
+     * The verification code (at time of writing) is of the form <version number>:<code>. This setter receives that
+     * whole string.
+     * @param verificationCodeData
+     */
+    setVerificationCodeData: function setVerificationCodeData(verificationCodeData) {
+      this.verificationCodeData = verificationCodeData;
+    },
+
+    /**
+     * The verification code (at time of writing) is of the form <version number>:<code>. This getter returns that
+     * whole string.
+     * @returns {string|null}
+     */
+    getVerificationCodeData: function getVerificationCodeData() {
+      return this.verificationCodeData;
+    },
+
+    /**
+     * The verification code (at time of writing) is of the form <version number>:<code>. This getter returns just
+     * the code, using the version number to know how to decode it.
+     * @returns {string|null}
+     */
+    extractVerificationCode: function extractVerificationCode() {
+      if (this.verificationCodeData === null) {
+        return null;
+      }
+
+      // For now, we just assume everything.
+      var codeParts = this.verificationCodeData.split(':');
+
+      return codeParts[1];
     }
   };
   angular.extend(ProductSuggestion.prototype, Product.prototype);

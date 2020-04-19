@@ -389,6 +389,7 @@ var DataRepository = function (recordSets) {
     productSuggestionRecord.status = productSuggestion.getStatus();
     productSuggestionRecord.createdAtUtc = productSuggestion.getCreatedAtUtc().toISOString();
     productSuggestionRecord.adminNotes = productSuggestion.getAdminNotes();
+    productSuggestionRecord.verificationCodeData = productSuggestion.getVerificationCodeData();
   };
 
   /**

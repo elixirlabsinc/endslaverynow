@@ -13,13 +13,13 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
   '$state',
   '$location',
   'dataRepositoryFactory',
-  'EmailHelperService',
+  'CommunicationsHelperService',
   'LookupService',
-  function ($scope, $transition$, $state, $location, dataRepositoryFactory, EmailHelperService, LookupService) {
+  function ($scope, $transition$, $state, $location, dataRepositoryFactory, CommunicationsHelperService, LookupService) {
     $scope.lookupService = LookupService;
     $scope.loaded = false;
     $scope.suggestedProductId = parseInt($transition$.params().id);
-    $scope.emailHelperService = EmailHelperService;
+    $scope.communicationsHelperService = CommunicationsHelperService;
 
     // @TODO: We need to change the way this works so that the form only uses models (and not ng-values)
     // @TODO: so that we can tell when someone blanks out a field.
@@ -161,7 +161,7 @@ angular.module('endslaverynowApp').controller('EditSuggestedProductCtrl', [
           'Edit has been completed!',
           function () {
             // Tell the suggester we have edited their suggestion.
-            self.emailHelperService.afterEdit(productSuggestion);
+            self.communicationsHelperService.afterEdit(productSuggestion);
 
             $state.go('admin.reviewSuggestedProduct', {id: $scope.suggestedProductId});
           }

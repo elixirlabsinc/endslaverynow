@@ -15,22 +15,22 @@ angular.module('endslaverynowApp')
     'dataRepositoryFactory',
     'ProductSuggestionStatuses',
     'StatusMapperService',
-    'EmailHelperService',
-    function ($transition$, $scope, $location, dataRepositoryFactory, ProductSuggestionStatuses, StatusMapperService, EmailHelperService) {
+    'CommunicationsHelperService',
+    function ($transition$, $scope, $location, dataRepositoryFactory, ProductSuggestionStatuses, StatusMapperService, CommunicationsHelperService) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.statusMapperService = StatusMapperService;
-      $scope.emailHelperService = EmailHelperService;
+      $scope.communicationsHelperService = CommunicationsHelperService;
       $scope.suggestedProductRowid = $transition$.params().rowid;
       $scope.baseUrl = $location.absUrl();
       $scope.loaded = false;
       $scope.found = false;
-      $scope.validated = false;
+      $scope.verified = false;
       $scope.isAdminUser = false;
 
       $scope.category = null;
       $scope.brand = null;
 
-      $scope.validationCode = null;
+      $scope.verificationCode = null;
 
       dataRepositoryFactory.ready(
         function () {
@@ -64,10 +64,10 @@ angular.module('endslaverynowApp')
         $location.path('/suggestProduct');
       };
 
-      $scope.validateCode = function(validationCode) {
-        // @TODO: Use the proper services to validate the code. For now, if it starts "a1", assume it's valid.
-        // @TODO: For now, this step is skipped.
-        if (validationCode.toLowerCase().indexOf('a1') === 0) {
+      $scope.verifyCode = function(verificationCode) {
+        // Extract the code out of the product suggestion and simply compare them.
+        // @TODO: Would be nice to make it pause for a couple of seconds after an incorrect entry, to make it harder to brute force?
+        if (verificationCode === $scope.suggestedProduct.extractVerificationCode()) {
           $scope.suggestedProduct.setStatus($scope.ProductSuggestionStatuses.inReview);
 
           var persistService = new PersistService(
@@ -77,12 +77,10 @@ angular.module('endslaverynowApp')
           );
           var onCompletion = function onCompletion() {
             // Show a message on screen when the status is changed.
-            $scope.validated = true;
+            $scope.verified = true;
 
-            // Send an email to confirm they have validated their code.
-            // @TODO: Include enough data from the product for the suggester to be able to identify it.
-            // @TODO: Sort out any wording. Remove this if we don't use validation codes.
-            $scope.emailHelperService.afterCodeValidation($scope.suggestedProduct);
+            // Send an email to confirm they have verified their code.
+            $scope.communicationsHelperService.afterCodeVerification($scope.suggestedProduct);
           };
 
           persistService.processProductSuggestion($scope.suggestedProduct, null, onCompletion);

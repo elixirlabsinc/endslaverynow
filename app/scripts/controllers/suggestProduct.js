@@ -16,7 +16,7 @@ angular.module('endslaverynowApp')
     'AvailableTypes',
     'ProductSuggestionStatuses',
     'CollectionService',
-    'EmailHelperService',
+    'CommunicationsHelperService',
     'UrlHelperService',
     'ENV',
     'LookupService',
@@ -28,14 +28,14 @@ angular.module('endslaverynowApp')
       AvailableTypes,
       ProductSuggestionStatuses,
       CollectionService,
-      EmailHelperService,
+      CommunicationsHelperService,
       UrlHelperService,
       ENV,
       LookupService
     ) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.collectionService = CollectionService;
-      $scope.emailHelperService = EmailHelperService;
+      $scope.communicationsHelperService = CommunicationsHelperService;
       $scope.urlHelperService = UrlHelperService;
       $scope.lookupService = LookupService;
       $scope.availableTypes = AvailableTypes;
@@ -179,8 +179,14 @@ angular.module('endslaverynowApp')
           if (item.image) {
             model.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage(item.image));
           }
-          // @TODO: For now, skip the "validation code" step and move the status on to "in review" (it would normally be "pending").
-          model.setStatus($scope.ProductSuggestionStatuses.inReview);
+          // At this point, we need to send a code to either the telephone number or email address.
+          // I will keep it simple for now, and just generate a 6 digit random number. We'll save it in to the
+          // record in the form '<code version>:<6 digit number>" so that if we ever change it, we'll know the correct
+          // way to validate the code.
+          var verificationCode = 100000 + Math.floor(Math.random() * 900000);
+          model.setVerificationCodeData('1:'+verificationCode.toString());
+
+          model.setStatus($scope.ProductSuggestionStatuses.pending);
 
           var persistService = new PersistService(
             dataRepositoryFactory,
@@ -188,19 +194,16 @@ angular.module('endslaverynowApp')
             dataRepositoryFactory.getStorageRepository()
           );
           var onCompletion = function onCompletion() {
-            // @TODO: At this point, we need to send a code to either the telephone number or email address.
-            // @TODO: I imagine we'd have to put some kind of identifier in the record (maybe before save, or here).
-
             // We need the rowid, but it's not populated on save, so we have to get the storage repository
             // to reparse the records, and then we need to ask for the model by id.
             $scope.dataRepository.parse($scope.dataRepository.getCollectionNames().productSuggestions);
             var suggestedProduct = $scope.dataRepository.getSuggestedProductById(model.getId());
 
             // Redirect the user to the "view" screen for this product. It will include, amongst other things,
-            // a field to enter the validation code in.
+            // a field to enter the verification code in.
             $location.path($scope.urlHelperService.getPathForSuggestedProduct(suggestedProduct));
 
-            $scope.emailHelperService.afterCreation(suggestedProduct);
+            $scope.communicationsHelperService.afterCreation(suggestedProduct);
           };
 
           persistService.processProductSuggestion(model, null, onCompletion);
