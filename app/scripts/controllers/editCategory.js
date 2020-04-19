@@ -12,8 +12,10 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
   '$scope',
   '$state',
   'dataRepositoryFactory',
-  function ($transition$, $scope, $state, dataRepositoryFactory) {
+  'LookupService',
+  function ($transition$, $scope, $state, dataRepositoryFactory, LookupService) {
     $scope.categoryId = $transition$.params().id;
+    $scope.lookupService = LookupService;
 
     $scope.dataRepository = null;
 
@@ -21,7 +23,6 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
 
     $scope.NameValue = null;
     $scope.DescriptionValue = null;
-    $scope.selectedParentCategoryId = null;
     $scope.Image = null;
 
     dataRepositoryFactory.ready(
@@ -40,17 +41,9 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
         $scope.parentCategory = $scope.dataRepository.getCategoryById(category.getParentCategoryId());
         $scope.image = category.getImage();
 
-        /**
-         * @param category {Category|null}
-         */
-        $scope.setParentCategory = function (category) {
-          $scope.selectedParentCategoryId = category ? category.getId() : null;
-          $scope.selectedParentCategoryName = category ? category.getName() : null;
-        };
-
         $scope.removeParentCategory = function () {
           $scope.parentCategory = null;
-          $scope.setParentCategory(null);
+          $scope.lookupService.setParentCategory(null);
         };
       }
     );
@@ -67,8 +60,8 @@ angular.module('endslaverynowApp').controller('EditCategoryCtrl', [
       if ($scope.DescriptionValue) {
         category.setDescription($scope.DescriptionValue);
       }
-      if ($scope.selectedParentCategoryId) {
-        category.setParentCategoryId($scope.selectedParentCategoryId);
+      if ($scope.lookupService.getSelectedParentCategoryId()) {
+        category.setParentCategoryId($scope.lookupService.getSelectedParentCategoryId());
       } else {
         category.setParentCategoryId(null);
       }

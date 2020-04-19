@@ -15,10 +15,10 @@
     <div class="form-group">
       Parent Category:
       <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{selectedParentCategoryName || parentCategory.name || 'Select Parent Category'}}
+        {{lookupService.getSelectedParentCategoryName() || parentCategory.name || 'Select Parent Category'}}
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="category in categories" ng-if="category.getName().length > 0" ng-click="setParentCategory(category)" class="dropdown-item form-control">
+        <button ng-repeat="category in categories" ng-if="category.getName().length > 0" ng-click="lookupService.setParentCategory(category)" class="dropdown-item form-control">
           {{category.getName()}}
         </button>
       </div>

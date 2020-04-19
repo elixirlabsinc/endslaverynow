@@ -26,20 +26,20 @@
             Ranking:
             <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                 {{selectedRankName || ranking}}
+                 {{lookupService.getSelectedRankName() || ranking}}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <button ng-repeat="rank in rankingOptions" ng-if="rank.length > 0" ng-click="setRanking(rank)" class="dropdown-item form-control">{{rank}}</button>
+                <button ng-repeat="rank in rankingOptions" ng-if="rank.length > 0" ng-click="lookupService.setRanking(rank)" class="dropdown-item form-control">{{rank}}</button>
             </div>
         </div>
         <div class="form-group">
             Category:
             <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                {{selectedCategoryName || cat.name}}
+                {{lookupService.getSelectedCategoryName() || cat.name}}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <button ng-repeat="category in categories" ng-if="category.getName().length > 0" ng-click="setCategory(category)" class="dropdown-item form-control">{{category.getName()}}</button>
+                <button ng-repeat="category in categories" ng-if="category.getName().length > 0" ng-click="lookupService.setCategory(category)" class="dropdown-item form-control">{{category.getName()}}</button>
             </div>
         </div>
         <div class="errorMessage" ng-if="errorMessage">Error submitting form. Please complete all fields to continue.

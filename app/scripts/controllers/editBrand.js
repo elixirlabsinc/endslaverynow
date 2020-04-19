@@ -12,7 +12,9 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
   '$scope',
   '$state',
   'dataRepositoryFactory',
-  function ($transition$, $scope, $state, dataRepositoryFactory) {
+  'LookupService',
+  function ($transition$, $scope, $state, dataRepositoryFactory, LookupService) {
+    $scope.lookupService = LookupService;
     $scope.brandId = $transition$.params().id;
 
     $scope.dataRepository = null;
@@ -24,9 +26,7 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
 
     $scope.NameValue = null;
     $scope.DescriptionValue = null;
-    $scope.selectedRankName = null;
-    $scope.selectedCategoryId = null;
-    $scope.selectedCategoryName = null;
+    $scope.lookupService.reset();
     $scope.Image = null;
 
     dataRepositoryFactory.ready(
@@ -47,17 +47,8 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
         $scope.ranking = brand.getRanking();
         $scope.image = brand.getImage();
         $scope.rankingOptions = (new Ranking()).getRankingOptions(); // Ideally needs to be a static method.
-        // @TODO: If $scope.CategoryId is not used anywhere else, it should just be a local variable.
-        $scope.CategoryId = brand.getFirstCategoryId();
-        $scope.cat = $scope.CategoryId === null ? null : $scope.dataRepository.getCategoryById($scope.CategoryId);
-
-        $scope.setRanking = function (rankName) {
-          $scope.selectedRankName = rankName;
-        };
-        $scope.setCategory = function (category) {
-          $scope.selectedCategoryId = category.getId();
-          $scope.selectedCategoryName = category.getName();
-        };
+        var categoryId = brand.getFirstCategoryId();
+        $scope.cat = categoryId === null ? null : $scope.dataRepository.getCategoryById(categoryId);
 
         $scope.loaded = true;
       }
@@ -75,11 +66,11 @@ angular.module('endslaverynowApp').controller('EditBrandCtrl', [
       if ($scope.DescriptionValue) {
         brand.setDescription($scope.DescriptionValue);
       }
-      if ($scope.selectedRankName) {
-        brand.setRanking($scope.selectedRankName);
+      if ($scope.lookupService.getSelectedRankName()) {
+        brand.setRanking($scope.lookupService.getSelectedRankName());
       }
-      if ($scope.selectedCategoryId) {
-        brand.setCategoryIds([$scope.selectedCategoryId]); // We need to pass in an array of category ids.
+      if ($scope.lookupService.getSelectedCategoryId()) {
+        brand.setCategoryIds([$scope.lookupService.getSelectedCategoryId()]); // We need to pass in an array of category ids.
       }
       if ($scope.Image) {
         brand.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.Image));

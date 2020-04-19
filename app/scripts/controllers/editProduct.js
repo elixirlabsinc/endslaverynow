@@ -12,7 +12,9 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
   '$scope',
   '$state',
   'dataRepositoryFactory',
-  function ($stateParams, $scope, $state, dataRepositoryFactory) {
+  'LookupService',
+  function ($stateParams, $scope, $state, dataRepositoryFactory, LookupService) {
+    $scope.lookupService = LookupService;
     $scope.productId = $stateParams.id ? parseInt($stateParams.id) : null;
 
     $scope.dataRepository = null;
@@ -25,8 +27,7 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
       PurchaseURLValue: null,
       Image: null
     };
-    $scope.selectedBrandId = null;
-    $scope.selectedCategoryId = null;
+    $scope.lookupService.reset();
 
     $scope.ctrl = {
       brands: null,
@@ -62,21 +63,6 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
 
         $scope.loaded = true;
 
-        /**
-         * @param category {Category}
-         */
-        $scope.setCategory = function (category) {
-          $scope.selectedCategoryId = category.getId();
-          $scope.selectedCategoryName = category.getName();
-        };
-        /**
-         * @param brand {Brand}
-         */
-        $scope.setBrand = function (brand) {
-          $scope.selectedBrandId = brand.getId();
-          $scope.selectedBrandName = brand.getName();
-        };
-
         // See if a product suggestion generated this product. If so, get its id.
         var productSuggestion = $scope.dataRepository.getSuggestedProductByProductId($scope.productId);
         $scope.productSuggestionId = productSuggestion ? productSuggestion.getId() : null;
@@ -98,11 +84,11 @@ angular.module('endslaverynowApp').controller('EditProductCtrl', [
       if ($scope.entity.PurchaseURLValue) {
         product.setPurchaseUrl($scope.entity.PurchaseURLValue);
       }
-      if ($scope.selectedCategoryId) {
-        product.setCategoryId($scope.selectedCategoryId);
+      if ($scope.lookupService.getSelectedCategoryId()) {
+        product.setCategoryId($scope.lookupService.getSelectedCategoryId());
       }
-      if ($scope.selectedBrandId) {
-        product.setBrandId($scope.selectedBrandId);
+      if ($scope.lookupService.getSelectedBrandId()) {
+        product.setBrandId($scope.lookupService.getSelectedBrandId());
       }
       if ($scope.entity.Image) {
         product.setImage(dataRepositoryFactory.getStorageRepository().extractLatestImage($scope.entity.Image));

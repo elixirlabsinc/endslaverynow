@@ -14,10 +14,12 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
   'dataRepositoryFactory',
   'ProductSuggestionStatuses',
   'StatusMapperService',
-  function ($scope, $location, $transition$, dataRepositoryFactory, ProductSuggestionStatuses, StatusMapperService) {
+  'EmailHelperService',
+  function ($scope, $location, $transition$, dataRepositoryFactory, ProductSuggestionStatuses, StatusMapperService, EmailHelperService) {
     $scope.dataRepository = null;
     $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
     $scope.statusMapperService = StatusMapperService;
+    $scope.emailHelperService = EmailHelperService;
     $scope.suggestedProductId = parseInt($transition$.params().id);
     $scope.category = null;
     $scope.brand = null;
@@ -77,6 +79,10 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
     $scope.saveNotes = function saveNotes(adminNotes) {
       $scope.suggestedProduct.setAdminNotes(adminNotes);
       $scope.dataRepository.persistProductSuggestion($scope.suggestedProduct, 'Your notes have been saved');
+
+      // Tell the suggester we have edited the notes on their suggestion.
+      $scope.emailHelperService.afterAddNotes($scope.suggestedProduct);
+
       $scope.closeEditNotes();
     };
 
@@ -87,6 +93,9 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
 
       $scope.suggestedProduct.setStatus($scope.ProductSuggestionStatuses.rejected);
       $scope.dataRepository.persistProductSuggestion($scope.suggestedProduct, 'This product suggestion has been rejected');
+
+      // Tell the suggester we have rejected their suggestion.
+      $scope.emailHelperService.afterRejection($scope.suggestedProduct);
     };
 
     $scope.unreject = function unreject() {
@@ -96,6 +105,9 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
 
       $scope.suggestedProduct.setStatus($scope.ProductSuggestionStatuses.inReview);
       $scope.dataRepository.persistProductSuggestion($scope.suggestedProduct, 'This product suggestion has been moved back to "in review"');
+
+      // Tell the suggester we have unrejected their suggestion.
+      $scope.emailHelperService.afterUnrejection($scope.suggestedProduct);
     };
 
     $scope.deleteSuggestion = function deleteSuggestion() {
@@ -130,7 +142,11 @@ angular.module('endslaverynowApp').controller('ReviewSuggestedProductCtrl', [
             $scope.suggestedProduct.setStatus($scope.ProductSuggestionStatuses.approved);
             $scope.persistService.processProductSuggestion(
               $scope.suggestedProduct,
-              'The product has been linked to this suggestion'
+              'The product has been linked to this suggestion',
+              function () {
+                // Tell the suggester we have approved their suggestion.
+                $scope.emailHelperService.afterApproval($scope.suggestedProduct);
+              }
             );
           }
         );

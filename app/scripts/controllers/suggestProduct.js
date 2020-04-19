@@ -16,6 +16,10 @@ angular.module('endslaverynowApp')
     'AvailableTypes',
     'ProductSuggestionStatuses',
     'CollectionService',
+    'EmailHelperService',
+    'UrlHelperService',
+    'ENV',
+    'LookupService',
     function (
       $scope,
       $state,
@@ -23,13 +27,24 @@ angular.module('endslaverynowApp')
       dataRepositoryFactory,
       AvailableTypes,
       ProductSuggestionStatuses,
-      CollectionService
+      CollectionService,
+      EmailHelperService,
+      UrlHelperService,
+      ENV,
+      LookupService
     ) {
       $scope.ProductSuggestionStatuses = ProductSuggestionStatuses;
       $scope.collectionService = CollectionService;
+      $scope.emailHelperService = EmailHelperService;
+      $scope.urlHelperService = UrlHelperService;
+      $scope.lookupService = LookupService;
       $scope.availableTypes = AvailableTypes;
       $scope.loaded = false;
       $scope.errorMessages = [];
+
+      // Initialise the recaptcha form, and hide our submit button until the user completes the challenge.
+      $scope.vcRecaptureSiteKey = ENV.grecaptcha.sitekey;
+      $scope.showSubmitButton = false;
 
       $scope.formType = $scope.availableTypes.Products;
       $scope.formPurpose = 'product suggestion';
@@ -46,10 +61,7 @@ angular.module('endslaverynowApp')
         suggesterWhy: null,
         suggesterNotes: null
       };
-      $scope.selectedCategoryId = null;
-      $scope.selectedCategoryName = null;
-      $scope.selectedBrandId = null;
-      $scope.selectedBrandName = null;
+      $scope.lookupService.reset();
 
       dataRepositoryFactory.ready(
         function () {
@@ -61,22 +73,16 @@ angular.module('endslaverynowApp')
         }
       );
 
-      /**
-       * @param category {Category}
-       * @TODO: This is a duplicate of the method in formAdd.js
-       */
-      $scope.setCategory = function (category) {
-        $scope.selectedCategoryId = category.getId();
-        $scope.selectedCategoryName = category.getName();
+      // Callback functions that get called when the recaptcha challenge is completed, and when that
+      // completion times out.
+      $scope.vcRecaptureOnSuccess = function vcRecaptureOnSuccess(response) {
+        // User successfully completed the recapture challenge - allow them to submit the form.
+        $scope.showSubmitButton = true;
       };
-
-      /**
-       * @param brand {Brand}
-       * @TODO: This is a duplicate of the method in formAdd.js
-       */
-      $scope.setBrand = function (brand) {
-        $scope.selectedBrandId = brand.getId();
-        $scope.selectedBrandName = brand.getName();
+      $scope.vcRecaptureOnExpire = function vcRecaptureOnExpire() {
+        // User successfully completed the recapture challenge, but it has since expired - do not allow
+        // them to submit the form.
+        $scope.showSubmitButton = false;
       };
 
       $scope.hasImage = function hasImage(image) {
@@ -99,6 +105,11 @@ angular.module('endslaverynowApp')
        */
       $scope.validInput = function validInput(item) {
         var result = [];
+
+        // Just make sure they are allowed to submit the form (in case anyone has hacked the DOM).
+        if (!$scope.showSubmitButton) {
+          result.push('Please complete the reCaptcha before submitting the form!');
+        }
 
         // Product name must be entered.
         if (item.name === null || item.name === '' || item.name === undefined) {
@@ -156,8 +167,8 @@ angular.module('endslaverynowApp')
 
       $scope.processForm = function (item) {
         // Populate the ids.
-        item.categoryId = $scope.selectedCategoryId ? $scope.selectedCategoryId.toString() : null;
-        item.brandId = $scope.selectedBrandId ? $scope.selectedBrandId.toString() : null;
+        item.categoryId = $scope.lookupService.getSelectedCategoryIdAsString();
+        item.brandId = $scope.lookupService.getSelectedBrandIdAsString();
 
         // Instantiate a model.
         var model = new ProductSuggestion(item);
@@ -187,7 +198,9 @@ angular.module('endslaverynowApp')
 
             // Redirect the user to the "view" screen for this product. It will include, amongst other things,
             // a field to enter the validation code in.
-            $location.path('/viewSuggestedProduct/'+suggestedProduct.getRowid());
+            $location.path($scope.urlHelperService.getPathForSuggestedProduct(suggestedProduct));
+
+            $scope.emailHelperService.afterCreation(suggestedProduct);
           };
 
           persistService.processProductSuggestion(model, null, onCompletion);

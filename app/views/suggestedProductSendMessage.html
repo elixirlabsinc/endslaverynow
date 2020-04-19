@@ -1,0 +1,63 @@
+<a ng-href="{{viewUrl}}" class="btn btn-warning pull-right">Cancel</a>
+
+<h2>Suggested Product</h2>
+
+<h3>Send us a message</h3>
+
+<div ng-if="!loaded">
+    <p>Loading...</p>
+</div>
+
+<div ng-if="loaded">
+    <div ng-if="!found">
+        <p>Sorry, we could not find that suggestion.</p>
+    </div>
+
+    <div ng-if="found">
+
+        <table>
+            <tr>
+                <th>Product Name</th><td>{{suggestedProduct.getName()}}</td>
+            </tr>
+            <tr>
+                <th>Description</th><td>{{suggestedProduct.getDescription()}}</td>
+            </tr>
+        </table>
+
+        <h3>Your message</h3>
+
+        <p>Note: The system will add a link to your product suggestion</p>
+
+        <div class="add-form" id="add-form" ng-if="loaded">
+            <h4>Subject</h4>
+            <div class="form-group">
+                <input
+                        type="text"
+                        class="form-control"
+                        required
+                        placeholder="Subject"
+                        ng-model="message.subject"
+                >
+            </div>
+
+            <h4>Message</h4>
+            <div class="form-group">
+                <textarea
+                      type="textarea"
+                      class="form-control"
+                      rows=10
+                      placeholder="Your message..."
+                      ng-model="message.body"
+                      required
+                >
+                </textarea>
+
+            </div>
+
+            <div class="errorMessage" ng-if="!valid">Please enter a subject and your message<br><br></div>
+
+            <input class="btn btn-primary btn-lg btn-block" type="submit" ng-click="sendMessage()" value="Send">
+
+        </div>
+    </div>
+</div>

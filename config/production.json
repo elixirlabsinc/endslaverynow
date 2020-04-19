@@ -6,5 +6,9 @@
     "messagingSenderId": "",
     "projectId": "",
     "storageBucket": ""
-  }
+  },
+  "grecaptcha": {
+    "sitekey": "TBC"
+  },
+  "email": "TBC"
 }

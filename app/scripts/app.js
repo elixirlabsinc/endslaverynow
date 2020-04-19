@@ -19,7 +19,8 @@ angular
 		'ngRoute',
 		'ngSanitize',
 		'ngTouch',
-		'ui.router'
+		'ui.router',
+        'vcRecaptcha'
 	])
 	.config(function($stateProvider, $urlRouterProvider) {
 		$stateProvider
@@ -223,13 +224,19 @@ angular
 				templateUrl: 'views/suggestProduct.html',
 				controller: 'SuggestProductCtrl',
 				controllerAs: 'suggestProduct'
-			})
-			.state('ViewSuggestedProductCtrl', {
-				url: '/viewSuggestedProduct/:rowid',
-				templateUrl: 'views/viewSuggestedProduct.html',
-				controller: 'ViewSuggestedProductCtrl',
-				controllerAs: 'viewSuggestedProduct'
-			});
+            })
+            .state('ViewSuggestedProductCtrl', {
+              url: '/viewSuggestedProduct/:rowid',
+              templateUrl: 'views/viewSuggestedProduct.html',
+              controller: 'ViewSuggestedProductCtrl',
+              controllerAs: 'viewSuggestedProduct'
+            })
+            .state('SuggestedProductSendMessageCtrl', {
+               url: '/viewSuggestedProduct/:rowid/sendMessage',
+               templateUrl: 'views/suggestedProductSendMessage.html',
+               controller: 'SuggestedProductSendMessageCtrl',
+               controllerAs: 'SuggestedProductSendMessage'
+            });
 
 			$urlRouterProvider.otherwise('/')
 	})
@@ -251,6 +258,26 @@ angular
     .factory('StatusMapperService', [
       function() {
         return new StatusMapperService();
+      }
+    ])
+    .factory('UrlHelperService', [
+      function() {
+        return new UrlHelperService();
+      }
+    ])
+    .factory('MailerService', ['$http', 'ENV',
+      function($http, ENV) {
+        return new MailerService($http, ENV);
+      }
+    ])
+    .factory('EmailHelperService', ['$location', 'MailerService', 'UrlHelperService',
+      function($location, MailerService, UrlHelperService) {
+        return new EmailHelperService($location, MailerService, UrlHelperService);
+      }
+    ])
+    .factory('LookupService', [
+      function() {
+        return new LookupService();
       }
     ])
     .constant('AvailableTypes', {

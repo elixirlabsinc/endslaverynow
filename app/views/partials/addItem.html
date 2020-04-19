@@ -34,19 +34,19 @@
 
 <div class="dropdown form-group" ng-if="formType !== availableTypes.Categories">
     <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{selectedCategoryName || 'Select Category'}}
+        {{lookupService.getSelectedCategoryName() || 'Select Category'}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setCategory(category)" class="dropdown-item form-control">{{category.name}}</button>
+        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="lookupService.setCategory(category)" class="dropdown-item form-control">{{category.name}}</button>
     </div>
 </div>
 
 <div class="dropdown form-group" ng-if="formType === availableTypes.Categories">
     <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{selectedParentCategoryName || 'Select Parent Category'}}
+        {{lookupService.getSelectedParentCategoryName() || 'Select Parent Category'}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="setParentCategory(category)" class="dropdown-item form-control">
+        <button ng-repeat="category in categories" ng-if="category.name.length > 0" ng-click="lookupService.setParentCategory(category)" class="dropdown-item form-control">
             {{category.name}}
         </button>
     </div>
@@ -54,19 +54,19 @@
 
 <div class="dropdown form-group" ng-if="formType === availableTypes.Products">
     <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{selectedBrandName || 'Select Brand'}}
+        {{lookupService.getSelectedBrandName() || 'Select Brand'}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="brand in brands" ng-if="brand.name.length > 0" ng-click="setBrand(brand)" class="dropdown-item form-control">{{brand.name}}</button>
+        <button ng-repeat="brand in brands" ng-if="brand.name.length > 0" ng-click="lookupService.setBrand(brand)" class="dropdown-item form-control">{{brand.name}}</button>
     </div>
 </div>
 
 <div class="dropdown form-group" ng-if="formType === availableTypes.Brands">
     <button class="btn btn-secondary dropdown-toggle dropdownbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{selectedRankName || 'Select Ranking'}}
+        {{lookupService.getSelectedRankName() || 'Select Ranking'}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <button ng-repeat="rank in rankingOptions" ng-if="rank.length > 0" ng-click="setRanking(rank)" class="dropdown-item form-control">{{rank}}</button>
+        <button ng-repeat="rank in rankingOptions" ng-if="rank.length > 0" ng-click="lookupService.setRanking(rank)" class="dropdown-item form-control">{{rank}}</button>
     </div>
 </div>
 

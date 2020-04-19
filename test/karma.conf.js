@@ -33,6 +33,7 @@ module.exports = function(config) {
       'bower_components/ng-file-upload/ng-file-upload.js',
       'bower_components/moment/moment.js',
       'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+      'bower_components/angular-recaptcha/release/angular-recaptcha.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js',

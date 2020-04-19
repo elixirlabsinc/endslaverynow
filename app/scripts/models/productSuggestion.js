@@ -66,6 +66,16 @@ var ProductSuggestion = (function () {
       return this.suggesterFamilyName;
     },
 
+    getSuggesterFullName: function getSuggesterFullName() {
+      var name = this.getSuggesterGivenName()+' '+this.getSuggesterFamilyName();
+      name = name.trim();
+      if (name === '') {
+        name = null;
+      }
+
+      return name;
+    },
+
     setSuggesterTelephoneNumber: function setSuggesterTelephoneNumber(newSuggesterTelephoneNumber) {
       this.suggesterTelephoneNumber = newSuggesterTelephoneNumber;
     },

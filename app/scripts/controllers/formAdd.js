@@ -16,9 +16,11 @@ angular.module('endslaverynowApp')
     'dataRepositoryFactory',
     'AvailableTypes',
     'CollectionService',
-    function ($stateParams, $scope, $state, Upload, dataRepositoryFactory, AvailableTypes, CollectionService) {
+    'LookupService',
+    function ($stateParams, $scope, $state, Upload, dataRepositoryFactory, AvailableTypes, CollectionService, LookupService) {
       $scope.availableTypes = AvailableTypes;
       $scope.collectionService = CollectionService;
+      $scope.lookupService = LookupService;
       $scope.brandId = $stateParams.id;
       $scope.loaded = false;
 
@@ -78,13 +80,7 @@ angular.module('endslaverynowApp')
         image: null
       };
 
-      $scope.selectedBrandId = null;
-      $scope.selectedBrandName = null;
-      $scope.selectedCategoryId = null;
-      $scope.selectedCategoryName = null;
-      $scope.selectedParentCategoryId = null;
-      $scope.selectedParentCategoryName = null;
-      $scope.selectedRankName = null;
+      $scope.lookupService.reset();
 
       $scope.products = [];
       $scope.dataRepository = null;
@@ -130,17 +126,17 @@ angular.module('endslaverynowApp')
         var model = null;
         switch ($scope.formType) {
           case $scope.availableTypes.Brands:
-            item.categories = $scope.selectedCategoryId.toString();
-            item.ranking = $scope.selectedRankName;
+            item.categories = $scope.lookupService.getSelectedCategoryIdAsString();
+            item.ranking = $scope.lookupService.getSelectedRankName();
             model = new Brand(item);
             break;
           case $scope.availableTypes.Categories:
-            item.parentCategoryId = $scope.selectedParentCategoryId || 0;
+            item.parentCategoryId = $scope.lookupService.getSelectedParentCategoryId() || 0;
             model = new Category(item);
             break;
           case $scope.availableTypes.Products:
-            item.brandId = $scope.selectedBrandId;
-            item.categoryId = $scope.selectedCategoryId;
+            item.brandId = $scope.lookupService.getSelectedBrandId();
+            item.categoryId = $scope.lookupService.getSelectedCategoryId();
             item.purchaseUrl = prependHttp(item.purchaseUrl);
             item.purchaseURlClicks = 0;
             item.parentCategoryId = 0;
@@ -174,34 +170,6 @@ angular.module('endslaverynowApp')
               break;
           }
         }
-      };
-
-      /**
-       * @param category {Category}
-       */
-      $scope.setCategory = function (category) {
-        $scope.selectedCategoryId = category.getId();
-        $scope.selectedCategoryName = category.getName();
-      };
-
-      /**
-       * @param category {Category}
-       */
-      $scope.setParentCategory = function (category) {
-        $scope.selectedParentCategoryId = category.getId();
-        $scope.selectedParentCategoryName = category.getName();
-      };
-
-      /**
-       * @param brand {Brand}
-       */
-      $scope.setBrand = function (brand) {
-        $scope.selectedBrandId = brand.getId();
-        $scope.selectedBrandName = brand.getName();
-      };
-
-      $scope.setRanking = function (rank) {
-        $scope.selectedRankName = rank;
       };
 
       $scope.selectItemType = function (itemType) {
