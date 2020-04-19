@@ -238,7 +238,7 @@ angular
                controllerAs: 'SuggestedProductSendMessage'
             });
 
-			$urlRouterProvider.otherwise('/')
+		// $urlRouterProvider.otherwise('/');
 	})
 	.factory('Auth', ['$firebaseAuth',
 		function($firebaseAuth) {
