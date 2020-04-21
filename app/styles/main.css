@@ -225,3 +225,10 @@ tr.audit-log-results.old-values {
   margin: 0 auto 1em;
 }
 /* End of styling for reCaptcha */
+
+/* Certifications, and in particular, the images */
+.certification .thumbnail img {
+  height: 100px;
+  margin-right: 1em;
+}
+/* End of certifications */

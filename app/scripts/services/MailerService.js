@@ -40,7 +40,7 @@ var MailerService = function($http, ENV) {
     );
   };
 
-  this.sendToSuggestor = function send(toEmail, subject, givenName, body, suggestedProductLink) {
+  this.sendToSuggestor = function sendToSuggestor(toEmail, subject, givenName, body, suggestedProductLink) {
     var result = {
       success: false,
       errorMessage: 'Unknown error'

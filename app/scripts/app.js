@@ -270,9 +270,9 @@ angular
         return new MailerService($http, ENV);
       }
     ])
-    .factory('EmailHelperService', ['$location', 'MailerService', 'UrlHelperService',
+    .factory('CommunicationsHelperService', ['$location', 'MailerService', 'UrlHelperService',
       function($location, MailerService, UrlHelperService) {
-        return new EmailHelperService($location, MailerService, UrlHelperService);
+        return new CommunicationsHelperService($location, MailerService, UrlHelperService);
       }
     ])
     .factory('LookupService', [
@@ -286,7 +286,7 @@ angular
       Products: 'products'
     })
     .constant('ProductSuggestionStatuses', {
-      pending: 'pending', // Created and waiting for validation code
+      pending: 'pending', // Created and waiting for verification code
       inReview: 'review', // Created and validated; being reviewed by an admin
       rejected: 'rejected', // Reviewed and rejected
       approved: 'approved' // Reviewed and approved
