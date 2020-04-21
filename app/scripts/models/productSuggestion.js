@@ -147,6 +147,15 @@ var ProductSuggestion = (function () {
     },
 
     /**
+     * Returns true if the supplied code matches the one in the entity.
+     * @param testCode
+     * @param {string} testCode
+     */
+    codeIsValid: function codeIsValid(testCode) {
+      return testCode === this.extractVerificationCode();
+    },
+
+    /**
      * The verification code (at time of writing) is of the form <version number>:<code>. This getter returns just
      * the code, using the version number to know how to decode it.
      * @returns {string|null}

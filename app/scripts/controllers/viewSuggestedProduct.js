@@ -70,8 +70,8 @@ angular.module('endslaverynowApp')
       };
 
       $scope.verifyCode = function() {
-        // Extract the code out of the product suggestion and simply compare them.
-        if ($scope.verification.code === $scope.suggestedProduct.extractVerificationCode()) {
+        // Ask the product suggestion entity if the entered code matches its code.
+        if ($scope.suggestedProduct.codeIsValid($scope.verification.code)) {
           $scope.suggestedProduct.setStatus($scope.ProductSuggestionStatuses.inReview);
 
           var persistService = new PersistService(
@@ -90,7 +90,7 @@ angular.module('endslaverynowApp')
           persistService.processProductSuggestion($scope.suggestedProduct, null, onCompletion);
         } else {
           window.alert('Sorry, that code is not valid. Please try again');
-          // Make them wait a couple of seconds before they can try again. It makes a brute for attack harder.
+          // Make them wait a couple of seconds before they can try again. It makes a brute force attack harder.
           // We have to use the angular timeout otherwise it doesn't notice when we reset the flag.
           // And of course we do this _after_ they close the window alert.
           $scope.verification.isInvalid = true;
