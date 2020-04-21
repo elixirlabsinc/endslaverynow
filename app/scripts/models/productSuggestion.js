@@ -165,7 +165,7 @@ var ProductSuggestion = (function () {
         return null;
       }
 
-      // For now, we just assume everything.
+      // For now, we just assume it is version 1.
       var codeParts = this.verificationCodeData.split(':');
 
       return codeParts[1];
